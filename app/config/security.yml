@@ -1,0 +1,58 @@
+security:
+    
+    access_denied_url: /dashboard/home/true
+      
+    providers:
+        # Example custom provider for Remote user
+        webservice:
+            id: webservice_user_provider
+            
+    encoders:
+        eProcess\EntityBundle\Entity\Utilisateur: sha512
+      
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }
+            
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        
+        secured_area:
+            anonymous: ~
+            pattern: ^/
+            simple_form:
+                provider: webservice
+                authenticator: user_authenticator
+                check_path:    /login_check
+                login_path:    /login
+                default_target_path: dashboard
+#                always_use_default_target_path: true
+            logout:
+                path:   /logout
+                target: /login
+                         
+#                default_target_path: default_security_target
+#                # login failure redirecting options (read further below)
+#                failure_path:    /foo
+#                failure_forward: false
+#                failure_path_parameter: _failure_path
+#                failure_handler: some.service.id
+#                success_handler: some.service.id
+#
+#                # field names for the username and password fields
+#                username_parameter: _username
+#                password_parameter: _password
+
+#            methods: [GET, POST]
+#            request_matcher: some.service.id
+#            access_denied_url: /foo/error403
+#            access_denied_handler: some.service.id
+#            entry_point: some.service.id
+#            
+#            
+            
+            
+    
+

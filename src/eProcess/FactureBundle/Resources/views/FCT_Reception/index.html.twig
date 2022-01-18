@@ -1,0 +1,196 @@
+{% extends "::layout.html.twig" %}
+
+{% block page_module %}
+    <a href="{{path('index_facture')}}">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class=" text-center">
+                    <div class="banniere-module">Factures </div>
+                    <div>Gestion des Factures </div>
+                </div>
+            </div>
+        </div>
+    </a>
+{% endblock  %}
+
+
+{% block page_content_left %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i>  Factures par Etape
+        </div>
+        <div class="panel-body">
+            <canvas id="myPieChart" width="600px" height="300px" ></canvas>
+        </div>
+    </div>
+
+{% endblock  %}
+
+{% block page_content_right %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-suitcase fa-fw"></i>  Actions sur les factures                </div>
+
+        <div class="panel-body">
+
+            {% block page_content_right_first_group %}
+
+                {% if isRECEPTION(CODE_PROFIL) %}
+                    <div class="list-group">
+                        <a href="{{path('facture_reception')}}" class="list-group-item">
+                            <i class="fa  fa-plus-circle  fa-fw"></i>  Nouvelle reception
+                        </a>
+                        <a href="{{path('facture_liste_reception')}}" class="list-group-item">
+                            <i class="fa fa-list   fa-fw"></i>  Liste factures arrivées
+                        </a>
+                        <a href="{{path('facture_liste_periode')}}" class="list-group-item">
+                            <i class="fa fa-search-minus  fa-fw"></i> Recherche de facture
+                        </a>
+                    </div>
+                {% elseif isEBS(CODE_PROFIL) %} 
+                    <div class="list-group">
+                        <a href="{{path('facture_traitement_arrive')}}" class="list-group-item">
+                            <i class="fa fa-gears fa-fw"></i> Facture à traiter
+                        </a>
+
+                        <a href="{{path('facture_traitement_termine')}}" class="list-group-item">
+                            <i class="fa fa-list   fa-fw"></i>  Factures traitées
+                        </a>
+
+                        <a href="{{path('facture_traitement_rejete')}}" class="list-group-item">
+                            <i class="fa fa-send   fa-fw"></i>  Factures rejetées
+                        </a>
+                        <a href="{{path('facture_traitement_recherche')}}" class="list-group-item">
+                            <i class="fa fa-search-minus  fa-fw"></i> Recherche de facture
+                        </a>
+
+                        <a href="{{path('add_fournisseur')}}" class="list-group-item">
+                            <i class="fa  fa-user  fa-fw"></i> Ajouter un Fournisseur
+                        </a>    
+                    </div>
+                {% elseif isOPERATION(CODE_PROFIL) %}     
+                    <div class="list-group">
+                        <a href="{{path('facture_validation_arrive')}}" class="list-group-item">
+                            <i class="fa  fa-plus-circle  fa-fw"></i>  Factures à valider
+                        </a>
+                        <a href="{{path('facture_validation_accepte')}}" class="list-group-item">
+                            <i class="fa  fa-check  fa-fw"></i>  Factures Conformes
+                        </a>
+                        <a href="{{path('facture_validation_probleme')}}" class="list-group-item">
+                            <i class="fa fa-times   fa-fw"></i>  Factures non comformes
+                        </a>
+                        <a href="{{path('facture_traitement_recherche')}}" class="list-group-item">
+                            <i class="fa fa-search-minus  fa-fw"></i> Recherche de factures
+                        </a>
+                    </div>
+                {% endif %}        
+
+            {% endblock %} 
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts %} 
+    {{information.modalTransfertFacture()}}
+
+    <form action="{{path('facture_remove')}}" method="POST" class="hidden" id="deleteFactureForm">
+        <input type="" name="idFacturesDelete" id="idFacturesDelete" value="" />
+        <input type="text" name="idFacturesMotif" id="idFacturesMotif" value="" />
+    </form>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+
+        function deleteFacture(ids, motifSuppression) {
+
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            }   //cas d'une suppression
+            else {
+                $('#idFacturesDelete').val(ids);
+                $('#idFacturesMotif').val(motifSuppression);
+                $('#deleteFactureForm').submit();
+        {#                afficheImageExecution() ;#}
+                }
+            }
+
+    </script>
+
+    {% if app.request.attributes.get("_route") == 'index_facture' %}
+        <script  src="{{asset('Chart/Chart.js')}}" type="text/javascript"></script>
+        <script type="text/javascript">
+
+            var valeur = $("<div/>").html("{{stat}}").text();
+            var tab = JSON.parse(valeur);
+            var colors = ["#3399fC", "#ffad00", "#339900", "#ff66fC", "#ff3300", "#1ABC00"];
+            var highlights = ["#3399ff", "#ffad0D", "#33990C", "#ff66f0", "#ff330f", "#1ABC0f"];
+            var data = [], i = 0;
+
+            for (var key in tab) {
+                var element = {};
+                if (tab.hasOwnProperty(key)) {
+                    element.label = key;
+                    element.value = parseInt(tab[key]);
+                    element.color = colors[i];
+                    element.highlight = highlights[i];
+                }
+
+                data.push(element);
+                i++;
+            }
+
+            {#     console.log(data);#}
+                ctx = $("#myPieChart").get(0).getContext("2d");
+                var myPieChart = new Chart(ctx).Pie(data);
+
+        </script>
+    {% endif %}
+
+
+
+    {# ici modale de suppression #}
+    <button class="btn btn-primary btn-xs hidden " data-toggle="modal"  id="btnSupprModal" data-target="#supprFctModal"> </button>
+    <!-- Modal -->
+    <div class="modal fade" id="supprFctModal" tabindex="-1" role="dialog" aria-labelledby="supprFctLabel" aria-hidden="true">
+        <div class="modal-dialog  " >
+            <div class="modal-content" style=" background-color: #ffe2e2">
+                <div id="rejetBonContent">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="supprFctLabel"> SUPPRESSION DES FACTURES </h4>
+                    </div>
+
+                    {#     contenu du modal           #}
+                    <div class="modal-body">
+                        <form id="formNoteRejetBon">
+                            <textarea class="form-control" id="noteSuppreFct" > Information:  Les Factures sont erronées. </textarea>
+                        </form>
+                        <div id="loadAssociated" style="display: none">
+                            <center> <img src="{{asset('images/chargement/ajax-loader.gif')}}" width="400px"/> </center>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"  id="annuleBonxx" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary" id="supprFctxx" onclick="$(this).hide();
+                                executeDelete(getIDs(), $('#formNoteRejetBon').val());">Valider</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        function executeDelete(ids, noteMotif) {
+            $('#formNoteRejetBon').hide();
+            $('#loadAssociated').show();
+            deleteFacture(ids, noteMotif);
+        }
+
+    </script>
+
+{% endblock %}
+
+

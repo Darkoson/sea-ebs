@@ -1,0 +1,21 @@
+<div class="navbar-default sidebar" role="navigation"  style="margin-top: -0px; ">
+    <div class="sidebar-nav navbar-collapse" id="sidebar" >
+        <ul class="nav" id="side-menu">
+            <li>
+                <a href="{{path('dashboard')}}"><i class="fa fa-dashboard fa-fw"></i> Tableau de bord</a>
+            </li>
+            {% for menuparent in MENUS_TITRE %} 
+                <li>
+                    <a href="#"><i class="fa fa-paw fa-fw"></i> {{menuparent.nom}}<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        {% for sousmenu in menuparent.sousMenu %}
+                            <li>
+                                <a href=" {{path(sousmenu.route)}}"> <span class="fa-space-shuttle"></span> {{sousmenu.nom}} </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %} 
+        </ul>
+    </div>
+</div>

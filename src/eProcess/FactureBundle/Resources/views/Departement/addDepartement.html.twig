@@ -1,0 +1,39 @@
+{% extends "eProcessFactureBundle:Departement:index.html.twig" %}
+
+{% block page_content_left %}
+
+    <div class="panel-body" >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Enregistrement d'un département 
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <form role="form" method="POST" action="{{path('add_departement')}}">
+                    <fieldset >
+                        <div class="form-group">
+                            <label  class="">Nom du département :</label>
+                            <input class="form-control"   name="nom" id="nom" required="true" placeholder="Nom du département" > 
+                        </div>
+
+                        <div class="form-group">
+                            <label class="">Description :</label>
+                            <input class="form-control" name="description" placeholder=" description sur les activités du département " required="true"> 
+                        </div>
+                    </fieldset>
+
+                    <button type="submit" class="btn btn-success">Enregistrer </button>
+                    <button type="reset" class="btn btn-primary">Annuler</button>
+                </form>
+
+
+            </div>
+            <!-- /.panel-body -->
+        </div>
+
+
+    </div>
+{% endblock %}
+
+

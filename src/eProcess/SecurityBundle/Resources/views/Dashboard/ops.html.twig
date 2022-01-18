@@ -1,0 +1,66 @@
+{% extends "::layout.html.twig" %}
+
+{% block profile_modules %} 
+    {% include 'eProcessSecurityBundle:Dashboard:modules/moduleEBS.html.twig' %} 
+{% endblock  %}
+
+
+{% block page_content_left %} 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Graphe des factures arrivées et traité par mois
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="flot-chart">
+
+               
+
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock  %}
+
+
+{% block page_content_right %} 
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-briefcase fa-fw"></i> Actions 
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="list-group">
+               
+                <a href="{{path('e_process_transfert_encours_recept')}}" class="list-group-item">
+                    <i class="fa  fa-sign-in fa-fw"></i> Factures à recevoir
+                    <span class="pull-right text-muted small"><em> ({{nbreTransfertArrive(CODE_PROFIL)}})</em>
+                    </span>
+                </a>
+                <a href="{{path('facture_validation_arrive')}}" class="list-group-item">
+                    <i class="fa fa-gears fa-fw"></i> Facture à valider
+
+                </a>
+                <a href="{{path('facture_validation_probleme')}}" class="list-group-item">
+                    <i class="fa  fa-minus-circle fa-fw"></i> Facture non Conformes
+                </a>
+
+                <a href="{{path('facture_liste_periode')}}" class="list-group-item">
+                    <i class="fa  fa-search-minus fa-fw"></i> Recherche de facture arrivées
+                </a>
+              
+                <a href="{{path('list_fournisseur')}}" class="list-group-item">
+                    <i class="fa  fa-user  fa-fw"></i> Les fournisseurs
+                </a>
+
+            </div>
+            <!-- /.list-group -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock  %}
+
+{% block javascripts %} {% endblock %}
+
+

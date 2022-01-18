@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>SEA-{% block title %}Login{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('logo.ico') }}" />
+       
+        {% include '::scripts/call_css.html.twig' %}
+        {% block stylesheet %} {% endblock %}
+
+    </head>
+
+    <body style=" background-image: url({{asset('images/fond/login.png')}}) ;background-repeat: no-repeat; background-size: cover">
+         <script src="{{ asset('bower/bower_components/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui-1.10.4.min.js') }}"></script>
+         {% import "eProcessTransfertBundle::macro.html.twig" as information %}
+        {% block body %}
+
+
+        {% endblock %}
+
+       
+        {% include '::scripts/call_js.html.twig' %}
+        {% block javascripts %}  {% endblock %}
+        
+    </body>
+
+</html>

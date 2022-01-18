@@ -1,0 +1,24 @@
+e_process_facture_departement:
+    resource: "@eProcessFactureBundle/Resources/config/routing/departement.yml"
+    prefix:   /department
+    
+e_process_facture_fournisseur:
+    resource: "@eProcessFactureBundle/Resources/config/routing/fournisseur.yml"
+    prefix:   /provider
+    
+e_process_facture_fact_reception:
+    resource: "@eProcessFactureBundle/Resources/config/routing/factureReception.yml"
+    prefix:   /reception
+    
+e_process_facture_fact_traitement:
+    resource: "@eProcessFactureBundle/Resources/config/routing/factureTraitement.yml"
+    prefix:   /process
+    
+    
+e_process_facture_fact_validation:
+    resource: "@eProcessFactureBundle/Resources/config/routing/factureValidation.yml"
+    prefix:   /validation
+    
+e_process_file:
+    resource: "@eProcessFactureBundle/Resources/config/routing/fichier.yml"
+    prefix:   /file

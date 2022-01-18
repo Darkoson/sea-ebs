@@ -1,0 +1,20 @@
+list_utilisateur:
+    path:     /list
+    defaults: { _controller: eProcessSecurityBundle:Utilisateur:listUtilisateur }
+
+add_utilisateur:
+    path:     /add
+    defaults: { _controller: eProcessSecurityBundle:Utilisateur:addUtilisateur  }
+    
+edit_utilisateur:
+    path:     /edit/{idUtilisateur}
+    defaults: { _controller: eProcessSecurityBundle:Utilisateur:editUtilisateur , idUtilisateur : 1  }
+
+remove_utilisateur:
+    path:     /remove
+    defaults: { _controller: "eProcessSecurityBundle:Utilisateur:removeUtilisateur"   }
+
+status_utilisateur:
+    path:     /changestatus
+    defaults: { _controller: "eProcessSecurityBundle:Utilisateur:changeUtilisateurStatus" }
+

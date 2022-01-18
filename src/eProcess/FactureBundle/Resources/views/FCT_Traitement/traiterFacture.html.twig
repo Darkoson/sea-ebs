@@ -1,0 +1,161 @@
+{% extends "eProcessFactureBundle:FCT_Reception:index.html.twig" %}
+
+
+{% block page_content %}
+
+    {{ form_start(form) }}
+
+    <div class="row" style="margin-right: 8px;">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="row" style="margin-top: 10px ;">
+                {% include 'eProcessFactureBundle:FCT_Traitement:traitement/headerFacture.html.twig'%}
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- /.row -->
+    <div class="row" style="margin-right: 8px;">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-default ">
+                <div class="panel-heading">
+                    Traitement de la facture
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body row">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#infos" data-toggle="tab" id="lienInfos">Informations Générales</a>
+                        </li>
+                        <li><a href="#checklist" data-toggle="tab" id="lienCheckList">Check List</a>
+                        </li>
+                        <li><a href="#fics" data-toggle="tab" id="lienFics"> Ajout de fichiers</a>
+                        </li>
+                        <li><a href="#enreg" data-toggle="tab" id="lientEnreg">Enregistrement </a>
+                        </li>
+                    </ul>
+
+
+                    {#                    {{ form_errors(form) }}#}
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+
+
+                        {#  ****  block des informations sur la facture  ***  #}
+                        <div class="tab-pane fade in active" id="infos">
+                            {% block traitement_infos %}
+                                {% include 'eProcessFactureBundle:FCT_Traitement:traitement/infoFacture.html.twig'%}         
+                            {% endblock  %}
+                        </div>
+
+                       
+                        {#  ****  block des informations sur le checkList  ***  #}        
+                        <div class="tab-pane fade" id="checklist">
+                            {% block traitement_checklist %}
+                                {% include 'eProcessFactureBundle:FCT_Traitement:traitement/checkListFacture.html.twig'%}
+                            {% endblock  %}
+
+                            <input type="hidden" name="checkListString" id="checkListString"/>
+                        </div>
+                        
+                             {#  ****  block des informations sur l'upload des fchiers  ***  #}
+                        <div class="tab-pane fade" id="fics">
+                            {% block traitement_fics %}
+                                {% include 'eProcessFactureBundle:FCT_Traitement:traitement/ficsFacture.html.twig'%}
+                            {% endblock  %}
+                        </div>
+
+
+                        {#  ****  block des informations sur le checkList  ***  #} 
+                        <div class="tab-pane fade " id="enreg">
+                            {% block traitement_enreg %}
+                                {% include 'eProcessFactureBundle:FCT_Traitement:traitement/enregistrerFacture.html.twig'%}
+                            {% endblock  %}
+                        </div>
+                        {#   champ pour indiquer si la facture est suivant contrat ou non #}
+                        <input type="text" class="hidden" id="isFactureContrat" name="isFactureContrat" value="false" />
+                        {#   champ contenent l'identifiant de l'instance d'achat encours de modifiction   #}
+                        <input type="text" class="hidden" id="idAchatModif" name="idAchatModif" value="{{achat.id}}" />
+                        
+                        
+                        <button type="submit" class="hidden" id="btnEnregFacture"> </button>
+
+                        {#                        {{form_rest(form ,{'display': 'hidden'})}}#}
+
+                    </div>
+
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+
+        </div>
+        <!-- /.col-lg-8 -->
+
+    </div>
+    <!-- /.row -->
+    {{ form_end(form,{'render_rest': false}) }}
+{% endblock %}
+
+
+{% block javascripts %} 
+{#   formulaire servant à changer le bon lors du traitement #}
+    <form method="POST" action="{{path('facture_traitement_encours',{'id':entity.id}) }}" id="formBonChange" style="display: none"> 
+        <input type="text" name="idBon" id="idBonChange">
+        <input type="text" name="idFour" id="idFourChange">
+    </form>
+
+
+    {{parent()}}
+
+    <script type="text/javascript">
+        $(document).ready(function (){
+            afficheFichiers() ;
+        }) ;
+
+        function passerSuivant(idSuivant) {
+            $('#' + idSuivant).click();
+        }
+
+        function enregistrerFacture() {
+            var checkListJson;
+            checkListJson = JSON.stringify(recapCheckList());
+            $('#checkListString').val(checkListJson);
+                // on soumet le formulaire
+                $('#btnEnregFacture').click();
+        }
+        
+        function changerBonFournisseur(idBon, idFour){
+            $('#idBonChange').val(idBon);
+            $('#idFourChange').val(idFour);
+{#            alert(idFour);return ;#}
+            $('#formBonChange').submit();
+            afficheImageExecution();
+        }
+
+
+
+         
+    $('.typeFacture').click(function (){
+        afficheFichiers() ;
+    });
+    
+    
+    function afficheFichiers() {
+       var isContrat = $('#isFactureContrat').val();
+       
+       if(isContrat === 'true'){ 
+           $('.contratKO').hide() ;
+           $('.contratOK').show() ;
+       } 
+       else if(isContrat === 'false'){
+           $('.contratOK').hide() ;
+           $('.contratKO').show() ;
+       }
+       
+    }
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,12 @@
+file_download:
+    path:     /{id}/download
+    defaults: { _controller: eProcessFactureBundle:Fichier:downloadFile, id: 0  }
+
+file_view:
+    path:     /{id}/view
+    defaults: { _controller: eProcessFactureBundle:Fichier:viewFile, id: 0  }
+ 
+file_edit:
+    path:     /{id}/edit
+    defaults: { _controller: eProcessFactureBundle:Fichier:editFile, id: 0  }
+ 

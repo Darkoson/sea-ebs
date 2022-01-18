@@ -1,0 +1,3 @@
+init_database:
+    path:     /init
+    defaults: { _controller: eProcessSecurityBundle:Application:initBase }

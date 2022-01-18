@@ -1,0 +1,13 @@
+services:
+    
+# Service de gestion des mails (ecobank, gmail, yahoo)
+    email_manager:
+        class: eProcess\TransfertBundle\Services\EmailManager
+        arguments :    [@mailer, @templating, @service_container]
+   
+# Service de recuperation des transferts par etape   
+    transfert_manager:
+        class: eProcess\TransfertBundle\Services\TransfertManager
+        arguments :    [ @doctrine.orm.entity_manager]
+   
+ 

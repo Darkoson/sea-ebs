@@ -1,0 +1,105 @@
+<div class=" row">
+    <div class="btn btn-success" style="margin-left: 50px" id="ajouterArticle" onclick="ajusterLigneArticles(true);" >
+        <i class="fa fa-plus"></i><strong> Ligne </strong> 
+    </div> 
+    <div class="btn btn-danger" style="margin-left: 50px" id="supprimerArticle" onclick="ajusterLigneArticles(false);">
+        <i class="fa fa-minus"> Ligne</i>
+    </div>
+</div>
+
+<div class="panel panel-info" style="margin-top: 10px;">
+    <div class="panel-heading" id="objetArticles">
+        <center > Pas d'objet </center>
+    </div>
+</div>
+
+
+
+<div class="  ">
+    <ul class="chat">
+        <li>
+            <div class=" row" style=" ">
+                <div class="col-lg-12 col-md-12 col-sm-12 upAndDownSpace ">
+                    <div class="row header text-muted small Bold">
+                        <div class="col-lg-3 col-md-3 col-sm-3">Voyageur</div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">Ville de Départ</div>
+                        <div class="col-lg-1 col-md-1 col-sm-1">Date Départ</div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">Ville de Destination</div>
+                        <div class="col-lg-1 col-md-1 col-sm-1">Date Retour</div>
+                        <div class="col-lg-1 col-md-1 col-sm-1">Prix</div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">Département</div>
+                    </div>
+                </div>
+                <div class="col-lg-12 tab-voyage " id="tab-voyage">
+                    <div class="row ligne upAndDownSpace">
+                        <div class="col-lg-3 col-md-3 col-sm-3"><input required="true" type="text" autocomplete="off" name="nom" value="" placeholder=" Nom et Prénoms" class=" form-control dynamic"></div>
+                        <div class="col-lg-2 col-md-2 col-sm-2"><input required="true" type="text" autocomplete="off" name="villeDep" value="" class=" form-control dynamic"></div>
+                        <div class="col-lg-1 col-md-1 col-sm-1"><input required="true" type="text" autocomplete="off" name="dateDep" value="" class=" form-control dynamic datetime"></div>
+                        <div class="col-lg-2 col-md-2 col-sm-2"><input required="true" type="text" autocomplete="off" name="villeArrive" value="" placeholder=" ville" class=" form-control dynamic"></div>
+                        <div class="col-lg-1 col-md-1 col-sm-1"><input required="true" type="text" autocomplete="off" name="dateRetour" value="" class=" form-control dynamic datetime"></div>
+                        <div class="col-lg-1 col-md-1 col-sm-1"><input type="text" autocomplete="off" name="montantVoyage" value="" placeholder=" 0" required="" class=" form-control numeric dynamic"></div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select name="dep" class="chosen-select-element form-control " required="true">
+                                {%for key, value in getEntities('eProcessEntityBundle','Departement') %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+
+        <li>
+            {#  ligne d'affichage des totaux  #}
+            <div class="row total-ligneVoyage upAndDownSpace">
+                <div class="col-lg-2">Remise</div>
+                <div class="col-lg-3">
+                    <input type="text" id="montantRemise" autocomplete="off" placeholder="0" class="form-control dynamic  numeric">
+                </div>
+
+                <div class="col-lg-3">Total sans Remise</div>
+                <div class="col-lg-4">
+                    <input type="text" disabled="true" id="montantTotal" value="0" class="form-control  dynamic numeric">
+                </div>
+            </div>
+
+        </li>
+
+        <li>
+
+            <div class="row total-ligne upAndDownSpace">
+                <div class="col-lg-4">Net à payer = </div>
+                <div class="col-lg-4"> </div>
+                <div class="col-lg-4">
+                    <div class="form-group input-group">
+                        <input class="input-group-addon form-control  numeric dynamic" disabled="" id="montantNet" type="text" value="0" >
+                        <span class="input-group-addon" id="deviseArticles">XOF</span>
+                    </div>
+                </div>
+            </div>
+
+        </li>
+
+
+
+
+    </ul>
+
+
+
+</div>
+
+
+
+
+
+<div class="btn btn-warning" style="margin-left: 50px" onclick="passerSuivant('lienCheckList');">
+    <i class="fa fa-angle-left"></i><strong> Précédant</strong> 
+</div> 
+            
+<div class="btn btn-primary" style="margin-left: 50px" onclick="passerSuivant('lienEnreg'); changerDevise();">
+    <strong>Suivant</strong> <i class="fa fa-angle-right"></i>
+</div> 
+

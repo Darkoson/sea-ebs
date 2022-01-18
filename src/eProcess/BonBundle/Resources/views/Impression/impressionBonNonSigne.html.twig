@@ -1,0 +1,57 @@
+{% extends "eProcessBonBundle:Impression:index.html.twig" %}
+
+{% block impression %}
+    <div class="panel-body" id="">
+        <div class="panel panel-default">
+
+            <div class="panel-body" >
+                <div class="panel panel-info" style="margin-top: 10px;">
+                    <div class="panel-heading " id="">
+                        <center > LISTE DES BONS DE COMMANDE EN ATTENTE DE SIGNATURE APRES SIGNATURE   </center>
+                    </div>
+                </div>
+
+
+                <table class="table table-striped"  style="margin-top: 50px; ">
+                    <thead class="">
+                        <tr class="">
+                            <th style="margin-top: 50px;" >Ordre</th>
+                            <th class="left">Numero</th>
+                            <th class="left">Objet</th>
+                            <th class="right" >Montant</th>
+                            <th class="left">Devise</th>
+                            <th >Etape</th>
+                            <th class="left">Approbateur</th>
+                            <th class="right" >Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {%for entity in listeBonNonSigne %}
+                            <tr class="odd gradeX ">
+                                <td class="center"> {{ loop.index }}</td>
+                                <td class="center text-muted small">{{ entity.numero }}</td>
+                                <td>{{ entity.achat.objet }}</td>
+                                <td  class="right" >{{ entity.achat.getMontant}}</td>
+                                <td  class="left" >{{ entity.achat.devise}}</td>
+                                <td class="center">{{readEtapeBon(entity.etape)}}</td>
+                                <td class="left">{{getEntityByID(entity.activerPar, 'Utilisateur')}}</td>
+                                <td  class="right" >{{entity.dateActivation|date('d-m-Y')}}</td>
+                            </tr>   
+                        {% endfor %} 
+                    </tbody>
+                </table>
+
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% endblock  %}
+

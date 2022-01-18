@@ -1,0 +1,227 @@
+<div class="panel panel-info" style="margin-top: 10px;">
+    <div class="panel-heading">
+        <center>{{achat.objet}} </center>
+    </div>
+</div>
+
+    <ul class="chat" style="margin-left: 10px;">
+
+    
+    
+    {#   Block des fichiers de bon de commande    #}
+    <li class=" clearfix ">
+        <div class="chat-panel  row">
+            <div class="header col-lg-6">
+                Facture arrivée suivant contrat
+            </div>
+            <div class="header col-lg-3">
+                OUI <input type="radio" onclick="basculerVersContrat(true);" id="contratOK" class="typeFacture"/>
+            </div>
+            <div class="header col-lg-3">
+                NON <input type="radio" onclick="basculerVersContrat(false);" id="contratKO" checked="true"  class="typeFacture"  />
+            </div>
+        </div>
+
+    </li>
+
+
+    <li>
+        <div class="chat-panel  row" id="listNormal">
+            <div class="header col-lg-12">
+
+                {#    demande      #}
+                <div  class=" factNormal row upAndDownSpace">
+                    <p class="col-lg-4"> Demande </p>
+                    {% if achat.checkList  and achat.checkList.hasDemande %}
+                        <input type="checkbox" class="col-lg-2" checked="" name="hasDemande">
+                        <input type="text"  name="hasDemandeComment" value="{{achat.checkList.hasDemandeComment}}" class="col-lg-6 form-control" style="width: 45%">
+                        
+                    {% else %}
+                        <input type="checkbox" class="col-lg-2"  name="hasDemande">
+                        <input type="text"  name="hasDemandeComment" value="" placeholder=" Votre Commantaire " class="col-lg-6 form-control" style="width: 45%">
+                    {% endif %}
+                </div>
+                
+                 {#    proformat      #}
+                <div class="factNormal row upAndDownSpace">
+                    <p class="col-lg-4"> Proforma </p>
+                    {% if achat.checkList  and achat.checkList.hasProforma %}
+                        <input type="checkbox" class="col-lg-2" checked="" name="hasProforma">
+                        <input type="text"  name="hasProformaComment" value="{{achat.checkList.hasProformaComment}}" class="col-lg-6 form-control" style="width: 45%">
+                        
+                    {% else %}
+                        <input type="checkbox" class="col-lg-2"  name="hasProforma">
+                        <input type="text"  name="hasProformaComment" value="" placeholder=" Votre Commantaire" class="col-lg-6 form-control" style="width: 45%">
+                    {% endif %}
+                </div>
+                
+                 {#    bon de commande      #}
+                <div class="factNormal row upAndDownSpace">
+                    <p class="col-lg-4"> Bon de Commande </p>
+                    {% if achat.checkList  and achat.checkList.hasBon %}
+                        <input type="checkbox" class="col-lg-2" checked="" name="hasBon">
+                        <input type="text"  name="hasBonComment" value="{{achat.checkList.hasBonComment}}" class="col-lg-6 form-control" style="width: 45%">
+                        
+                    {% else %}
+                        <input type="checkbox" class="col-lg-2"  name="hasBon">
+                        <input type="text"  name="hasBonComment" value="" placeholder=" Votre Commantaire" class="col-lg-6 form-control" style="width: 45%">
+                    {% endif %}
+                </div>
+                  
+                 {#    approbation      #}
+                <div class="factNormal row upAndDownSpace">
+                    <p class="col-lg-4"> Approbation </p>
+                    {% if achat.checkList  and achat.checkList.hasApprobation %}
+                        <input type="checkbox" class="col-lg-2" checked="" name="hasApprobation">
+                        <input type="text"  name="hasApprobationComment" value="{{achat.checkList.hasApprobationComment}}" class="col-lg-6 form-control" style="width: 45%">
+                        
+                    {% else %}
+                        <input type="checkbox" class="col-lg-2"  name="hasApprobation">
+                        <input type="text"  name="hasApprobationComment" value="" placeholder=" Votre Commantaire" class="col-lg-6 form-control" style="width: 45%">
+                    {% endif %}
+                </div>
+                
+                 {#    facture      #}
+                <div  class=" factNormal row upAndDownSpace">
+                    <p class="col-lg-4"> Facture </p>
+                    <input type="checkbox" class="col-lg-2"  name="hasFacture">
+                    <input type="text"  name="hasFactureComment" value="" placeholder=" Votre Commantaire sur la facture" class="col-lg-6 form-control" style="width: 45%">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="chat-panel  row " id="listContrat" style="display: none">
+            <div class="header col-lg-12">
+                <div class="factNormal row upAndDownSpace">
+                    <p class="col-lg-4"> Facture </p>
+                    <input type="checkbox" class="col-lg-2" name="hasFacture" >
+                    <input type="text" name="hasFactureComment" placeholder=" Votre Commantaire sur la facture" class="col-lg-6 form-control" style="width: 45%" value="">
+                </div>
+
+                <div class="factNormal row upAndDownSpace" >
+                    <p class="col-lg-4"> Contrat </p>
+                    <input type="checkbox" class="col-lg-2" name="hasContrat" >
+                    <input type="text" name="hasContratComment" placeholder=" Votre Commantaire sur le contrat" class="col-lg-6 form-control" style="width: 45%" value="">
+                </div>
+            </div>
+        </div>
+    </li>
+
+</ul>
+
+
+
+{# RECAPITULATION SUR LES CHECKLIST#}
+<div class="" >
+
+</div>  
+
+
+<div class="btn btn-warning" style="margin-left: 50px" onclick="passerSuivant('lienInfos');">
+    <i class="fa fa-angle-left"></i><strong> Précédant</strong> 
+</div>     
+<div class="btn btn-primary" style="margin-left: 50px" onclick="passerSuivant('lienFics'); recapCheckList();">
+    <strong>Suivant</strong> <i class="fa fa-angle-right"></i>
+</div> 
+
+
+
+<script>
+
+
+
+    // fonction de recuperation des information nécéssaire sur les check list
+    function recapCheckList() {
+        // appel de cette fonction pour modifier la valeur des check boxes à true ou false
+        changerValeurs();
+        var tab = {};
+        var list;
+
+        // initialisation du type de facture comme étant arrivée normalement
+        tab.fctNormale = true;
+
+        // cas où la facture est arrivée avec contrat
+        if ($('#contratOK').prop("checked")) {
+            tab.fctNormale = false;
+            list = $('#listContrat .factNormal');
+        }
+        // cas où la facture est arrivée sans contrat
+        else if ($('#contratKO').prop("checked")) {
+            list = $('#listNormal .factNormal');
+        }
+
+        list.each(function () {
+            var element = $(this).children('input');
+            element.each(function () {
+                // ajout des informations dans 
+                var clef = $(this).attr('name');
+                var value = $(this).val();
+                tab[clef] = value;
+            });
+        });
+
+        console.log(tab) ;
+        return tab;
+
+    }
+
+
+    /**
+     * changerValeurs : fonction de changement des valeurs des checkboxs à true ou false
+     * 
+     * @param 
+     * @returns 
+     */
+    function changerValeurs() {
+        $('input[type=checkbox]').each(function () {
+            if ($(this).is(':checked')) {
+                $(this).val(1);
+            } else {
+                $(this).val(0);
+            }
+        });
+    }
+
+    /* 
+     * fonction permettante de basculer entre le check liste des 
+     contrats et des factures normales
+     */
+    function basculerVersContrat(status) {
+        // pour initialiser le champ du formulaire qui contient e type de facture traité
+        $('#isFactureContrat').val(status);
+        
+        if (status === true) {
+
+            var cocher = $('#contratOK').prop("checked");
+            if (cocher) {
+                $('#contratKO').prop("checked", false);
+                $('#listContrat').show();
+                $('#listNormal').hide();
+            } else {
+                $('#contratKO').prop("checked", true);
+                $('#listContrat').hide();
+                $('#listNormal').show();
+            }
+
+
+        } else {
+
+            var cocher = $('#contratKO').prop("checked");
+            if (cocher) {
+                $('#contratOK').prop("checked", false);
+                $('#listContrat').hide();
+                $('#listNormal').show();
+            } else {
+                $('#contratOK').prop("checked", true);
+                $('#listContrat').show();
+                $('#listNormal').hide();
+            }
+            
+        }
+
+{#            alert( $('#isFactureContrat').val()) ;#}
+       
+    }
+
+</script>

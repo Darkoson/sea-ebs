@@ -1,0 +1,76 @@
+{% extends "eProcessFactureBundle:FCT_Reception:index.html.twig" %}
+
+{% block page_content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Liste des factures rejetées à EBS  
+            <div class="pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        Actions
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li><a href="#" onclick="sendFacture(getIDs(), '{{fromReceptToEbs()}}') ;">Envoyer à EBS</a>
+                {#        <li class="divider"></li>
+                        <li><a href="#"  onclick="deleteFacture(getIDs());">Supprimer</a>
+                        </li>#}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+            <div class="dataTable_wrapper">
+                <table class="table table-striped table-bordered table-hover"  id="dataTables-example" >
+                    <thead class="element">
+                        <tr class="alert-warning">
+                            <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                            <th >Date Arrive</th>
+                            <th >Ordre</th>
+                            <th >Réf Facture</th>
+                            <th >Fournisseur</th>
+                            <th >Objet</th>
+                            <th >Devise</th>
+                            <th >Montant</th>
+                            <th  ><center>Erreur</center></th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {%for entity in listeFactureRejete %}
+                            <tr class="odd gradeX">
+                                <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                <td>{{ entity.dateArrive|date('d-m-Y') }}</td>
+                                <td>{{ entity.ordreArrive }}</td>
+                                <td>{{ entity.referenceFournisseur }}</td>
+                                <td>{{ entity.achat.fournisseur }}</td>
+                                <td>{{ entity.achat.objet }}</td>
+                                <td>{{ entity.achat.devise }}</td>
+                                <td>{{ entity.achat.montant }}</td>
+                                <td class="">
+                                    <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="left" data-content="{{entity.getLastInfoTransfert()}}."> voir note</button>
+                                </td>
+                            </tr>
+                            {% endfor %}                    
+                    </tbody>
+                </table>
+
+                {#                {%endfor %} #}
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+
+
+{% endblock %}
+
+
+{% block javascripts %} 
+    {{parent()}}
+
+{% endblock %}
+
+

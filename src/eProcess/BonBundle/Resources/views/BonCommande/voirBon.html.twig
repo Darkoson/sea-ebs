@@ -1,0 +1,351 @@
+{#{% extends "eProcessBonBundle:BonCommande:index.html.twig" %}#}
+
+{#{% block page_content_left %}#}
+
+
+
+<div  id="voirBonPage">
+
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ul class="nav nav-tabs" style="margin-top: 30px;">
+                <li class="active"><a href="#infoGenerale" data-toggle="tab" id="">INFORMATION GENERALE </a>
+                </li>
+                <li><a href="#infoTraitement" data-toggle="tab" id=""> INFORMATION SUR TRAITEMENT </a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content col-lg-12" style="padding-top: 20px">
+
+                <div class="panel panel-success"  style="margin-bottom: 30px;">
+                    <div class="panel-heading">
+                        <center> {{ entity.achat.objet }} </center>
+                    </div>
+                </div>
+
+                {#  ****  block des bons arrives   ***  #}        
+                <div class="tab-pane fade in active" id="infoGenerale">
+
+
+                    {#  RECAPITULATIF INFORMATIONS SAISIES        #} 
+
+                    <div class="col-lg-8 ">
+                        <div class="panel panel-default ">
+
+                            <div class="panel-body">
+                                <table class="table table-striped table-bordered table-hover" id="">
+                                    <tr>
+                                        <th>Fournisseur</th>
+                                        <td class="small text-muted">{{achat.fournisseur}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Mode Paiement</th>
+                                        <td class="small text-muted">{{achat.paieCommande}} % à la commande  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Délais de livraison</th>
+                                        <td class="small text-muted">{{achat.delaisLivraison}} semaine(s)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Département</th>
+                                        <td>{% if achatDep is  null %} -- {% else %} {{achatDep.departement}} {% endif %}</td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    {#  RECAPITULATIF DES FICHIERS CHARGES        #}
+                    <div class="col-lg-4 ">
+                        <div class="panel panel-default ">
+                            <div class="panel-heading">
+                                <i class="fa fa-comments fa-fw"></i> Fichiers 
+                            </div>
+
+                            <div class="panel-body" id="listeFichiers">
+                                <div class="clearfix">
+                                    <small class=" col-lg-9 .parent text-muted" style="">
+                                        <a href="{{path('file_view',{'id':achat.ficDemande.id})}}" class="noExecution lien nonVu" target="_blank" > <i class="fa fa-eye "></i>  Demande   </a>
+                                    </small>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="clearfix">
+                                    <small class=" col-lg-9 .parent text-muted" style="">
+                                        <a href="{{path('file_view',{'id':achat.ficProformat.id})}}" class="noExecution lien nonVu" target="_blank" > <i class="fa fa-eye "></i>  Proforma   </a>
+                                    </small>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="clearfix">
+                                    <small class=" col-lg-9 .parent text-muted" style="">
+                                        <a href="{{path('file_view',{'id':achat.ficApprobationBudget.id})}}" class="noExecution lien nonVu" target="_blank" > <i class="fa fa-eye "></i>  Approbation Budget   </a>
+                                    </small>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="clearfix">
+                                    <small class=" col-lg-9 .parent text-muted" style="">
+                                        <a href="{{path('file_view',{'id':achat.ficApprobationHier.id})}}" class="noExecution lien nonVu" target="_blank" > <i class="fa fa-eye "></i>  Approbation Hier.   </a>
+                                    </small>
+                                    <div class="col-lg-3"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {#  RECAPITULATIF DES ARTICLES SAISIES        #}
+                    <div class="col-lg-12 ">
+                        <div class="panel panel-default ">
+                            <div class="panel-heading">
+                                <i class="fa fa-comments fa-fw"></i> Détails des besoins
+                            </div>
+                            <div class="panel-body">
+
+                                <ul class="chat">
+                                    <li class=""style="">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-3">
+                                                <div class="form-group input-group">
+                                                    <span class="input-group-addon text-muted small">Taxe </span>
+                                                    <input  value="{{readTaxe(achat.taxe)}}" type="text" taxe readonly=""  class="form-control  ">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-group input-group">
+                                                    <span class="input-group-addon text-muted small">Devise </span>
+                                                    <input value="{{achat.devise}}"  type="text"  readonly=""  class="form-control  ">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-group input-group">
+                                                    <span class="input-group-addon text-muted small">Total </span>
+                                                    <input  value="{% if achatDep is  null %} -- {% else %}{{achatDep.montant}} {% endif %} "  type="text"  readonly=""  class="form-control  ">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-group input-group">
+                                                    <span class="input-group-addon text-muted small">Remise </span>
+                                                    <input value="{{achat.remise}}"  type="text"  readonly=""  class="form-control  ">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </li>
+
+                                    <li class="">
+
+                                        <table class="table table-striped table-bordered table-hover" id="">
+                                            <thead>
+                                                <tr>
+                                                    <th>Désignation</th>
+                                                    <th>P.Unitaire</th>
+                                                    <th>Quantité</th>
+                                                    <th>Montant</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="">
+                                                {%for article in provision.getArticles()%}
+                                                    <tr class="small text-muted">
+                                                        <th class="">{{article.lib}}</th>
+                                                        <th>{{article.pu}}</th>
+                                                        <th>{{article.nbre}}</th>
+                                                        <th>{{article.total}}</th>
+                                                    </tr>
+                                                {%endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    </li>
+
+
+
+                                </ul>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                {#  ****  block des approuvé mais non signé ***  #}
+                <div class="tab-pane fade " id="infoTraitement">
+
+                    <ul class="chat">
+
+                        <li class="left clearfix">
+
+                            <div class=" ">
+                                <div class="header">
+                                    <center> <strong class="primary-font ">Création</strong></center>
+                                </div>
+
+
+                                <div class=" row">
+                                    <table class="table table-striped  table-hover col-lg-12">
+                                        <tr class="row">
+                                            <th class="col-lg-3">Créé Par:</th>
+                                            <td class="col-lg-5"> <input value="{{createur}}" readonly="" class="form-control"></td>
+                                            <td class="col-lg-4"> <input value="Le {{entity.dateCreation | date('d-m-Y')}}" readonly="" class="form-control"></td>
+                                        </tr>
+
+                                        <tr class="row">
+                                            <th class="col-lg-3">Vérifié Par:</th>
+                                            <td class="col-lg-5"> <input value="{% if verificateur is null %} --- {% else%} {{verificateur}}{% endif%}" readonly="" class="form-control"></td>
+                                            <td class="col-lg-4"> <input value="Le {% if entity.dateVerification is null %} --- {% else%}{{entity.dateVerification | date('d-m-Y')}} {% endif %}" readonly="" class="form-control"></td>
+                                        </tr>
+
+                                        <tr class="row">
+                                            <th class="col-lg-3">Approbateur:</th>
+                                            <td class="col-lg-5"> <input value="{% if activateur is null %} --- {% else%} {{activateur}}{% endif%}" readonly="" class="form-control"></td>
+                                            <td class="col-lg-4"> <input value="Le {% if entity.dateActivation is null %} --- {% else%}{{entity.dateActivation | date('d-m-Y')}} {% endif %}" readonly="" class="form-control"></td>
+                                        </tr>
+
+                                        <tr class="row">
+                                            <th class="col-lg-3">Etape :</th>
+                                            <td colspan="2" class="col-lg-9"> <input value="{{readEtapeBon(entity.etape)}}" readonly="" class="form-control"></td>
+                                                {#                                                    <td class="col-lg-4"> <input value="Le {% if entity.dateActivation is null %} --- {% else%}{{entity.dateActivation | date('d-m-Y')}} {% endif %}" readonly="" class="form-control"></td>#}
+                                        </tr>
+                                        <tr class="row">
+                                            <th class="col-lg-3">Message :</th>
+                                            <td colspan="2" class="col-lg-9"> <textarea readonly="" maxlength="250" style="width: 60%">  {{entity.motif }}</textarea> </td>
+                                                {#                                                    <td class="col-lg-4"> <input value="Le {% if entity.dateActivation is null %} --- {% else%}{{entity.dateActivation | date('d-m-Y')}} {% endif %}" readonly="" class="form-control"></td>#}
+                                        </tr>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>     
+
+    {#      on affiche le bouton d'approbation si le bon est en attente d'approbation et que le visualiseur est de la finance et que c'est lui qui doit approuver    #}
+    {% if  entity.etape == bonSoumisAutor() and isFINANCE(getUserProfilCode() and entity.activerPar == getCurrentID()) %}
+        {% set route = 'bon_soumis_approbation' %}
+        <div class=" row upAndDownSpace" id="boutonsApprobations">
+
+            <div class="col-lg-offset-3 col-lg-3">
+                <button class="btn btn-success confirmation" onclick="autorisationBon('{{entity.id}}', '{{statusInactive()}}', '{{route}}', '{{bonApprouve()}}');"> Approuver </button>
+            </div>
+
+            <div class=" col-lg-6">
+                <button class="btn btn-danger confirmation" onclick="autorisationBon('{{entity.id}}', '{{statusInactive()}}', '{{route}}', '{{bonRejete()}}');"> Rejeter </button>
+            </div>
+
+        </div>
+        {#      on affiche le bouton de verification si le bon est editer nouvellement ou modifié et que le visualiseur est de EBS et différent de l'editeur du bon      #}
+    {% elseif ( entity.etape == bonEmis() or entity.etape == bonModifie() ) and isEBS(getUserProfilCode() ) %} 
+        {% set route = 'list_bon_emis' %}
+
+        <div class=" row upAndDownSpace " >
+            {% if entity.creerPar != getCurrentID() %}
+                <div class=" row upAndDownSpace" id="boutonsApprobations">
+                    <div class="col-lg-offset-3 col-lg-3">
+                        <button class="btn btn-success confirmation" onclick="etapeBon('{{entity.id}}', '{{bonVerifie()}}', '{{route}}', -1);"> <i class="fa fa-edit" > </i> Confirmer </button>
+                    </div>
+
+                    <div class=" col-lg-6">
+                        <a href="{{path('edit_bonCommande',{'idAchat':entity.achat.id})}}" class="confirmation"><button type="button" class="btn btn-info " ><i class="fa fa-edit" > </i> Modifier </button></a>
+                    </div>
+                </div>
+            {% else %}
+                <div class=" row upAndDownSpace" id="boutonsApprobations">
+                    <div class="col-lg-offset-3 col-lg-3">
+                        <button class="btn btn-primary confirmation" > <i class="fa fa-stop" > </i> Vous êtes l'Editeur !, Vous ne pouver plus Confirmer la vérification   </button>
+                    </div>
+                </div>
+            {% endif %}
+
+
+        </div>
+
+
+    {% endif %}                           
+
+</div>
+
+
+
+
+
+{#{% endblock %}#}
+
+
+
+
+{% block javascripts %} 
+
+    {% if  entity.etape == bonEmis() or entity.etape == bonSoumisAutor() %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.confirmation').click(function () {
+                    $('#voirBonPage').hide();
+                });
+                $('#boutonsApprobations').hide();
+
+            });
+
+
+
+            $('.nonVu ').each(function () {
+                $(this).parent('small').siblings('div').last().html('<span class=" btn btn-circle btn-danger"><i class="fa fa-check-circle"></i> </span>');
+            });
+
+            $('.noExecution ').on('click', function () {
+                $(this).removeClass('nonVu dejaVu').addClass(' dejaVu');
+                afficherValidationLienVu();
+            });
+
+
+
+            // fonction d'affichage des boutons de validation des liens consutlés
+            function afficherValidationLienVu() {
+                $('.dejaVu ').each(function () {
+                    $(this).parent('small').siblings('div').last().html(' <span class=" btn btn-circle btn-success"><i class="fa fa-check-circle"></i> </span>');
+                });
+
+                var nbre = $('.dejaVu').size();
+{#                console.log(nbre) ;#}
+                if (nbre > 3) {
+                    $('#boutonsApprobations').show();
+                } else {
+                    $('#boutonsApprobations').hide();
+                }
+
+            }
+
+
+        </script>
+    {% endif %}  
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.confirmation').click(function () {
+                $('#voirBonPage').hide();
+            });
+            $('#boutonsApprobations').hide();
+
+        });
+
+
+    </script>
+{% endblock %}
+
+

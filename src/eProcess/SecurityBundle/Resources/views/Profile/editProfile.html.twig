@@ -1,0 +1,61 @@
+{% extends "eProcessSecurityBundle:Profile:index.html.twig" %}
+
+{% block page_content_left %}
+     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Mise à jour du Profil : {{entity}} 
+                            <div class="pull-right">
+                                <div class="btn-group">
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            <form role="form" method="POST" action="{{path('edit_profile',{'idProfile': entity.id})}}">
+                                 <div class="form-group">
+                                    <label>Nom</label>
+                                    <input class="form-control" name="name" value="{{entity}}" placeholder="Nom du profil" required="true"> 
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input class="form-control" name="description" value="{{entity.description}}" placeholder="Description du profile" required="true"> 
+                                </div>
+                                
+                                 <div class="" style="margin-bottom: 50px;">
+                                    <label>Peux Approuver Bon: </label>
+                                    <input  name="approve" type="checkbox" {% if entity.canApprove%} checked="" {%endif%} style="margin-left: 50px;"> 
+                                </div>
+
+
+                                <button type="submit" class="btn btn-success">Modifier </button>
+                                <button type="reset" class="btn btn-primary">Annuler</button>
+                            </form>
+
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+
+    function getModuleActions(id) {
+
+            if (id > 0) {
+                getAssociated('eProcessEntityBundle', 'Module', {'id':id}, 'Action', '#actions',{});
+            }
+
+        }
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,221 @@
+{% extends "eProcessBonBundle:BonCommande:index.html.twig" %}
+
+{% block page_content %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Recherches et Liste des bons par fournisseur
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#recherche" data-toggle="tab" id="lienRecherche"> Recherche par fournisseur </a>
+                </li>
+                <li ><a href="#attente" data-toggle="tab" id="lienCheckList"> Bons en attente d'envoi</a>
+                </li>
+                <li><a href="#chezFournisseur" data-toggle="tab" id="lienInfos"> Bons chez fournisseur</a>
+                </li>
+                
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content col-lg-12" style="padding-top: 20px">
+
+                
+                {#  ****  block des recherche par fournisseur ***  #}
+                <div class="tab-pane fade in active" id="recherche">
+                    <form class="  well" method="POST" action="{{path('bon_attente_envoi')}}">
+
+                        <div class="row">
+                            <div class="col-lg-2">
+                                Fournisseur
+                            </div>
+
+                            <div class="col-lg-3">
+                                <select class="chosen-select-element form-control" name="idFour" style="display:block ; width: 100%">
+                                    <option value=""> - aucun -</option>
+                                    {% for key, value in getEntities('eProcessEntityBundle','Fournisseur',1) %}
+                                        <option value="{{key}}">{{value}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-lg-1">
+                                Etape
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="chosen-select-element form-control" name="etape" style="display:block ; width: 100%">
+                                    <option value=""> - inconu -</option>
+                                    {% for key, value in getEtapeBon() %}
+                                        <option value="{{key}}">{{value}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <button type="submit" class=" btn btn-primary"> rechercher </button>
+                            </div>
+                        </div>
+
+                    </form>
+                                
+                                
+                    {#          Affichage des resultats de la recherche          #}
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Liste des bons du fournisseur : {% if fournisseur is defined  and fournisseur is not null  %} {{fournisseur}}{%else%} INCONNU {%endif%}
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            <div class=" row">
+                                <table class="table table-striped  table-hover col-lg-12">
+                                    <thead class="element row">
+                                        <tr class="alert-warning">
+                                            <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                                            <th >Numero</th>
+                                            <th >Objet</th>
+                                            <th >Fournisseur</th>
+                                            <th >Etape</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody >
+                                        {%for entity in bonRecherche %}
+                                            <tr class="odd gradeX">
+                                                <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                                <td>{{ entity.numero }}</td>
+                                                <td><a href="{{path('voir_bonCommande',{'idBon':entity.id})}}">{{ entity.achat.objet }}</a></td>
+                                                <td>{{ entity.achat.fournisseur}}</td>
+                                                <td class="center">{{readEtapeBon(entity.etape)}}
+                                                </td>
+                                            </tr>
+                                        {% else %} 
+                                            <tr class="odd gradeX">
+                                                <td colspan="5"><center> Aucun Bon </center></td>
+                                        </tr>
+                                    {% endfor %}                    
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>        
+
+                </div>
+
+                
+                
+                
+                
+                {#  ****  block des bons en attente d'envoi   ***  #}        
+                <div  class="tab-pane fade "  id="attente">
+                    <div class=" row">
+                        <table class="table table-striped  table-hover col-lg-12">
+                            <thead class="element row">
+                                <tr class="alert-warning">
+                                    <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                                    <th >Numero</th>
+                                    <th >Objet</th>
+                                    <th >Montant</th>
+                                    <th >Devise</th>
+                                </tr>
+                            </thead>
+
+                            <tbody >
+                                {%for entity in bonAttente %}
+                                <tr class="odd gradeX">
+                                        <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                        <td>{{ entity.numero }}</td>
+                                        <td><a href="{{path('voir_bonCommande',{'idBon':entity.id})}}">{{ entity.achat.objet }}</a></td>
+                                        <td>{{ entity.achat.montant}} </td>
+                                        <td> {{ entity.achat.devise}}</td>
+                                        </tr> 
+                                {% else %} 
+                                    <tr class="odd gradeX">
+                                        <td colspan="5"><center> Aucun Bon </center></td>
+                                </tr>
+                            {% endfor %}                    
+                            </tbody>
+                        </table>
+                    </div>
+                    {% if bonAttente|length > 0 %}
+                        <div class=" row">
+                            <div class=" col-lg-12">
+                                <button class="btn btn-primary" onclick="etapeBon(getIDs(), '{{bonEnvoiFournisseur()}}', '{{route}}', -1);"> Envoyer au fournisseur </button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {#  ****  block des bons chez fournisseur ***  #}
+                <div class="tab-pane fade "  id="chezFournisseur">
+                    <div class=" row">
+                        <table class="table table-striped  table-hover col-lg-12">
+                            <thead class="element row">
+                                <tr class="alert-warning">
+                                    <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                                    <th >Numero</th>
+                                    <th >Objet</th>
+                                    <th >Montant</th>
+                                    <th >Devise</th>
+                                    <th >Fournisseur</th>
+                                </tr>
+                            </thead>
+
+                            <tbody >
+                                {%for entity in bonFournisseur %}
+                                    <tr class="odd gradeX">
+                                        <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                        <td>{{ entity.numero }}</td>
+                                        <td><a href="{{path('voir_bonCommande',{'idBon':entity.id})}}">{{ entity.achat.objet }}</a></td>
+                                        <td>{{ entity.achat.montant}}</td>
+                                        <td>{{ entity.achat.devise}}</td>
+                                        <td>{{ entity.achat.fournisseur}}</td>
+                                        
+                                    </tr>
+                                {% else %} 
+                                    <tr class="odd gradeX">
+                                        <td colspan="6"><center> Aucun Bon </center></td>
+                                </tr>
+                            {% endfor %}                    
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    {% if bonFournisseur|length > 0 %}
+                        <div class=" row">
+                        </div>
+                    {% endif %}
+
+                </div>
+                    
+                    
+                
+            </div>
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+    {{parent()}}
+    <script type="text/javascript">
+        $(document).ready(function () {
+        {#        $('.chosen-select-element').show(100) ;#}
+                $('.chosen-select-element').css('width', '100%');
+            });
+    </script>
+{% endblock %}
+
+

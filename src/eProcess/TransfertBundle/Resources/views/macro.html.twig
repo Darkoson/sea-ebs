@@ -1,0 +1,444 @@
+
+{# macro de transfert de facture#}
+{% macro modalTransfertFacture() %}
+
+
+    {# ici je prepare le formaulaire de transfert #}
+    <button class="btn btn-primary btn-xs hidden " data-toggle="modal"  id="launchModal" data-target="#transfertModal"> </button>
+    <!-- Modal -->
+    <div class="modal fade" id="transfertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="transfertContent">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"> </h4>
+                    </div>
+
+                    {#     contenu du modal           #}
+                    <div class="modal-body">
+                        <form id="formNote">
+
+                            <textarea class="form-control" id="noteEnvoi" > Information: 
+Voici les factures nouvellement arrivées.
+                             
+                            </textarea>
+
+                        </form>
+
+
+                        <div id="loadAssociated" style="display: none">
+                            <center> <img src="{{asset('images/chargement/ajax-loader.gif')}}" width="400px"/> </center>
+                        </div>
+
+
+                        <div class="col-md-12 alert-danger" id="erreurTransfert" style="display: none">
+                            <h6> <center><div id="msg"> </div></center></h6> 
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="annuleFacturexx" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary" id="envoiFacturexx" onclick="">Envoyer</button>
+                    </div>
+
+                    {# partie contenant des blocs cachés  #}
+
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <script>
+
+        function sendFacture(ids, etape) {
+
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            }   //cas d'une suppression
+            else {
+                var titre = 'Envoi de factures :';
+                if (etape === '{{fromReceptToEbs()}}') {
+                    titre = 'Envoi de factures arrivées à EBS';
+                }
+                if (etape === '{{fromEbsToOps()}}') {
+                    titre = 'Envoi de factures traitées aux opérations';
+                }
+                if (etape === '{{fromEbsToRecept()}}') {
+                    titre = 'Rejet de Facture arrivée';
+                }
+                if (etape === '{{fromOpsToEbs()}}') {
+                    titre = 'Envoi de factures à problème à EBS';
+                }
+                // affichage du titre d modale en fonction de étapes de la facture
+                $('#myModalLabel').text(titre);
+                $('#loadAssociated').hide('fast');
+                $('#erreurTransfert').hide('fast');
+                //on affiche le bouton d'envoi de mail
+                $('#envoiFacturexx').show();
+                $('#formNote').show('fast');
+
+                // affichage du modal
+                $('#launchModal').click();
+
+                // envoi des informations par ajax 
+                $('#envoiFacturexx').click(function () {
+                    //on cache le bouton d'envoi de mail une fois qu'il est cliqué
+                    $(this).hide();
+                    $('#formNote').hide();
+                    $('#annuleFacturexx').hide();
+
+                    var DATA = 'ids=' + ids + '&etape=' + etape + '&message=' + $('#noteEnvoi').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('e_process_transfert')}}",
+                        data: DATA,
+                        cache: false,
+                        beforeSend: function (xhr) {
+                            $('#loadAssociated').show('fast');
+                        },
+                        complete: function (xhr) {
+                            $('#loadAssociated').hide('fast');
+                        },
+                        success: function (data) {
+
+                            var answer = jQuery.parseJSON(data);
+                            if (answer.status) {
+                                window.location.reload();
+                            } else {
+                                alert(answer.message);
+                                $('#msg').html(answer.message);
+                                $('#erreurTransfert').show();
+                            }
+                        },
+                        error: function () {
+                            alert('ERREUR SURVENUE LORS DU TRAITEMENT !');
+                            $('#msg').html('ERREUR SURVENUE LORS DU TRAITEMENT !');
+                            $('#erreurTransfert').show();
+                        }
+                    });
+                });
+            }
+        }
+
+    </script>   
+
+{% endmacro %}
+
+{# macro de reception de facture #}
+{% macro modalReceptionFacture(idTransfert) %}
+    <form id="formReceptionFacture" method="POST" action="{{path('e_process_transfert_approbation',{'id':idTransfert})}}" style="display: none">
+        <input type="text" name="ids" id="ReceptionFactureID">  
+        <input type="text" name="avis" id="ReceptionFactureAvis">  
+        <input type="text" name="note" id="ReceptionFactureNote">  
+    </form>
+
+    {# ici je prepare le formaulaire de transfert #}
+    <button class="btn btn-primary btn-xs hidden " data-toggle="modal"  id="btnRejetFactureModal" data-target="#rejetFactureModal"> </button>
+    <!-- Modal -->
+    <div class="modal fade" id="rejetFactureModal" tabindex="-1" role="dialog" aria-labelledby="rejetFactureLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="rejetFactureContent">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="rejetFactureLabel"> </h4>
+                    </div>
+
+                    {#     contenu du modal           #}
+                    <div class="modal-body">
+                        <form id="formNoteRejetFacture">
+
+                            <textarea class="form-control" id="noteRejetFacture" > Information: 
+Cette facture est  rejetée car elle n'est pas présente dans la liste reçue physiquement .
+                             
+                            </textarea>
+
+                        </form>
+
+
+                        <div id="loadAssociated" style="display: none">
+                            <center> <img src="{{asset('images/chargement/ajax-loader.gif')}}" width="400px"/> </center>
+                        </div>
+
+
+                        <div class="col-md-12 alert-danger" id="erreurTransfert" style="display: none">
+                            <h6> <center><div id="msg"> </div></center></h6> 
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"  id="annuleFacturexx" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary" id="envoiFacturexx" onclick="$(this).hide();
+                                sendAccuseFacture($('#noteRejetFacture').val());">Envoyer</button>
+                    </div>
+
+                    {# partie contenant des blocs cachés  #}
+
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <script>
+
+
+        // rejet ou acceptation de facture 
+        function accuseReceptionFacture(ids, status) {
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            } else {
+                updateFormReceptionFacture(ids, status);
+
+                if (status === '{{statusActivated()}}') {
+                    sendAccuseFacture('Acceptée');
+                } else if (status === '{{statusBlocked()}}') {
+                    afficheModalReceptionFacture();
+                }
+            }
+
+        }
+
+        function updateFormReceptionFacture(ids, status) {
+            $('#ReceptionFactureID').val(ids);
+            $('#ReceptionFactureAvis').val(status);
+        }
+
+        function afficheModalReceptionFacture() {
+            $('#rejetFactureLabel').text('Rejet de facture');
+            $('#loadAssociated').hide('fast');
+            $('#erreurTransfert').hide('fast');
+            //on affiche le bouton d'envoi de mail
+            $('#envoiFacturexx').show();
+            $('#formNote').show('fast');
+            // affichage du modal
+            $('#btnRejetFactureModal').click();
+        }
+
+
+
+        function sendAccuseFacture(message) {
+            $('#ReceptionFactureNote').val(message);
+            $('#formReceptionFacture').submit();
+
+            $('#formNoteRejetFacture').hide('fast');
+            $('#annuleFacturexx').hide('fast');
+            $('#loadAssociated').show('fast');
+
+        }
+
+
+
+
+
+    </script>   
+
+
+
+{% endmacro %}
+
+
+{# macro de autorisation ou rejet de bon de commande #}
+{% macro modalAutorisationBonCommande() %}
+
+    <form action="{{path('etape_bon')}}" method="POST" class="hidden" id="autorisationBonForm">
+        <input type="text" name="idBons" id="idBonsAutor" value="" />
+        <input type="text" name="etape" id="etapeAutor" value=""  />
+        <input type="text" name="status" id="statusAutor" value=""  />
+        <input type="text" name="route" id="routeAutor" value=""  />
+        <input type="text" name="message" id="messageAutor" value=""  />
+        <input type="text" name="appprobateur" id="appprobateur" value=""  />
+    </form>
+
+    {# ici je prepare le formaulaire de transfert #}
+    <button class="btn btn-primary btn-xs hidden " data-toggle="modal"  id="btnRejetBonModal" data-target="#rejetBonModal"> </button>
+    <!-- Modal -->
+    <div class="modal fade" id="rejetBonModal" tabindex="-1" role="dialog" aria-labelledby="rejetBonLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="rejetBonContent">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="rejetBonLabel"> </h4>
+                    </div>
+
+                    {#     contenu du modal           #}
+                    <div class="modal-body">
+                        <form class="" id="formRecepteur" style="display: none  ; margin-bottom: 30px;">
+                            <div class="col-lg-6" >
+                                Profile : 
+
+                                <select class="" id="profileApprobateur" >
+                                    {%for key, value in getEntities('eProcessEntityBundle','Profile',-1, -1, {'canApprove': true } ) %}
+                                        <option value="{{key}}">{{value}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="" >
+                                Approbateur:
+                                <select class="" id="utilisateurApprobateur" required="true" name="approbateur" style="min-width: 40px;">
+                                    <option value="" >-- Aucun utilisateur  --</option> 
+                                </select>
+                            </div>
+
+
+                        </form>
+                        <form id="formNoteEnvoiBon">
+
+                            <textarea class="form-control" id="noteRejetBon" > Information: 
+Voici les bons qui sont refusées.
+                             
+                            </textarea>
+
+                        </form>
+
+
+                        <div id="loadAssociated" style="display: none">
+                            <center> <img src="{{asset('images/chargement/ajax-loader.gif')}}" width="400px"/> </center>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"  id="annuleBonxx" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary" id="envoiBonxx" onclick="$(this).hide();
+                                sendAccuseBon($('#noteRejetBon').val());">Valider</button>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <script>
+        $('#utilisateurApprobateur, #profileApprobateur').on('change, click', afficherBoutonValideModale);
+        $('#profileApprobateur').on('change, click',
+                function () {
+                    getAssociated('eProcessEntityBundle', 'Profile', {'id': $(this).val()}, 'Utilisateur', '#utilisateurApprobateur', {'isActif': '{{statusActivated()}}'}) ;
+                }
+            );
+        $('#utilisateurApprobateur').on('change, click',
+                function () {
+                    $('#appprobateur').val($(this).val());
+                });
+
+        // afficher ou cacher la validation du modale
+        function afficherBoutonValideModale() {
+            var user = $.trim($('#utilisateurApprobateur').val());
+            if (user === '' || user === '0') {
+                $('#envoiBonxx').hide(); // on cache l'envoi 
+            }
+            //cas d'une suppression
+            else {
+                $('#envoiBonxx').show(); // on affiche l'envoi 
+            }
+        }
+
+        // autorisation d'un bon de commande
+        function autorisationBon(ids, status, route, etape) {
+
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            }
+            //cas d'une suppression
+            else {
+                updateFormReceptionBon(ids, status, route, etape);
+                afficheModalEnvoiBon(status, etape);
+            }
+        }
+
+        function updateFormReceptionBon(ids, status, route, etape) {
+            $('#idBonsAutor').val(ids);
+            $('#etapeAutor').val(etape);
+            $('#statusAutor').val(status);
+            $('#routeAutor').val(route);
+        }
+
+        // preparation et affichage du modal en fonction du status et etape du bon
+        function afficheModalEnvoiBon(status, etape) {
+
+            if (status === '{{statusActivated()}}' || etape === '{{bonApprouve()}}') {
+                $('#rejetBonLabel').text('Validation de Bon');
+                $('#noteRejetBon').text('Le bon est approuvés');
+            } else if (status === '{{statusDeleted()}}' || etape === '{{bonSupprime()}}') {
+                $('#rejetBonLabel').text('Suppression de bon');
+                $('#noteRejetBon').text('Le bon est supprimé à cause  d\'apparition des erreurs');
+            } else if (status === '{{statusBlocked()}}' || etape === '{{bonRejete()}}' ) {
+                $('#rejetBonLabel').text('Rejet de Bon');
+                $('#noteRejetBon').text('Le bon est rejeté pour des raisons d\'incohérence');
+            }
+            // adapation du formulaire si nous somme dans le contexte d'envoi pour approbation
+            else if( etape === '{{bonSoumisAutor()}}') {
+                $('#formRecepteur').show();
+                $('#envoiBonxx').hide(); // on cache l'envoi 
+                $('#rejetBonLabel').text('Envoi Pour Validation');
+                $('#noteRejetBon').text('Veuillez Approuver le Bon de commande, S\'il vous plaît');
+            }
+            // au cas ou ce n'est pas un envoi pour approbation
+            else {
+                $('#formRecepteur').hide();
+                $('#envoiBonxx').show();
+            }
+
+            $('#loadAssociated').hide('fast');
+            //on affiche le bouton d'envoi de mail
+            $('#formNote').show('fast');
+            // affichage du modal
+            $('#btnRejetBonModal').click();
+        }
+
+
+
+        function sendAccuseBon(message) {
+            $('#messageAutor').val(message);
+            $('#annuleBonxx').hide('fast');
+            $('#formNoteEnvoiBon').hide('fast');
+            $('#formRecepteur').hide('fast');
+            $('#autorisationBonForm').submit();
+            $('#loadAssociated').show();
+
+
+        }
+
+    </script>   
+
+
+
+{% endmacro %}
+
+
+
+{# macro de visualisation d'un fichier #}
+{% macro modalVoirFichier() %}
+    <div class="modal remote-modal fade" id="fichierModal" tabindex="-1" role="document" aria-labelledby="fichierModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).on("hidden.bs.modal", ".remote-modal", function (e) {
+            $(e.target).removeData("bs.modal").find(".modal-content").empty();
+            cacherImageExecution();
+        });
+
+    </script>   
+{% endmacro %}
+
+
+
+

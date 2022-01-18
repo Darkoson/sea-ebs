@@ -1,0 +1,45 @@
+
+default:
+    path:     /
+    defaults: { _controller: eProcessSecurityBundle:Login:index }
+
+login:
+    path:     /login
+    defaults: { _controller: eProcessSecurityBundle:Login:login }
+    
+    
+login_check:
+    pattern: /login_check
+    
+logout:
+    path: /logout
+ 
+
+e_process_security_homepage:
+    resource: "@eProcessSecurityBundle/Resources/config/routing/dashboard.yml"
+    prefix:   /dashboard
+    
+e_process_security_droit:
+    resource: "@eProcessSecurityBundle/Resources/config/routing/droit.yml"
+    prefix:   /right
+    
+e_process_security_menu:
+    resource: "@eProcessSecurityBundle/Resources/config/routing/menu.yml"
+    prefix:   /menu
+    
+e_process_security_profile:
+    resource: "@eProcessSecurityBundle/Resources/config/routing/profile.yml"
+    prefix:   /profile
+    
+e_process_security_utilisateur:
+    resource: "@eProcessSecurityBundle/Resources/config/routing/utilisateur.yml"
+    prefix:   /user
+    
+e_process_security_application:
+    resource: "@eProcessSecurityBundle/Resources/config/routing/application.yml"
+    prefix:   /application
+    
+ 
+ 
+ 
+ 

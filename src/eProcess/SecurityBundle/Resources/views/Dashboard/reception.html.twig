@@ -1,0 +1,67 @@
+{% extends "::layout.html.twig" %}
+
+{% block profile_modules %} 
+    {% include 'eProcessSecurityBundle:Dashboard:modules/moduleEBS.html.twig' %} 
+{% endblock  %}
+
+
+{% block page_content_left %} 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Graphe des factures arrivées et traité par mois
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="flot-chart">
+
+                
+
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock  %}
+
+
+{% block page_content_right %} 
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-briefcase fa-fw"></i> Notifications
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="list-group">
+                <a href="{{path('facture_reception')}}" class="list-group-item">
+                    <i class="fa  fa-plus-circle  fa-fw"></i> Nouvelle réception
+                    <span class="pull-right text-muted small">
+                    </span>
+                </a>
+                <a href="{{path('facture_liste_reception')}}" class="list-group-item">
+                    <i class="fa  fa-list fa-fw"></i> factures arrivées
+                    </span>
+                </a>
+                    
+                <a href="{{path('facture_liste_periode')}}" class="list-group-item">
+                    <i class="fa  fa-search-minus fa-fw"></i> Recherche de factures
+                </a>
+            {#    <a href="{{path('list_bon_emis')}}" class="list-group-item">
+                    <i class="fa fa-inbox  fa-fw"></i> Liste des bons émis
+                </a>#}
+                <a href="{{path('list_fournisseur')}}" class="list-group-item">
+                    <i class="fa  fa-user  fa-fw"></i> Les fournisseurs
+                </a>
+               {# <a href="{{path('facture_traitement_journee')}}" class="list-group-item">
+                    <i class="fa a-hand-o-down fa-fw"></i> Les traitements de la journée
+                </a>#}
+
+            </div>
+            <!-- /.list-group -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock  %}
+
+{% block javascripts %} {% endblock %}
+
+

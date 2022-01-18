@@ -1,0 +1,188 @@
+
+
+{#  ****  block des informations sur l'upload des fchiers  ***  #}
+<div class="panel panel-info" style="margin-top: 10px;">
+    <div class="panel-heading">
+        <center>{{achat.objet}} </center>
+    </div>
+</div>
+
+{#   contenu du panel    #}
+<div class="panel-body">
+
+    <ul class="chat">
+          {#   Block des  fichiers de facture  #}
+        <li class=" clearfix contratOK contratKO">
+            <div class="chat-body clearfix">
+                <div class="header row">
+                    <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficFacture())}}</strong>                   
+                    <small class=" col-lg-6   text-muted" style="">
+                        {{form_widget(form.ficFacture)}}
+                    </small>
+                </div>
+            </div>
+        </li>
+
+        {#   Block des  fichiers de demande  #}
+        <li class=" clearfix contratKO">
+            <div class="chat-body clearfix">
+                <div class="header row">
+                    <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficDemande())}}</strong>
+
+                    {% if achat.ficDemande is null%}
+                        <small class=" col-lg-6   text-muted" style="">
+                            {{form_widget(form.ficDemande)}}
+                        </small>
+                    {%  else %}
+                        <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                            <a href="{{path('file_view',{'id':achat.ficDemande.id})}}"  target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                        </small>
+                        <small class=" col-lg-3 pull-right text-muted">
+                            <a href="{{path('file_download',{'id':achat.ficDemande.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                        </small>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </li>
+
+        {#   Block des  fichiers de proformat  #}
+        <li class=" clearfix contratKO">
+            <div class="chat-body clearfix">
+                <div class="header row">
+                    <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficProformat())}}</strong>
+                    {% if achat.ficProformat is null%}
+                        <small class=" col-lg-6   text-muted" >
+                            {{form_widget(form.ficProformat)}}
+                        </small>
+                    {%  else %}
+                        <small class="col-lg-3   text-muted" style="margin-left: 50px;">
+                            <a href="{{path('file_view',{'id': achat.ficProformat.id})}}"  target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                        </small>
+                        <small class=" col-lg-3 pull-right text-muted">
+                            <a href="{{path('file_download',{'id': achat.ficProformat.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                        </small>
+                    {% endif %}
+
+                </div>
+            </div>
+        </li>
+
+          {#   Block des fichiers des bons de commande    #}
+        <li class=" clearfix contratKO">
+            <div class="chat-body ">
+                <div class="header row">
+                    <strong class="primary-font col-lg-6">Bon de commande</strong>
+                    {% if bonCommande is not null and bonCommande.fichier %}
+                        <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                            <a href="{{path('file_view',{'id':bonCommande.fichier.id})}}"  target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                        </small>
+                        
+                        <small class=" col-lg-3 pull-right text-muted">
+                            <a href="{{path('file_download',{'id':bonCommande.fichier.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                        </small>
+                    {% else %}
+                        <small class="col-lg-6   pull-right" > Pas de bon ou de fichier si le bon existe ! </small>
+                    {% endif%}
+                </div>
+            </div>
+        </li>
+
+        
+        {#   Block des  fichiers de livraison  #}
+        <li class=" clearfix contratOK contratKO">
+            <div class="chat-body clearfix">
+                <div class="header row">
+                    <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficLivraison())}}</strong>
+
+                    {% if achat.ficLivraison is not null %}
+                        <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                            <a href="{{path('file_download',{'id':achat.ficLivraison.id}) }}"> <i class="fa fa-eye "></i> Voir  </a>
+                        </small>
+                        <small class=" col-lg-3 pull-right text-muted">
+                            <a href="{{path('file_download',{'id':achat.ficLivraison.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                        </small>
+                    {% else %}
+                        <small class=" col-lg-6   text-muted" style="">
+                            {{form_widget(form.ficLivraison)}}
+                        </small>
+                    {% endif%}
+
+                </div>
+            </div>
+        </li>
+
+        
+        
+        {#   Block des  fichiers d'approbation  #}
+        <li class=" clearfix contratKO">
+            <div class="chat-body clearfix">
+                <div class="header row">
+                    <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficApprobation())}}</strong>
+
+                    {% if achat.ficApprobation is not null %}
+                        <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                            <a href="{{path('file_view',{'id': achat.ficApprobation.id})}}"  target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                        </small>
+                        
+                        <small class=" col-lg-3 pull-right text-muted">
+                            <a href="{{path('file_download',{'id':achat.ficApprobation.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                        </small>
+                    {% else %}
+                        <small class=" col-lg-6   text-muted" style="">
+                            {{form_widget(form.ficApprobation)}}
+                        </small>
+                    {% endif%}
+
+                </div>
+            </div>
+        </li>
+
+      
+      
+        {#   Block des  fichiers  de contrat #}
+        <li class=" clearfix contratOK">
+            <div class="chat-body " style="{#margin: 15px;#}">
+                <div class="header row">
+                    <strong class="primary-font col-lg-6">Contat du fournisseur</strong>
+                    {% if fournisseur is not null and fournisseur.fichier is not null %}
+                        <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                            <a href="{{path('file_view',{'id': fournisseur.fichier.id})}}"  target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                        </small>
+                        <small class=" col-lg-3 pull-right text-muted">
+                            <a href="{{path('file_download',{'id': fournisseur.fichier.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                        </small>
+                    {% else %}
+                        <small class="col-lg-6   pull-right" > {{fournisseur}} n'a pas de contrat ! 
+                            <a href="{{path('edit_fournisseur',{'idFournisseur': fournisseur.id})}}"  target="_blank" style="margin-left: 18px;" >
+                                <div class="btn btn-primary"> <i class="fa fa-plus-square "></i>  Ajouter </div>
+                            </a> 
+                    </small> 
+                        {% endif%}
+
+                </div>
+            </div>
+        </li>
+
+    </ul>
+
+
+</div>    
+
+
+
+
+
+<div class="btn btn-warning" style="margin-left: 50px" onclick="passerSuivant('lienCheckList');">
+    <i class="fa fa-angle-left"></i><strong> Précédant</strong> 
+</div>     
+<div class="btn btn-primary" style="margin-left: 50px" onclick="passerSuivant('lientEnreg');">
+    <strong>Suivant</strong> <i class="fa fa-angle-right"></i>
+</div>
+
+
+
+<script type="text/javascript">
+   
+</script>

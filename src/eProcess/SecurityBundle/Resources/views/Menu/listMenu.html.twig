@@ -1,0 +1,79 @@
+{% extends "eProcessSecurityBundle:Menu:index.html.twig" %}
+
+{% block page_content_left %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Liste des menus 
+            <div class="pull-right">
+                <div class="btn-group">
+
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+            <div class="dataTable_wrapper">
+                {%for parent in Menusparents%} 
+                    <table class="table-bordered table-striped parent activation" >
+                        <thead class="element">
+                            <tr class="alert-danger">
+                                <th style="padding-left:10px;"><input type="checkbox" class="checkall" name="checkall"/></th>
+                                <th colspan="3">{{parent.nom}}</th>
+                                <th colspan="2">
+                                    {% if parent.enfants|length == 0 %}
+                                        <a href="#" onclick="enregistrer('{{parent.id}}', false, 0);" class="btn btn-danger btn-block">Supprimer </a> 
+                                    {% else %}
+                                        <a href="{{ path('edit_menu', { 'idMenu': parent.id }) }}" class="btn btn-default btn-block">Modifier</a>
+                                    {% endif %}
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody class="cache">
+                            <tr class="alert-warning">
+                                <th style="padding-left:10px;"> </th>
+                                <th style="width: 35%">Nom</th>
+                                <th style="width: 50%">Description</th>
+                                <th style="width: 5%">Etat</th>
+                                <th style="width: 10%" colspan="" ><center>Actions</center></th>
+                        </tr>
+
+
+                        {% for entity in parent.enfants %}
+                            <tr class="odd gradeX">
+                                <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                <td>{{ entity.nom }}</td>
+                                <td>{% if entity.action is not null%} {{ entity.action.description }}{% else %} --- {% endif %}</td>
+                                <td class="center">
+                                    {% if entity.isActif %} <i class="alert-success fa fa-check-circle fa-fw"></i>
+                                    {% else %} <i class="alert-danger fa fa-ban fa-fw"> {% endif %}
+                                </td>
+                                <td><a href="{{path('edit_menu',{'idMenu': entity.id})}}" class="btn  fa fa-edit fa-fw " title="Modifier  {{entity.nom}}"><i class=""></i></a></td>
+                            </tr>
+                        {% endfor %}                    
+                        </tbody>
+                    </table>
+                    <br/>
+
+                {%endfor %} 
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block javascripts %} 
+    {{parent()}}
+    <script> </script>
+{% endblock %}
+
+

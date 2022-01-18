@@ -1,0 +1,5 @@
+e_process_trans:
+    resource: "@eProcessTransfertBundle/Resources/config/routing/transfert.yml"
+    prefix:   /transfert
+    
+

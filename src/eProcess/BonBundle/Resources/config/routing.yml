@@ -1,0 +1,8 @@
+e_process_bon:
+    resource: "@eProcessBonBundle/Resources/config/routing/bonCommande.yml"
+    prefix:   /bon
+ 
+e_process_impression:
+    resource: "@eProcessBonBundle/Resources/config/routing/impression.yml"
+    prefix:   /print
+ 

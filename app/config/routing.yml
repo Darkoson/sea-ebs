@@ -1,0 +1,20 @@
+e_process_transfert:
+    resource: "@eProcessTransfertBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
+e_process_bon:
+    resource: "@eProcessBonBundle/Resources/config/routing.yml"
+    prefix:   /
+
+e_process_facture:
+    resource: "@eProcessFactureBundle/Resources/config/routing.yml"
+    prefix:   /
+
+e_process_entity:
+    resource: "@eProcessEntityBundle/Resources/config/routing.yml"
+    prefix:   /
+
+e_process_security:
+    resource: "@eProcessSecurityBundle/Resources/config/routing.yml"
+    prefix:   /

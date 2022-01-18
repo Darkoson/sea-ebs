@@ -1,0 +1,285 @@
+
+<div class="row bg-info" style="margin-top: 10px; " >
+    <div class=" medium col-lg-9 col-md-9 col-sm-9" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-info" style="margin-top: 10px;">
+            <div class="panel-heading" id="">
+                <center > DETAILS SUR BON DE COMMANDE  </center>
+            </div>
+        </div>
+
+    </div>
+    <div class=" col-lg-3 col-md-3 col-sm-3" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-warning" style="margin-top: 10px;">
+            <div class="panel-heading" id="" style="height: fit-content; align-content: center" >
+                <div class="third circle bg-warning" data-size="60" data-thickness="20">
+                    <span>70 %</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class=" row" style="margin-top: 10px;">
+    <div class="btn btn-success" style="margin-left: 100px" id="ajouterArticle" onclick="ajusterLigneArticles(true);" >
+        <i class="fa fa-plus"></i><strong> Ligne </strong> 
+    </div> 
+    <div class="btn btn-danger" style="margin-left: 50px" id="supprimerArticle" onclick="ajusterLigneArticles(false);">
+        <i class="fa fa-minus"> Ligne</i>
+    </div>
+</div>
+
+<div class="panel panel-info" style="margin-top: 10px;">
+    <div class="panel-heading" id="objetArticles">
+        <center > {{achat.objet}} </center>
+    </div>
+</div>
+
+
+
+<div class="  ">
+    <ul class="chat">
+        <li>
+            <div class=" row">
+                <div class="col-lg-12 col-md-12 col-sm-12 upAndDownSpace ">
+                    <div class="row header Bold">
+                        <div class="col-lg-7 col-md-7 col-sm-7">Désignation</div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">P.Unitaire</div>
+                        <div class="col-lg-2">Quantité</div>
+                    </div>
+                </div>
+                <div class="col-lg-12 tab-article " id="tab-article">
+                    {% if provision|length >0  and provision.articles|length >0 %}
+
+
+                        {% for article in  provision.articles %}
+                            {% if article is not null %}
+                                <div class="row ligne upAndDownSpace">
+                                    <div class="col-lg-7 col-md-7 col-sm-7"><input required="true" type="text" autocomplete="off" name="libelleArticle" value="{{article.lib}}" placeholder=" libellé de l'article" class=" form-control dynamic"></div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2"><input type="text" autocomplete="off" name="montantArticle" value="{{article.pu}}" placeholder=" 0" required="" class=" form-control numeric dynamic"></div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2"><input type="number" min="0" autocomplete="off" name="nombreArticle" value="{{article.nbre}}" placeholder=" 0"  required="" class=" form-control numeric dynamic"></div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %} 
+                        <div class="row ligne upAndDownSpace">
+                            <div class="col-lg-7 col-md-7 col-sm-7"><input required="true" type="text" autocomplete="off" name="libelleArticle" value="" placeholder=" libellé de l'article" class=" form-control dynamic"></div>
+                            <div class="col-lg-2 col-md-2 col-sm-2"><input type="text" autocomplete="off" name="montantArticle" value="" placeholder=" 0" required="" class=" form-control numeric dynamic"></div>
+                            <div class="col-lg-2 col-md-2 col-sm-2"><input type="number" min="0" autocomplete="off" name="nombreArticle"  placeholder=" 0"  required="" class=" form-control numeric dynamic"></div>
+                            <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                        </div>
+                    {% endif  %}
+                </div>
+            </div>
+        </li>
+
+
+        {% if provision|length >0 and provision.articles|length >0 %}
+
+
+            <li>
+                {#  ligne d'affichage des totaux  #}
+                <div class="row  upAndDownSpace">
+                    <div class="col-lg-6">
+                        <div class="row ">
+                            <div class="col-lg-2">Taxe</div>
+                            <div class=" col-lg-4   text-muted" style="width: 60%">
+                                <select id="taxe" class="chosen-select-element dynamic" > 
+                                    {% for key,value in getTypeTaxe()%}
+                                        <option value="{{key}}">{{value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row ">
+                            <div class="col-lg-2">Remise</div>
+                            <div class="col-lg-8">
+                                <input type="text" id="montantRemise" value="{{provision.remise}}" autocomplete="off" placeholder="0" class="form-control dynamic  numeric">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+
+            <li>
+
+                <div class="row total-ligne upAndDownSpace">
+                    <div class="col-lg-1">Total </div>
+                    <div class="col-lg-4">
+                        <input type="text" readonly="" id="montantTotal" value="{{provision.total}}" class="form-control  dynamic numeric">
+                    </div>
+
+
+                    <div class="col-lg-1">Net </div>
+                    <div class="col-lg-6">
+                        <div class="form-group input-group">
+                            <input readonly="" id="montantNet" type="text" value="" class="form-control  numeric dynamic">
+                            <span class="input-group-addon" id="deviseArticles">XOF</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </li>
+
+
+
+        {% else %}
+
+            <li>
+                {#  ligne d'affichage des totaux  #}
+                <div class="row  upAndDownSpace">
+                    <div class="col-lg-6">
+                        <div class="row ">
+                            <div class="col-lg-2">Taxe</div>
+                            <div class=" col-lg-4   text-muted" style="width: 60%">
+                                <select id="taxe" class="chosen-select-element dynamic" > 
+                                    {% for key,value in getTypeTaxe()%}
+                                        <option value="{{key}}"   {%if achat.taxe == key %} selected=""{%endif %} >{{value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row ">
+                            <div class="col-lg-2">Remise</div>
+                            <div class="col-lg-8">
+                                <input type="text" id="montantRemise" autocomplete="off" placeholder="0" class="form-control dynamic  numeric">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+
+        {% endif  %}
+
+
+    </ul>
+
+
+
+</div>
+
+
+<div class="btn btn-warning" style="margin-left: 50px" onclick="passerSuivant('checklist');">
+    <i class="fa fa-angle-left"></i><strong> Précédant</strong> 
+</div> 
+
+<div class="btn btn-success" style="margin-left: 50px"  onclick="mettreAjourChamps();">
+    <i class="glyphicon  glyphicon-refresh"> Recharger</i>
+</div>  
+
+<div id="articles-suiv" class="btn btn-primary hidden" style="margin-left: 50px" onclick="recapArticles();
+        passerSuivant('fics');">
+    <strong>Suivant</strong> <i class="fa fa-angle-right"></i>
+</div> 
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var total = formatSimple('{{provision.total}}');
+        var remise = formatSimple('{{provision.remise}}');
+        var net = total - remise ;
+        $('#montantNet').val(formatMillier(net));
+
+    });
+
+    /**
+     * recapArticles : fonction de recuperation des elements saisie
+     *                  sans faire des calculs
+     * 
+     * @returns {recapArticles.result}
+     */
+    function recapArticles() {
+        var result = {};
+        var list = new Object();
+
+        var listeArticle = $('#tab-article .ligne');
+
+        result.remise = ($('#montantRemise').val() === '') ? 0 : $('#montantRemise').val();
+        var nomTaxe = $('#taxe_chosen').children().eq(0).children().eq(0).text(); // attention ici avec la valeur
+        result.taxe = $('#taxe').val();
+        result.total = $('#montantTotal').val();
+        $("#recap-tab-article").html(''); // initialisation du Mise à jour du recap de l'onglet
+
+        var i = j = 0;
+        listeArticle.each(function () {
+            var article = {};
+            article.lib = $(this).children('div').eq(0).children('input').val();
+            article.pu = $(this).children('div').eq(1).children('input').val();
+            article.nbre = $(this).children('div').eq(2).children('input').val();
+            list['' + i + ''] = article;
+            i++;
+
+            // verification et affichage des champs vide avec l'image de validation
+            var ok = ($.trim(article.lib) !== '')
+                    && ($.isNumeric(parseInt(formatSimple(article.pu))) && parseInt(formatSimple(article.pu)) !== 0)
+                    && ($.isNumeric(parseInt(formatSimple(article.nbre))) && parseInt(formatSimple(article.nbre)) !== 0);
+            if (ok) {
+                $(this).children('div').eq(3).html(' <span class=" btn btn-circle btn-success"><i class="fa fa-check-circle"></i> </span>');
+            } else {
+                j++; // COMPTEUR DES LIGNES INCORRECTES
+                $(this).children('div').eq(3).html('<span class=" btn btn-circle btn-danger"><i class="fa fa-times-circle"></i> </span>');
+            }
+            // suite  de mise à jour des informations des articles saisie sur l'onglet d'enregistrement
+            var ligne = "<tr> <td>" + article.lib + "</td> <td>" + article.pu + "</td> <td>" + article.nbre + "</td> </tr>";
+            $("#recap-tab-article").append(ligne);
+    {#console.log(article.pu !==  'NaN');
+    console.log(article.pu !==  NaN);
+    console.log( $.isNumeric(article.pu) );#}
+            });
+            result.articles = list;
+    {#        $('#saisieRecap').val(JSON.stringify(result));#}
+
+
+            // fin de mise à jour des informations des articles saisie sur l'onglet d'enregistrement
+            $("#recap_total").val(result.total);
+            $("#recap_taxe").val(nomTaxe);
+            $("#recap_remise").val(result.remise);
+
+            (j === 0) ? $("#articles-suiv ").removeClass('hidden') : $("#articles-suiv").addClass('hidden');
+
+            return result;
+        }
+
+
+        /**
+         * calculerTotalArticle : fonction de calcul du total des articles
+         * 
+         * @returns {Number}
+         */
+        function calculerTotalArticle() {
+            var listeArticle = $('#tab-article .ligne');
+            var somme = 0;
+            listeArticle.each(function () {
+                var pu_sting = $.trim(formatSimple($(this).children('div').eq(1).children('input').val()));
+                var qt_sting = $.trim(formatSimple($(this).children('div').eq(2).children('input').val()));
+                if (pu_sting && qt_sting) {
+                    somme += (parseFloat(pu_sting) * parseFloat(qt_sting));
+                }
+            });
+
+            return somme;
+        }
+</script>
+

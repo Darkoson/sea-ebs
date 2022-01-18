@@ -1,0 +1,85 @@
+{% extends "::layout.html.twig" %}
+
+{% block page_module %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="row">   
+                <div class="col-xs-3">
+                    <i class="fa fa-gear fa-5x"></i>
+                </div>
+                <div class="col-xs-9 text-right">
+                    <div class="huge">Profils</div>
+                    <div>Gestion des Droits et Profils </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}
+
+
+
+{% block page_content_right %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-suitcase fa-fw"></i>  Actions sur les Profils des utilisateurs
+        </div>
+        <div class="panel-body">
+            <div class="list-group">
+                <a href="{{path('add_profile')}}" class="list-group-item">
+                    <i class="fa  fa-plus-circle  fa-fw"></i>  Ajout des Profils
+                </a>
+                <a href="{{path('list_profile')}}" class="list-group-item">
+                    <i class="fa fa-list   fa-fw"></i>  Liste des Profils
+                </a>
+                <a href="#" onclick="enregistrer(getIDs(), 1, 1);" class="list-group-item">
+                    <i class="fa fa-check-circle   fa-fw"></i>  Autoriser les Profils
+                </a>
+                <a  href="#" onclick="enregistrer(getIDs(), 0, 1);" class="list-group-item">
+                    <i class="fa fa-search-minus  fa-fw"></i> Désactiver les Profils
+                </a>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+    
+{% block javascripts %} 
+
+    <form action="{{path('status_profile')}}" method="POST" class="hidden" id="modifProfileForm">
+        <input type="" name="idProfilesModif" id="idProfilesModif" value="" />
+        <input type="" name="status" id="status" value=""  />
+    </form>
+
+    <form action="{{path('remove_profile')}}" method="POST" class="hidden" id="deleteProfileForm">
+        <input type="" name="idProfilesDelete" id="idProfilesDelete" value="" />
+    </form>
+
+
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+
+        function enregistrer(ids, status, route) {
+
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            } else {
+                //cas d'une suppression
+                if (route === 0) {
+                    $('#idProfilesDelete').val(ids);
+                    $('#deleteProfileForm').submit();
+                }
+
+                //cas d'un changement d'etat 
+                else if (route === 1) {
+                    $('#idProfilesModif').val(ids);
+                    $('#status').val(status);
+                    $('#modifProfileForm').submit();
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
+

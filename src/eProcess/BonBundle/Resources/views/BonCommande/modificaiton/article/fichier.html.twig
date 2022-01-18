@@ -1,0 +1,156 @@
+
+
+<div class="row bg-info" style="margin-top: 10px; margin-bottom: 30px;" >
+    <div class=" medium col-lg-9 col-md-9 col-sm-9" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-info" style="margin-top: 10px;">
+            <div class="panel-heading" id="">
+                <center > CHARGEMENT DES DOCUMENTS RELATIFS AU BON DE COMMANDE   </center>
+            </div>
+        </div>
+
+    </div>
+    <div class=" col-lg-3 col-md-3 col-sm-3" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-warning" style="margin-top: 10px;">
+            <div class="panel-heading" id="" style="height: fit-content; align-content: center">
+                <div class="forth circle bg-warning" data-size="60" data-thickness="20">
+                    <span>80 %</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row " style="margin-top: 10px; margin-bottom: 15px;" >
+    <div class=" col-lg-1 col-md-1 col-sm-1"></div>
+    <div class=" col-lg-10 col-md-10 col-sm-10" style=" font-weight:  bold;">
+        <div class="panel panel-warning " style="margin-top: 10px;">
+            <div class="panel-heading" id="">
+                <center > FICHIERS : PDF - WORD - IMAGE   </center>
+            </div>
+            <div class="panel-body" id="">
+                <center > Les anciens fichiers sont conservés s'ils ne sont pas remplacés </center>
+            </div>
+        </div>
+
+    </div>
+    <div class=" col-lg-1 col-md-1 col-sm-1"></div>
+</div>
+
+
+
+
+<div class="panel-body">
+    <ul class="chat" id="tab-fichiers" >
+        <li class="row clearfix">
+            <strong class="primary-font col-lg-3 ">{{readTypeFichier( ficDemande())}}</strong>
+
+            <div class=" col-lg-7 parent   text-muted" style="width: 60%">
+                {{form_widget(form.ficDemande)}}
+            </div>
+
+            {% if achat.ficDemande is not null%}
+                <small class="col-lg-1   text-muted" style="">
+                    <a href="{{path('file_view',{'id':achat.ficDemande.id})}}" class="noExecution" target="_blank" > <i class="fa fa-eye "></i> ancien   </a>
+                </small>
+            {% else %}
+                <div class="col-lg-1">  </div>
+            {% endif %}
+
+        </li>
+        <li class="row clearfix">
+
+            <strong class="primary-font col-lg-3 ">{{readTypeFichier( ficProformat())}}</strong>
+
+            <div class=" col-lg-7 parent  text-muted" style="width: 60%">
+                {{form_widget(form.ficProformat)}}
+            </div>
+            {% if achat.ficProformat is not null%}
+                <small class="col-lg-1   text-muted" style="">
+                    <a href="{{path('file_view',{'id':achat.ficProformat.id})}}" class="noExecution" target="_blank" > <i class="fa fa-eye "></i>  ancien   </a>
+                </small>
+            {% else %}
+                <div class="col-lg-1">  </div>
+            {% endif %}
+        </li>
+        <li class="row clearfix">
+
+            <strong class="primary-font col-lg-3 ">{{readTypeFichier( ficApprobationBudget())}}</strong>
+
+            <div class=" col-lg-7 parent  text-muted" style="width: 60%; ">
+                {{form_widget(form.ficApprobationBudget)}}
+            </div>
+            {% if achat.ficApprobationBudget is not null%}
+                <small class="col-lg-1   text-muted" style="">
+                    <a href="{{path('file_view',{'id':achat.ficApprobationBudget.id})}}" class="noExecution"  target="_blank" > <i class="fa fa-eye "></i>  ancien  </a>
+                </small>
+            {% else %}
+                <div class="col-lg-1">  </div>
+            {% endif %}
+
+        </li>
+        <li class="row clearfix">
+
+            <strong class="primary-font col-lg-3 ">{{readTypeFichier( ficApprobationHier())}}</strong>
+
+            <div class=" col-lg-7 parent  text-muted" style="width: 60%; ">
+                {{form_widget(form.ficApprobationHier)}}
+            </div>
+            {% if achat.ficApprobationHier is not null%}
+                <small class="col-lg-1   text-muted" style="">
+                    <a href="{{path('file_view',{'id':achat.ficApprobationHier.id})}}" class="noExecution" target="_blank" > <i class="fa fa-eye "></i>  ancien   </a>
+                </small>
+            {% else %}
+                <div class="col-lg-1">  </div>
+            {% endif %}
+        </li>
+    </ul>
+</div>    
+
+<div class="btn btn-warning" style="margin-left: 50px" onclick="passerSuivant('articles');">
+    <i class="fa fa-angle-left"></i><strong> Précédant</strong> 
+</div>
+
+
+
+<div id="fic-suiv" class="btn btn-primary " style="margin-left: 50px" onclick="passerSuivant('enreg');">
+    <strong>Suivant</strong> <i class="fa fa-angle-right"></i>
+</div>
+
+<script type="text/javascript">
+    $('#eprocess_entitybundle_achat_fichiers').css('width', '100%');
+    $(document).ready(function () {
+        $('input[type=file]').val('');
+    });
+
+    // expression regulière pour filtrer leforma des fichiers
+    $('#tab-fichiers').find('input[type=file]').change(function () {
+        var allowedTypes = ['png', 'jpg', 'jpeg', 'gif', 'pdf', 'doc', 'docx'];
+        var extension = $(this).val().toLowerCase().split('.');
+        extension = extension[extension.length - 1].toLowerCase(); // On utilise toLowerCase() pour éviter les extensions en majuscules
+        if (allowedTypes.indexOf(extension) === -1) {
+            $(this).val('');
+            alert('Format du fichier est incorrect!');
+        }
+
+        // recapitulation des fichiers de bon
+        recapFicsBon();
+    });
+
+    /**
+     * recapFicsBon : fonction de verification des fichiers choisis 
+     * afin d'afficher le bouton de passage à l'étape suivante
+     * 
+     * @returns {undefined}
+     */
+    function recapFicsBon() {
+    }
+
+
+
+
+</script>
+
+
+
+
+

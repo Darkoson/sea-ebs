@@ -1,0 +1,43 @@
+{% extends "eProcessSecurityBundle:Profile:index.html.twig" %}
+
+{% block page_content_left %}
+     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Ajout de nouveau profile 
+                            <div class="pull-right">
+                                <div class="btn-group">
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            <form role="form" method="POST" action="{{path('add_profile')}}" >
+                                <div class="form-group">
+                                    <label>Nom</label>
+                                    <input class="form-control" name="name" placeholder="Nom du profil" required="true"> 
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Description </label>
+                                    <input class="form-control" name="description" placeholder="Description du profil" required="true"> 
+                                </div>
+                                <div class="" style="margin-bottom: 50px;">
+                                    <label>Peux Approuver Bon: </label>
+                                    <input  name="approve" type="checkbox" style="margin-left: 50px;"> 
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Enregistrer </button>
+                                <button type="reset" class="btn btn-primary">Annuler</button>
+                            </form>
+
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+
+{% endblock %}
+
+

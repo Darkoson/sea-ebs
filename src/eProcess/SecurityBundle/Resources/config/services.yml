@@ -1,0 +1,93 @@
+services:
+    
+#    LES SERVICES QUI SONT UTILISES DANS LES CONTROLEURS ET DES LES AUTRES SERVICES
+
+    user_authenticator:
+        class:     eProcess\SecurityBundle\Services\UserAuthenticator
+        arguments: ["@security.password_encoder",@right_manager]
+        
+        
+    webservice_user_provider:
+        class:     eProcess\SecurityBundle\Services\WebserviceUserProvider
+        arguments: [ @ldap_manager ,@right_manager ]
+    
+        
+    kernel.listener.cecurity_exception_listener:
+        class: eProcess\SecurityBundle\Listener\ExceptionListener
+        arguments: [@templating, @kernel]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    right_manager:
+        class:      eProcess\SecurityBundle\Services\DroitManager
+        arguments: [ @session , @menu_Manager ]
+                
+        
+    ldap_manager:
+        class:      eProcess\SecurityBundle\Services\LdapManager
+        arguments: [ @service_container ]
+        
+    util_manager:
+        class:      eProcess\SecurityBundle\Services\UtilManager
+        arguments: [ @doctrine.orm.entity_manager ]
+          
+         
+    menu_manager:
+        class:      eProcess\SecurityBundle\Services\MenuManager
+        arguments: [ @doctrine.orm.entity_manager ]
+        tags:
+           - { name: twig.extension } 
+          
+    date_manager:
+        class:      eProcess\SecurityBundle\Services\DateManager
+        tags:
+           - { name: twig.extension } 
+          
+         
+         
+         
+         
+         
+        
+#  LES EXTENSION TWIG
+        
+    status_manager:
+        class:     eProcess\SecurityBundle\ExtensionTwig\StatusTwig
+        tags:
+           - { name: twig.extension } 
+          
+        
+    etape_facture_manager:
+        class:     eProcess\SecurityBundle\ExtensionTwig\EtapeFactureTwig
+        arguments: [ @facture_manager ]
+        tags:
+           - { name: twig.extension } 
+          
+    etape_bon_manager:
+        class:     eProcess\SecurityBundle\ExtensionTwig\EtapeBonTwig
+        tags:
+           - { name: twig.extension } 
+          
+    fichier_manager:
+        class:     eProcess\SecurityBundle\ExtensionTwig\FichierTwig
+        tags:
+           - { name: twig.extension } 
+          
+    etape_tranfert_manager:
+        class:     eProcess\SecurityBundle\ExtensionTwig\TransfertFactureTwig
+        arguments: [ @transfert_manager ]
+        tags:
+           - { name: twig.extension } 
+          
+        
+    param_manager:
+        class:     eProcess\SecurityBundle\ExtensionTwig\ParamTwig
+        arguments: [ @right_manager , @util_manager ]
+        tags:
+           - { name: twig.extension } 
+          
+    profile_manager:
+        class:     eProcess\SecurityBundle\ExtensionTwig\ProfileTwig
+        tags:
+           - { name: twig.extension } 
+      

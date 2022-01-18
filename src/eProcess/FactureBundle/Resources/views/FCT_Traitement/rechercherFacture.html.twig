@@ -1,0 +1,343 @@
+{% extends "eProcessFactureBundle:FCT_Reception:index.html.twig" %}
+
+{% block page_content %}
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Recherche multicritère sur les facture
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+
+                <li class="active"><a href="#multicritere" data-toggle="tab" > Recherche multicritère</a>
+                </li>
+
+                <li id="lienRechercheSimple"><a href="#simple" data-toggle="tab" > Recherche basée sur numéro </a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content col-lg-12" style="padding-top: 20px">
+
+                {#  ****  block desrecherche multicritère ***  #}
+                <div class="tab-pane fade in active" id="multicritere">
+
+                    <form class=" well" method="POST" action="{{path('facture_traitement_recherche')}}" id="rechercheMultiCritere">
+                        <ul class="chat">
+                            <li>
+                                <div class="row downSpace">
+                                    <div class="col-lg-1">
+                                        Fournisseur: 
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <select class="chosen-select-element form-control" name="idFour" style="display:block ; width: 100%">
+                                            <option value=""> - aucun -</option>
+                                            {% for key, value in getEntities('eProcessEntityBundle','Fournisseur') %}
+                                                <option value="{{key}}">{{value}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-1">
+                                        Etape:
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <select class="chosen-select-element form-control" name="etape" style="display:block ; width: 100%">
+                                            <option value=""> - aucun -</option>
+                                            {% for key, value in getEtapeFacture() %}
+                                                <option value="{{key}}">{{value}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+
+                                <div class="row upAndDownSpace ">
+                                    <div class=" col-lg-1">
+                                        devise
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        {{form_widget(form.devise)}}
+                                    </div>
+
+
+                                    <div class="col-lg-1">
+                                        Mont Min
+                                    </div>
+
+
+                                    <div class="col-lg-2">
+                                        <input type="text" class="form-control numeric" name="montMin" id="montMin">
+                                    </div>
+
+
+                                    <div class="col-lg-1">
+                                        Mont Max 
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input type="text" class="form-control numeric" name="montMax" id="montMax">
+                                    </div>
+
+
+
+
+                                </div>
+
+                            </li>
+                            <li>
+                                <div class="row upAndDownSpace ">
+
+                                    <div class=" col-lg-1">
+                                        Date
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        {{form_widget(form.typeDate)}}
+                                    </div>
+
+
+
+                                    <div class="col-lg-1">
+                                        Début 
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input type="text" class="form-control datetime" name="debut">
+                                    </div>
+
+
+                                    <div class="col-lg-1">
+                                        Fin 
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input type="text" class="form-control datetime" name="fin">
+                                    </div>
+
+
+                                </div>
+                            </li>
+                            {# <li>
+                                 <div class="row upAndDownSpace ">
+                                     
+                                     <div class=" col-lg-1">
+                                         Bon
+                                     </div>
+ 
+                                     <div class="col-lg-4">
+                                          <select class="chosen-select-element form-control" name="idBon" >
+                                             <option value=""> - aucun -</option>
+                                             {% for key, value in getEntities('eProcessEntityBundle','BonCommande') %}
+                                                 <option value="{{key}}">{{value}}</option>
+                                             {% endfor %}
+                                         </select>
+                                     </div>
+                                 </div>
+                             </li>
+                             #}
+                        </ul>
+
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <div  class=" btn btn-primary" id="btn_rechercheMultiCritere"> rechercher </div>
+                            </div>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+                {#  ****  block des recherche sur numero d'ordre   ***  #}        
+                <div class="tab-pane fade in" id="simple">
+                    <form class="well" method="POST" action="{{path('facture_traitement_recherche',{'isNum':1})}}">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                Numero d'ordre:
+                            </div>
+                            <div class="col-lg-4">
+                                <input class=" form-control" required="true" name="ordreArrive" style="" />
+                            </div>
+
+                            <div class="col-lg-offset-2 col-lg-4">
+                                <button type="submit" class=" btn btn-primary"> rechercher </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+        {#          Affichage des resultats de la recherche          #}
+
+        {% if isRecherche%}
+            <div class="panel-default" style="margin-top: 12px;">
+                <div class="panel-heading">
+                    RESULTAT DE LA RECHERCHE 
+
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                Actions
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                <li class="alert-warning"><a href="#" onclick="exportExcelFacture();"> 
+                                        <span class=""></span> exporter en Excel</a>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+
+                    <div class="">
+                        <table class="table table-striped  table-hover ">
+                            <thead class="element row">
+                                <tr class="alert-warning">
+                                    <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                                    <th >Numero</th>
+                                    <th >Objet</th>
+                                    <th >Montant</th>
+                                    <th >Devise</th>
+                                    <th >Etape</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="resultFacture">
+
+
+                                {%if isNum %}
+                                    {%for entity in factureRecherche %}
+                                        <tr class="odd gradeX ligneFacture">
+                                            <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                            <td>{{ entity.ordreArrive }}</td>
+                                            <td><a href="{{path('facture_traitement_voir',{'id':entity.id})}}">{{ entity.achat.objet }}</a></td>
+                                            <td>{{ entity.achat.montant}}</td>
+                                            <td>{{ entity.achat.devise}}</td>
+                                            <td class="center">{{readEtapeFacture(entity.etape)}}
+                                            </td>
+                                        </tr>
+                                    {% else %} 
+                                        <tr class="odd gradeX">
+                                            <td colspan="6"><center> Aucune Facture </center></td>
+                                        </tr>
+                                    {% endfor %}  
+                                {%else  %}
+                                    {%for entity in factureRecherche %}
+                                        <tr class="odd gradeX ligneFacture">
+                                            <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                            <td>{{ entity.ordreArrive }}</td>
+                                            <td><a href="{{path('facture_traitement_voir',{'id':entity.id})}}">{{ entity.objet }}</a></td>
+                                            <td>{{ entity.montant}}</td>
+                                            <td>{{ entity.devise}}</td>
+                                            <td class="center">{{readEtapeFacture(entity.etape)}}
+                                            </td>
+                                        </tr>
+                                    {% else %} 
+                                        <tr class="odd gradeX">
+                                            <td colspan="6"><center> Aucune Facture </center></td>
+                                        </tr>
+                                    {% endfor %}  
+                            {% endif  %}
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>            
+        {%endif%}        
+
+        <!-- /.panel-body -->
+    </div>
+
+
+
+    {#   exportation des bon en excel    #}
+    <form action="{{path('export_excel_facture')}}" method="POST" style="display: none" id="formExportFactureExcel"> 
+        <input type="text" name="listFacture" id="inputExportFactureExcel">
+    </form>
+
+
+{% endblock %}
+
+
+{% block javascripts %} 
+    {{parent()}}
+
+    {#  ce controle permet d'ouvrir l'onglet de recherche par numero  #}
+    {% if isNum %}
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $('lienRechercheSimple').click();
+            });
+        </script>
+
+    {% endif %}
+
+
+    <script type="text/javascript">
+
+
+
+        $('#btn_rechercheMultiCritere').click(function () {
+            $('#montMin').val(formatSimple($('#montMin').val()));
+            $('#montMax').val(formatSimple($('#montMax').val()));
+        {#                 alert($('#montMin').val()) ;#}
+                $('#rechercheMultiCritere').submit();
+                afficheImageExecution();
+
+
+            });
+
+            function exportExcelFacture() {
+                var tab = {};
+                var i = 0;
+                var list = $('#resultFacture .ligneFacture');
+
+                list.each(function () {
+                    var element = {};
+                    element.ordre = $(this).children('td').eq(1).text();
+                    element.objet = $(this).children('td').eq(2).text();
+                    element.montant = $(this).children('td').eq(3).text();
+                    element.devise = $(this).children('td').eq(4).text();
+                    element.etape = $(this).children('td').eq(5).text();
+                    tab[i] = element;
+                    i++;
+                });
+
+                $('#inputExportFactureExcel').val(JSON.stringify(tab));
+                console.log($('#inputExportFactureExcel').val());
+                $('#formExportFactureExcel').submit();
+
+            }
+
+
+    </script>
+{% endblock %}
+
+

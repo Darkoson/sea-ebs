@@ -1,0 +1,19 @@
+
+facture_validation_arrive:
+    path:     /new
+    defaults: { _controller: "eProcessFactureBundle:FactureValidation:arriveFactureValidation" }
+
+
+facture_validation_voir:
+    path:     /{id}/view
+    defaults: { _controller: "eProcessFactureBundle:FactureValidation:validationFacture", id : 0 }
+
+
+facture_validation_probleme:
+    path:     /problem
+    defaults: { _controller: eProcessFactureBundle:FactureValidation:factureNonConforme }
+
+facture_validation_accepte:
+    path:     /success
+    defaults: { _controller: eProcessFactureBundle:FactureValidation:factureConforme }
+

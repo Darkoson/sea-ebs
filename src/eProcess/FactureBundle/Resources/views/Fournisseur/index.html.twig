@@ -1,0 +1,91 @@
+{% extends "::layout.html.twig" %}
+
+{% block page_module %}
+    <a href="{{path('index_facture')}}">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class=" text-center">
+                    <div class="banniere-module">Factures </div>
+                    <div>Gestion des Factures </div>
+                </div>
+            </div>
+        </div>
+    </a>
+{% endblock  %}
+
+{% block page_content_right %}
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <i class="fa fa-suitcase fa-fw"></i>  Actions sur les fournisseurs            
+        </div>
+        <div class="panel-body">
+
+
+            <div class="list-group">
+                <a href="{{path('add_fournisseur')}}" class="list-group-item">
+                    <i class="fa  fa-plus-circle  fa-fw"></i>  Ajouter un fournisseur
+                </a>
+                <a href="{{path('load_fournisseur')}}" class="list-group-item">
+                    <i class="fa  fa-upload  fa-fw"></i>  Charger des fournisseurs
+                </a>
+                <a href="{{path('list_fournisseur')}}" class="list-group-item">
+                    <i class="fa  fa-users  fa-fw"></i>  Liste des fournisseurs
+                </a>
+                <a href="{{path('remove_fournisseur')}}" class="list-group-item">
+                    <i class="fa fa-times   fa-fw"></i>  Supprimer des fournisseurs
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+{% endblock %}
+
+    
+{% block javascripts %} 
+
+    <form action="{{path('remove_fournisseur')}}" method="POST" class="hidden" id="deleteFournisseurForm">
+        <input type="" name="idFournisseursDelete" id="idFournisseursDelete" value="" />
+    </form>
+
+
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+        $(document).ready(function () {
+            contratFile();
+        });
+
+        $('#eprocess_entitybundle_fournisseur_hasContrat_chosen ').click(function () {
+            contratFile();
+        });
+
+        function contratFile() {
+            var value = $('#eprocess_entitybundle_fournisseur_hasContrat_chosen  a  span:first').text();
+            if (value === 'YES') {
+                $('#ficConrat').show(100);
+            } else {
+                $('#ficConrat').hide(100);
+            }
+        }
+
+
+        function enregistrer(ids, status, route) {
+
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            } else if (route === 1) {
+                $('#idFournisseursDelete').val(ids);
+                $('#status').val(status);
+                $('#deleteFournisseurForm').submit();
+            }
+        }
+
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,30 @@
+utilisateur:
+    path:     /
+    defaults: { _controller: "eProcessEntityBundle:Utilisateur:index" }
+
+utilisateur_show:
+    path:     /{id}/show
+    defaults: { _controller: "eProcessEntityBundle:Utilisateur:show" }
+
+utilisateur_new:
+    path:     /new
+    defaults: { _controller: "eProcessEntityBundle:Utilisateur:new" }
+
+utilisateur_create:
+    path:     /create
+    defaults: { _controller: "eProcessEntityBundle:Utilisateur:create" }
+    methods:  POST
+
+utilisateur_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "eProcessEntityBundle:Utilisateur:edit" }
+
+utilisateur_update:
+    path:     /{id}/update
+    defaults: { _controller: "eProcessEntityBundle:Utilisateur:update" }
+    methods:  [POST, PUT]
+
+utilisateur_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "eProcessEntityBundle:Utilisateur:delete" }
+    methods:  [POST, DELETE]

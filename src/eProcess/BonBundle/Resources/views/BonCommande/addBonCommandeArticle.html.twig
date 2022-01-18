@@ -1,0 +1,95 @@
+{% extends "eProcessBonBundle:BonCommande:index.html.twig" %}
+
+{% block page_content_left %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Génération de bon de commande
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="lien active" id="lieninfos"><a href="#" data-toggle="tab">Informations</a> </li>
+                <li class="lien" id="lienchecklist"><a href="#" data-toggle="tab" >CheckList </a> </li>
+                <li class="lien " id="lienarticles"><a href="#" data-toggle="tab"> Articles </a> </li>
+                <li class="lien " id="lienfics"><a href="#" data-toggle="tab" > Documents </a> </li>
+                <li class="lien " id="lienenreg"><a href="#" data-toggle="tab" > Finalisation </a> </li>
+            </ul>
+
+            {{ form_start(form) }}
+{#            {{ form_errors(form) }}#}
+            <!-- Tab panes -->
+            <div class="tab-content col-lg-12" style="padding-top: 20px">
+
+               
+                {#  ****  block des informations sur la facture  ***  #}
+                <div class="tab-pane fade in active" id="infos">
+                    {% include 'eProcessBonBundle:BonCommande:generation/article/informations.html.twig' %}
+                </div>
+                
+                {#  ****  block des informations sur le checkList  ***  #}        
+                <div class="tab-pane fade " id="checklist">
+                    {% include 'eProcessBonBundle:BonCommande:generation/article/checkList.html.twig' %}
+                </div>
+
+
+                {#  ****  block des articles sur la facture  ***  #}
+                <div class="tab-pane fade " id="articles">
+                    {% include 'eProcessBonBundle:BonCommande:generation/article/articles.html.twig' %}
+                </div>
+
+
+                {#  ****  block des informations sur l'upload des fchiers  ***  #}
+                <div class="tab-pane fade" id="fics">
+                    {% include 'eProcessBonBundle:BonCommande:generation/article/fichier.html.twig' %}
+                </div>
+
+
+                {#  ****  block aperçu des informations saisies  ***  #} 
+                <div class="tab-pane fade " id="enreg">
+                    {% include 'eProcessBonBundle:BonCommande:generation/article/genererBon.html.twig' %}
+                </div>
+
+                {# RECAPITULATION SUR LE FORMULAIRE#}
+                <input type="text"    name="formRecap" id="formRecap" style="display: none">
+
+                {{form_rest(form)}}
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+   
+
+{% endblock %}
+
+
+{% block javascripts %} 
+    <div id="lignePrototype" style="display: none">
+        <div class="row ligne upAndDownSpace ">
+            <div class="col-lg-7 col-md-7 col-sm-7"><input type="text" autocomplete="on" name="libelleArticle" value="" placeholder=" libellé de l'article" class=" form-control dynamic"></div>
+            <div class="col-lg-2 col-md-2 col-sm-2"><input type="" autocomplete="on" name="montantArticle" value="" placeholder="0" required="" class=" form-control dynamic numeric"></div>
+            <div class="col-lg-2 col-md-2 col-sm-2"><input type="number" min="0" autocomplete="off" name="nombreArticle" value="" placeholder="0"  required="" class=" form-control dynamic numeric"></div>
+            <div class="col-lg-1 col-md-1 col-sm-1"></div>
+        </div>
+    </div>
+    
+    {{parent()}}
+    
+    {% include 'eProcessBonBundle::scriptEditionBon.html.twig' %}
+    
+    <script>
+        $('.chosen-container').css('width', '100%');
+
+        $(document).ready(function () {
+            $('input').filter(':text').val('');
+            $('input').has('.numeric').val(0);
+        });
+    </script>
+{% endblock %}
+
+

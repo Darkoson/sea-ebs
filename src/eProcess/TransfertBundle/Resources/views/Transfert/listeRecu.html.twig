@@ -1,0 +1,56 @@
+{% extends "eProcessTransfertBundle:Transfert:index.html.twig" %}
+
+{% block page_content_left %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Liste des transferts reçus
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="list-group">
+                {% for transfert in listeEnvoi %} 
+                   
+                    <a href="{{path('e_process_transfert_voir',{'id':transfert.id})}}" class="list-group-item">
+                        <i class="fa fa-comment fa-fw"></i>{{transfert.envoyeur}}
+                        <span style="margin-left: 20px"> {{transfert.transfertFactures|length}} facture(s)  </span>
+                        <span class="pull-right text-muted small"><em>{{transfert.dateCreation|date('d-m-Y H:m:i')}}</em>
+                        </span>
+                    </a>
+                        
+                         {% else %} 
+
+                    <center>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-comment fa-fw"></i> Aucun transfert 
+
+                        </a>
+                    </center>
+
+                {% endfor %} 
+
+
+            </div>
+            <!-- /.list-group -->
+
+
+
+            {#                            <a href="#" class="btn btn-default btn-block">View All Alerts</a>#}
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block javascripts %} 
+    {{parent()}}
+    <script></script>
+{% endblock %}
+
+

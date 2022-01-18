@@ -1,0 +1,101 @@
+{% extends "::layout.html.twig" %}
+
+{% block page_module %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="row">   
+                <div class="col-xs-3">
+                    <i class="fa fa-gear fa-5x"></i>
+                </div>
+                <div class="col-xs-9 text-right">
+                    <div class="huge">Profils</div>
+                    <div>Gestion des Droits et Profils </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}
+
+
+
+{% block page_content %}
+
+    {% if toAuthorized is not defined %}
+        {% if app.request.get('_route') == 'list_right' %}
+            {% set toAuthorized = 3 %}
+        {% endif  %}
+
+        {% if app.request.get('_route') == 'add_right' %}
+            {% set toAuthorized = 4 %}
+        {% endif  %}
+
+    {% endif  %}
+
+    {% block page_content_top %} {% endblock page_content_top %}
+
+
+    <ul class="nav nav-tabs">
+        {% for profile in toutProfileActif %}
+            <li {% if profile.id == profileActif.id %} class="active" {% endif%} >
+                <a  href= "{{path('list_right',{'idProfile':profile.id })}}" >{{profile.nom}}</a></li>
+            {% endfor %}
+    </ul>
+    <div class="  tab-content  ">
+        <div class="tab-pane active" >
+            {#        <div class="row" >#}
+            <div class="  col-lg-8" id="page_content_left">
+                {% block page_content_left %}
+
+                {% endblock  %}
+            </div>
+            <div class="  col-lg-4" id="page_content_right">
+                {% block page_content_right %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Edition des droits
+                        </div>
+                        <div class="panel-body">
+                            <a href="{{path('list_right',{'idProfile': profileActif.id })}}" {% if toAuthorized == 3 %}class="btn btn-default btn-block active" {% else %} class="btn btn-default btn-block" {% endif %} >Liste des droits </a>
+                            <a href="{{path('add_right',{'idProfile': profileActif.id })}}" {% if toAuthorized == 4 %}class="btn btn-default btn-block active" {% else %} class="btn btn-default btn-block" {% endif %} >Ajouter des droits </a>
+                            <a href="{{path('status_right',{'idProfile': profileActif.id ,'toAuthorized': 1 })}}" {% if toAuthorized == 1 %}class="btn btn-default btn-block active" {% else %} class="btn btn-default btn-block" {% endif %} >Autoriser les droits</a>
+                            <a href="{{path('status_right',{'idProfile': profileActif.id ,'toAuthorized': 0})}}" {% if toAuthorized == 0 %}class="btn btn-default btn-block active" {% else %} class="btn btn-default btn-block" {% endif %} >Refuser des droits</a>
+                            <a href="{{path('remove_right',{'idProfile': profileActif.id ,'toAuthorized': 2})}}" {% if toAuthorized == 2 %}class="btn btn-default btn-block active" {% else %} class="btn btn-default btn-block" {% endif %} >Supprimer les droits</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+                {% endblock %}
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <form action="{{path('add_right',{'idProfile':profileActif.id})}}" method="POST" class="hidden" id="ajoutDroitForm">
+        <input type="" name="idActions" id="idActions" value="" />
+        <input type="" name="idProfile" id="idProfile" value="{{profileActif.id}}"  />
+    </form>
+
+{% endblock %}
+
+
+{% block javascripts %} 
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+
+        function enregistrer(ids) {
+
+            $('#idActions').val(ids);
+            if (ids === '') {
+                alert('Selectionner au moins un élément!');
+            } else {
+                $('#ajoutDroitForm').submit();
+            }
+        }
+    </script>
+{% endblock %}
+
+

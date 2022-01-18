@@ -1,0 +1,265 @@
+{% extends "eProcessFactureBundle:FCT_Reception:index.html.twig" %}
+
+{% block page_content_left %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Enregistrement d'une facture 
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+
+            <div class="row">
+                <div class="col-lg-3  col-md-3 col-sm-3">Réference Bon : </button></div>
+                <form id="form1" action="{{ path('facture_reception',{'etape':1}) }}" method="POST" class="col-lg-4 col-md-4 col-sm-4"> 
+                    <select id="idBon" name="idBon" class="chosen-select-element form-control" onchange ="chercherAchat();" required="true" style="">
+                        <option value=""> -- aucun  --</option>    
+                        {% for key, value in listeBons %}
+                            {#                        {% for key, value in getEntities('eProcessEntityBundle','BonCommande',-1, bonEnvoiFournisseur() ) %}#}
+                            {% if (bonCommande is defined) and (bonCommande.id == key ) %}
+
+                                <option value="{{key}}" selected="true">{{value}}</option>
+                            {% else %}
+                                <option value="{{key}}">{{value}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                    {#                        {{dump(bonEnvoiFournisseur())}}#}
+                </form>
+
+                <div class="col-lg-3  col-md-3 col-sm-3">Ordre d'arrive:  </button></div>
+                <div class="col-lg-2 col-md-2 col-sm-2"> <button class=" btn btn-success">{{ ordreArrive }} </button></div>
+            </div>
+
+            {% if (bonCommande is defined) and (bonCommande is not null) %}
+
+
+                <div class="  panel-body row " style="margin-top: 30px">
+
+                    <form role="form" id="form2"  class="col-lg-12 well" method="POST" action="{{path('facture_reception_enreg',{'existBon':1})}}" >
+
+                        <div class="panel panel-info" style="margin-top: 10px;">
+                            <div class="panel-heading">
+                                <center>{{bonCommande.achat.objet}}</center>
+                            </div>
+                        </div>
+
+                        <div class="row well ">
+                            <div class="form-group col-lg-12 ">
+
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                        <label class="">Référence bon :</label>
+                                        <input type="text" value="{{bonCommande.numero}}" readonly="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                        <label class="">Référence Facture :  (*)</label>
+                                        <input type="text" class="form-control" id="refFact" name="refFact" required="true" />
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                        <label class="">Date Facture : (*)</label>
+                                        <input type="text" class="form-control datetime" id="dateFacture" name="dateFacture" required="true" />
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                        <label class="">Fournisseur :</label>
+                                        <select id="iFour" name="iFour" class="chosen-select-element form-control"  disabled="true">
+                                            {% for key, value in getEntities('eProcessEntityBundle','Fournisseur') %}
+                                                {% if (bonCommande.achat is not null) and (bonCommande.achat.fournisseur.id == key ) %}
+
+                                                    <option value="{{key}}" selected="true">{{value}}</option>
+                                                {% else %}
+                                                    <option value="">Aucun</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                        <label class="">Montant :</label>
+                                        <input type="text" name="montant" value="{{bonCommande.achat.getMontant}}" readonly="" class="form-control">
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                        <label class="">Devise :</label>
+                                        <input type="text" name="devise" value="{{bonCommande.achat.devise}}" readonly="" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                        <label class="">Taxe :</label>
+                                        <select id="taxe" class="chosen-select-element dynamic"  disabled="true"> 
+                                            {% for key,value in getTypeTaxe()%}
+                                                {% if (bonCommande.achat is not null and bonCommande.achat.taxe == key ) %}
+                                                    <option value="{{key}}" selected="true">{{value}}</option>
+                                                {% else %}
+                                                    <option value="">Aucun</option>
+                                                {% endif %}
+
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="row well">
+                            <div class="form-group col-lg-12 ">
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                        <label class="">Date Arrivée : (*)</label>
+                                        <input type="text" class="form-control datetime" id="dateArrive" name="dateArrive" required="true" />
+                                    </div>
+                                    <div class="form-group col-lg-8 col-md-8 col-sm-8">
+                                        <label class="">Fichier Facture : (*)</label>
+                                        <input type="file" id="ficFacture" name="ficFacture" required="true">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <input type="hidden" value="{{bonCommande.achat.id}}"  name="idAchat" />
+                                        <div  class="btn btn-success" id="btnValider">Enregistrer </div>
+                                        <button type="reset" class="btn btn-primary">Annuler</button>
+
+                                    </div>
+                                </div> 
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            {% else %}
+
+                <div class="  panel-body row " style="margin-top: 30px">
+
+                    <form  id="form3" role="form" class="col-lg-12 well" method="POST" action="{{path('facture_reception_enreg')}}" onsubmit="afficheImageExecution();" >
+
+                        <div class="row">
+                            <div class="form-group col-lg-12 ">
+                                {{ form_widget(form.objet) }}
+                            </div>
+                        </div>
+
+                        <div class="row well">
+                            <div class="form-group col-lg-12 ">
+
+
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Fournisseur :</label>
+                                        {{ form_widget(form.fournisseur) }}
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Référence Facture :</label>
+                                        <input type="text" class="form-control" name="refFact" required="true" />
+                                        {#                                           {{ form_widget(form.referenceFournisseur) }}#}
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Date Arrivée :</label>
+                                        <input type="text" class="form-control datetime" name="dateArrive" required="true" />
+                                        {#                                            {{ form_widget(form.dateArrive) }}#}
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Montant :</label>
+                                        {{ form_widget(form.montant) }}
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Devise :</label>
+                                        {{ form_widget(form.devise) }}
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <button type="" class="btn btn-success"  >Enregistrer </button>
+                                        <button type="reset" class="btn btn-primary">Annuler</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>      
+                        {#                             {{form_rest(form)}}#}
+                    </form>
+                </div>
+
+            {% endif  %}
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+    {{parent()}}
+
+    <script>
+
+        function chercherAchat() {
+            $('#form1').submit();
+            afficheImageExecution();
+        }
+        // expression regulière pour filtrer le forma des fichiers
+        $('input[type=file]').change(function () {
+            var allowedTypes = ['png', 'jpg', 'jpeg', 'gif', 'pdf', 'doc', 'docx'];
+            var extension = $(this).val().toLowerCase().split('.');
+            extension = extension[extension.length - 1].toLowerCase(); // On utilise toLowerCase() pour éviter les extensions en majuscules
+            if (allowedTypes.indexOf(extension) === -1) {
+                $(this).val('');
+                alert('Format du fichier est incorrect!');
+            }
+        });
+
+        {% if (bonCommande is defined) and (bonCommande is not null) %}
+            $('#btnValider').on('click',function (){validerForm(['refFact', 'dateFacture' ,'dateArrive','ficFacture'], 'form2');});
+        {% else %}
+            $('#btnValider').click(validerForm(['refFact', 'dateFacture' ,'dateArrive'], 'form3'));
+        {% endif %}
+
+            function validerForm(idsChamp, idForm) {
+                if ($.isArray(idsChamp)) {
+                    var nbre = 0, total = idsChamp.length;
+                    
+                    for (var i=0; i<total; i++ ) {
+                        console.log(idsChamp[i]+' = '+isNullOrEmpty(idsChamp[i])) ;
+                        if (!isNullOrEmpty(idsChamp[i])) {
+                            nbre++;
+                        }
+                    }
+                }
+                console.log(nbre) ;
+                if (total === nbre) {
+                    alert(true);
+                    $('#'+idForm).submit();
+                    afficheImageExecution();
+                }
+                else{
+                    alert('Tous les champs avec (*) sont obligatoires');
+                }
+
+            }
+    </script>
+{% endblock %}
+

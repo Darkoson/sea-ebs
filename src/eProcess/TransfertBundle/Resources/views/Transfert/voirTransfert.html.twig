@@ -1,0 +1,164 @@
+{% extends "eProcessTransfertBundle:Transfert:index.html.twig" %}
+
+{% block page_content %}
+
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Information sur le transfert de factures 
+            
+             <div class="pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-xs " >
+                        {{readEtapeTransfert(entity.etape)}}
+                    </button>
+                    
+                </div>
+            </div>
+            
+        </div>
+
+
+        <!-- .panel-heading -->
+        <div class="panel-body">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Emetteur et Récepteur</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Profil</th>
+                                            <th>Nom et Prenom</th>
+                                            <th>Date </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Emetteur</th>
+                                            <td>{{entity.envoyeur.profile}} </td>
+                                            <td>{{entity.envoyeur}}</td>
+                                            <td>{{entity.dateCreation|date('d-m-Y H:i:s') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Récepteur</th>
+                                           
+                                            <td>
+                                                {% if entity.recepteur %} {{entity.recepteur.profile}} {% else %} --- {% endif %}
+                                            </td>
+                                            <td> {% if entity.recepteur %} {{entity.recepteur}} {% else %} --- {% endif %}</td>
+                                            <td> {% if entity.dateActivation %} {{entity.dateActivation|date('d-m-Y H:i:s') }} {% else %} --- {% endif %}</td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                Liste des factures transférées
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+
+                            <div class="table-responsive table-bordered">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Ordre</th>
+                                            <th>Réf</th>
+                                            <th>Fournisseur</th>
+                                            <th>Montant</th>
+                                            <th>Devise</th>
+                                            <th>Etat</th>
+                                            <th>Descrition</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        
+                                        {% set listeTransFacture = entity.transfertFactures %}
+                                            
+                                        {% for transFact in listeTransFacture %}
+                                            {% set facture = transFact.facture %}
+                                            <tr class="odd gradeX">
+                                                <td>{{loop.index}}</td>
+                                               <td>{{ facture.ordreArrive }}</td>
+                                                <td>{{ facture.referenceFournisseur }}</td>
+                                                <td>{{ facture.achat.fournisseur }}</td> 
+                                                <td>{{ facture.achat.montant }}</td>
+                                                <td>{{ facture.achat.devise}}</td>
+                                                 <td class="center tooltip-demo">
+                                                {% if  isActivated(transFact.isActif) %} <i class="alert-success fa fa-check-circle fa-fw"></i>
+                                                {% elseif isInactive(transFact.isActif) %} --- 
+                                                {% elseif isBlocked(transFact.isActif) %} <i class="alert-danger fa fa-ban fa-fw" data-toggle="tooltip" data-placement="top" title="{{transFact.description}}"></i>
+                                                {% endif %}
+                                            </td>
+                                            <td >
+                                                {% if  isActivated(transFact.isActif) or isBlocked(transFact.isActif) %}
+                                                    <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="left" data-content="{{transFact.description}}."> voir note</button>
+                                                {% else %}
+                                                    encours
+                                                {% endif %}
+                                            </td>
+                                            </tr>
+                                        {% endfor %} 
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive --> 
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- .panel-body -->
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+
+
+    </script>
+{% endblock %}
+
+

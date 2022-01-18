@@ -1,0 +1,57 @@
+{% extends "eProcessSecurityBundle:Utilisateur:index.html.twig" %}
+
+{% block page_content_left %}
+    
+
+    <div class="" id="" >
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Enregistrement d'un utilisateur 
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <form role="form" method="POST" action="{{path('add_utilisateur')}}">
+                    <fieldset >
+                        <div class="row upAndDownSpace">
+                            <label  class="col-lg-4">Nom d'utilisateur :</label>
+                            <div class="col-lg-6"> {{form_widget(form.username)}}</div>
+                        </div>
+
+                        <div class="row upAndDownSpace">
+                            <label class="col-lg-4" >Nom :</label>
+                            <div class="col-lg-6"> {{form_widget(form.nom)}}</div>
+                        </div>
+
+                        <div class="row upAndDownSpace">
+                            <label class="col-lg-4">Prénom :</label>
+                            <div class="col-lg-6"> {{form_widget(form.prenom)}}</div>
+                        </div>
+                    </fieldset>
+
+                    <div class="row upAndDownSpace">
+                        <label class="col-lg-4">Profil</label>
+                       <div class="col-lg-6"> {{form_widget(form.profile)}}</div>
+                    </div>
+
+                    <div class="row upAndDownSpace">
+                        <label class="col-lg-4" >Département</label>
+                       <div class="col-lg-6"> {{form_widget(form.departement)}}</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Enregistrer </button>
+                    <button type="reset" class="btn btn-primary">Annuler</button>
+                    {{form_rest(form)}}
+                </form>
+
+
+            </div>
+            <!-- /.panel-body -->
+        </div>
+
+    </div>
+
+{% endblock %}
+
+

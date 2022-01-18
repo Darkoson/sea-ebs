@@ -1,0 +1,120 @@
+{% extends "eProcessTransfertBundle:Transfert:index.html.twig" %}
+
+{% block page_content_left %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <i class="fa fa-check  fa-fw"></i> Liste des transferts acceptés
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="list-group">
+                {% for transfert in listeEnvoi %} 
+
+                    <a href="{{path('e_process_transfert_voir',{'id':transfert.id})}}" class="list-group-item">
+                        <i class="fa fa-comment fa-fw"></i>{{transfert.recepteur}}
+                        <span style="margin-left: 20px"> {{transfert.transfertFactures|length}} facture(s)  </span>
+                        <span class="pull-right text-muted small"><em>{{transfert.dateActivation|date('d-m-Y H:m:i')}}</em>
+                        </span>
+                    </a>
+
+
+
+                {% else %} 
+
+                    <center>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-comment fa-fw"></i> Aucun transfert 
+
+                        </a>
+                    </center>
+                {% endfor %} 
+
+
+            </div>
+            <!-- /.list-group -->
+
+
+
+            {#                            <a href="#" class="btn btn-default btn-block">View All Alerts</a>#}
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block javascripts %} 
+    {{parent()}}
+    <script></script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+{#
+
+
+
+{% extends "eProcessTransfertBundle:Transfert:index.html.twig" %}
+
+{% block page_content_left %}
+    <div class="panel-group" id="accordion">
+        {% for transfert in listeEnvoi %} 
+
+            <div class="row">
+
+
+
+
+                <div {% if loop.index is even %} class="panel panel-default" {% else  %}  class="panel panel-info"{% endif  %}>
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="{{'#'~transfert.id}}"> 
+                                {{transfert.envoyeur}}
+
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                      {{transfert.factures|length}} factures(s)  {{transfert.dateCreation|date('d-m-Y')}}
+                                    </div>
+                                </div> 
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="{{transfert.id}}" {% if loop.index == 1 %} class="panel-collapse collapse in" {% else  %}  class="panel-collapse collapse"{% endif  %}>
+                        <div class="panel-body">
+                            {{transfert.description}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %} 
+    </div>
+{% endblock %}
+
+
+
+
+{% block javascripts %} 
+    {{parent()}}
+    <script></script>
+{% endblock %}
+
+
+#}  
+

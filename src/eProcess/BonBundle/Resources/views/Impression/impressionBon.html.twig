@@ -1,0 +1,175 @@
+{% extends "eProcessBonBundle:Impression:index.html.twig" %}
+
+
+{% block impression %}
+
+    <div class="container" >
+
+        <div style="margin-top: 100px;"> 
+            <table style="border-width: 0px; width: 100%;">
+                <tr >    
+                    <td style="width: 30%">
+                        <table class="table"  style="border-width: 0px;" >
+                            <tbody>{#
+                                <tr class="" >    
+                                    <td > FOURNISSEUR </td>
+                                </tr>#}
+                                <tr class="" >    
+                                    <td>NOM </td>
+                                    <td>{{ entity.achat.fournisseur }} </td>
+                                </tr>
+                                <tr class="" >    
+                                    <td>TELEPHONE</td>
+                                    <td>{{ entity.achat.fournisseur.telephone }} </td>
+                                </tr>
+                                <tr class="" >    
+                                    <td>LOCALITE</td>
+                                    <td>{{ entity.achat.fournisseur.pays }} </td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </td>
+                    <td style="width: 50%"> </td>
+                    <td style="width: 20%">
+                        <table class="table "  style="border-width: 0px;" >
+                            <tbody>
+                                <tr class="" >    
+                                    <td>NUMERO </td>
+                                    <td>{{ entity.numero }}</td>
+                                </tr>
+                                <tr class="" >    
+                                    <td>DATE</td>
+                                    <td>{{ entity.dateCreation|date('d-m-Y') }}</td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </td>
+                    
+                </tr>
+            </table>
+
+
+        </div>
+{#
+
+        <div class="row well small" >
+            <div class="col-lg-4 col-md-4 col-sm-4" >
+                <div class="row bg-danger"> 
+                    <div class=col-md-12" > FOURNISSEUR </div>
+                </div>
+                <div class="row  bg-success"> 
+                    <div class="col-lg-4 col-md-4 col-sm-4" >NOM </div>
+                    <div class="col-md-8 text-left" >{{ entity.achat.fournisseur }}</div>
+                </div>
+                <div class="row"> 
+                    <div class="col-lg-4 col-md-4 col-sm-4" >TELEPHONE </div>
+                    <div class="col-md-8 text-left" >{{ entity.achat.fournisseur.telephone }}</div>
+                </div>
+                <div class="row"> 
+                    <div class="col-md-4" >LOCALITE </div>
+                    <div class="col-md-8 text-left" >{{ entity.achat.fournisseur.pays }}</div>
+                </div>
+            </div>
+
+            <div class="col-lg-offset-4 col-md-offset-4 col-sm-offset-4  col-lg-4 col-md-4 col-sm-4" >
+                <div class="row"> 
+                    <div class="col-lg-4 col-md-4 col-sm-4" >NUMERO </div>
+                    <div class="col-md-8 text-left" >{{ entity.numero }}</div>
+                </div>
+                <div class="row"> 
+                    <div class="col-lg-4 col-md-4 col-sm-4" >DATE </div>
+                    <div class="col-md-8 text-left" >{{ entity.dateCreation|date('d-m-Y') }}</div>
+                </div>
+            </div>
+        </div>
+
+#}
+
+        <div class="small center" > PRIERE NOUS FOURNIR LES ARTICLES/SERVICES CI-DESSOUS SELON LES CONDITIONS MENTIONNEES AU VERSO   </div>
+
+
+        <div class="panel panel-info" style="margin-top: 20px;">
+            <div class="panel-heading " id="">
+                <center > {{ entity.achat.objet }}  </center>
+            </div>
+        </div>
+
+
+        {% if listProvision|length > 0 %}
+            {% for provision in listProvision %}
+
+                {% if provision and provision.infoArticles|length > 0 %}
+                    {% set infoArticles = provision.infoArticles %}
+                    <div class="" style="margin-top: 20px; height: 500px;">
+                        <table class="table table-bordered " >
+                            <thead>
+                                <tr class="" style="">
+                                    <th  class="">N°</th>
+                                    <th  class=" ">QTE</th>
+                                    <th  class=" ">DESIGNATION</th>
+                                    <th  class=" ">P.U.</th>
+                                    <th  class=" ">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in infoArticles.articles %}
+                                    {% if article %}
+                                        <tr class="" >    
+                                            <td > {{loop.index}} </td>
+                                            <td> {{article.nbre}} </td>
+                                            <td class=" text-left small">{{article.lib}}</td>
+                                            <td class="text-right  small">{{article.pu}}</td>
+                                            <td class=" text-right  small">{{article.total}}</td>
+                                        </tr>
+                                    {% endif %}
+
+                                {% endfor  %}
+                            </tbody>
+                        </table>
+
+
+                        <div class="" >
+                            <div class=" small" style="float: left; border-width: 1px; border-radius: 12px;">{% if infoArticles.remise %} Remise :  {{infoArticles.remise}} {% else %} {% endif %}</div>
+                            <div class=" small" style="float: left; margin-left: 40px;"> Taxe :  {{ readTaxe(entity.achat.taxe)}} </div>
+                            <div class=" text-right small" >Total : {{entity.achat.devise}} {{infoArticles.total}}  </div>
+                        </div>
+
+                        <div class="col-md-12 small" style="margin-top: 20px"> ORIGINAL DE LA FACTURE A RETOURTNER AVEC LA FACTURE    </div>        
+                    </div>
+                {% endif %}
+
+
+            {% endfor %}
+        {% endif %}                  
+
+
+
+
+        <div class="row" style="margin-top: 100px; margin-bottom: 20px">
+            <table class=" col-md-12  ">
+                <tr class="row">
+                    <td class="col-md-4"> </td>
+                    <td class="col-md-8">
+                        <div class="row">
+                            <table class="col-md-12 ">
+                                <tr class="row">
+                                    <td colspan="2" class="col-md-10 text-left small"><hr/></td>
+                                    <td  class="col-md-2"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td  class="col-md-5 text-left small"> SIGNATURE AUTORISEE 1</td>
+                                    <td class="col-md-5 text-right small">SIGNATURE AUTORISEE 2   </td>
+                                    <td class="col-md-2  small"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td> 
+                </tr>
+            </table>
+        </div>     
+
+    </div>
+
+{% endblock  %}
+
+

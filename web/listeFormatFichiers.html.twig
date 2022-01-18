@@ -1,0 +1,97 @@
+pdf|txt|jpg|png|doc|docx|xlx|xls|xlsx|jpg|ppt|pptx|tif|tiff|
+bmp|pcd|gif|bmp|zip|rar|odt|avi|ogg|m4a|mov|mp3|mp4|mpg|wav|
+wmv|stp|sldprt|sldasm|iges|igs|stl|x_t|step|stp|prt|asm|idw|
+iam|ipt|dxf|dwg|pdf|slddrw|dwf
+
+
+{# $('input[type=file]').change(function () {
+         var val = $(this).val().toLowerCase();
+         var regex = new RegExp("(.*?)\.(pdf|jpg|png|doc|docx|xlx|xls|xlsx|zip)$");
+         if (!(regex.test(val))) {
+             $(this).val('');
+             alert('Format du fichier Incorrecte!');
+         }
+     });
+
+
+
+         $('input[type=file]').each(function () {
+             $(this).on('change', function () {
+
+                 var files = this.files, filesLen = files.length, extension;
+                 var allowedTypes = ['png', 'jpg', 'jpeg', 'gif', 'pdf'];
+
+                 for (var i = 0; i < filesLen; i++) {
+
+                     extension = files[i].name.split('.');
+                     extension = extension[extension.length - 1].toLowerCase(); // On utilise toLowerCase() pour éviter les extensions en majuscules
+                     var target = $(this).parents('div .parent ').siblings('div').last();
+                     if (allowedTypes.indexOf(extension) != -1) {
+
+                         target.html('');
+
+                         // creation de l'imagette en fonction du type de fichier
+                         createThumbnail(files[i], target, extension);
+                     } else {
+                         $('input[type=file]').val('');
+                         target.html('<span class=" btn btn-circle btn-danger"><i class="fa fa-times-circle"></i> </span>');
+                         alert('Format du fichier Incorrecte!');
+                     }
+                 }
+             });
+         });
+
+
+         function createThumbnail(file, target, extension) {
+             var imageType = ['png', 'jpg', 'jpeg', 'gif'];
+             var pdfType = ['pdf'];
+             var docType = ['doc', 'docx'];
+
+             var reader = new FileReader();
+             // cas d'un fichier image
+             if (imageType.indexOf(extension) !== -1) {
+
+
+                 reader.addEventListener('load', function () {
+
+                     // Affichage de l'image
+                     var imgElement = document.createElement('img');
+
+                     imgElement.style.maxWidth = '75px';
+                     imgElement.style.maxHeight = '75px';
+                     imgElement.style.borderRadius = '25px';
+
+                     imgElement.src = this.result;
+
+                     target.append(imgElement);
+
+                 });
+
+                 reader.readAsDataURL(file);
+             }
+
+             // cas d'un fichier PDF
+             if (pdfType.indexOf(extension) !== -1) {
+
+             }
+             // cas d'un fichier DOC
+             if (docType.indexOf(extension) !== -1) {
+
+             }
+         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#}

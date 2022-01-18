@@ -1,0 +1,138 @@
+{% extends "::layout.html.twig" %}
+
+{% block page_module %}
+    <div class="panel panel-yellow">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-user fa-5x"></i>
+                </div>
+                <div class="col-xs-9 text-right">
+                    <div class="huge">utilisateurs</div>
+                    <div>Gestion des Utilisateurs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}
+
+
+
+{% block page_content %}
+
+
+    {% block page_content_top %} {% endblock page_content_top %}
+
+
+    {# <div class="  tab-content  ">
+         <div class="tab-pane active" >#}
+    <div class="  col-lg-8">
+        {% block page_content_left %}
+
+        {% endblock  %}
+    </div>
+    <div class="  col-lg-4">
+        {% block page_content_right %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-suitcase fa-fw"></i>  Actions sur les Utilisateurs
+                </div>
+                <div class="panel-body">
+
+                    <div class="list-group">
+                        <a href="{{path('add_utilisateur')}}" class="list-group-item">
+                            <i class="fa  fa-plus-circle  fa-fw"></i>  Créer un Utilisateur
+                        </a>
+                        <a href="{{path('list_utilisateur')}}" class="list-group-item">
+                            <i class="fa fa-list   fa-fw"></i>  Liste des Utilisateurs
+                        </a>
+                        <a href="#" onclick="enregistrer(getIDs(), 1, 1);" class="list-group-item">
+                            <i class="fa fa-check-circle   fa-fw"></i>  Autoriser les Utilisateurs
+                        </a>
+                        <a href="#" onclick="enregistrer(getIDs(), 0, 1);" class="list-group-item">
+                            <i class="fa fa-minus-circle  fa-fw"></i> Désactiver les Utilisateurs
+                        </a>
+                        <a href="{{path('remove_utilisateur')}}" class="list-group-item">
+                            <i class="fa fa-times   fa-fw"></i>  Supprimer les Utilisateurs
+                        </a>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+
+        {% endblock %}
+
+
+    </div>
+    {#  </div>
+  </div>#}
+
+
+
+{% endblock %}
+
+
+{% block javascripts %} 
+
+    <form action="{{path('status_utilisateur')}}" method="POST" class="hidden" id="modifUtilisateurForm">
+        <input type="" name="idUtilisateursModif" id="idUtilisateursModif" value="" />
+        <input type="" name="status" id="status" value=""  />
+    </form>
+
+    <form action="{{path('remove_utilisateur')}}" method="POST" class="hidden" id="deleteUtilisateurForm">
+        <input type="" name="idUtilisateursDelete" id="idUtilisateursDelete" value="" />
+    </form>
+
+
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+        function getUtilisateurAD(usernameAD) {
+
+            if (usernameAD === '') {
+                alert('Veuillez saisir le nom d\'utilisateur !');
+            } else {
+                //recuperation ajax
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('add_utilisateur')}}",
+                    data: {usernameAD: usernameAD},
+                    cache: false,
+                    beforeSend: function (xhr) {
+        {#     $('#loadAssociated').show('fast');
+             $('#target').hide('fast');#}
+                             },
+                             success: function (data) {
+//                            $('#loadAssociated').hide('fast');
+//                            $('#target').show('fast');
+                                 var answer = jQuery.parseJSON(data);
+
+                                 if (answer.status) {
+                                     //on vide les anciennes options
+                                     var liste = answer.rep;
+                                     alert(answer.message);
+                                     alert(liste);
+                                 } else {
+                                     alert(answer.message);
+                                 }
+                             }
+                         });
+                     }
+                 }
+
+                 function enregistrer(ids, status, route) {
+
+                     if (ids === '') {
+                         alert('Selectionner au moins un élément !');
+                     } else if (route === 1) {
+                         $('#idUtilisateursModif').val(ids);
+                         $('#status').val(status);
+                         $('#modifUtilisateurForm').submit();
+                     }
+                 }
+
+    </script>
+{% endblock %}
+
+

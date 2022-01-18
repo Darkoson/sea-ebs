@@ -1,0 +1,67 @@
+
+<!-- /.row -->
+{#<div class="row upAndDownSpace">#}
+    {% block page_content_top %} 
+
+        {#    notification des bons de commande #}
+        <a href="{{path('index_bonCommande')}}">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-shopping-cart fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">Bons</div>
+                                <div>Gestion des Bons </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+
+        {#    notification sur la gestion des factures    #}
+        <a href="{{path('index_facture')}}">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">   
+                            <div class="col-xs-3">
+                                <i class="fa fa-tasks fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">Factures</div>
+                                <div>Gestion des Factures </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        {#    notification sur les transferts de factures   #}           
+        <a href="{{path('index_transfert')}}">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-comments fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">Envois  </div>
+                                <div>Gestion des Transferts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    {% endblock %} 
+{#</div>#}
+<!-- /.row -->
+
+

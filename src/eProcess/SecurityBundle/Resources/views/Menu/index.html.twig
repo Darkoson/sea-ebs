@@ -1,0 +1,96 @@
+{% extends "::layout.html.twig" %}
+
+{% block page_module %}
+    <div class="panel panel-green">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-cube fa-5x"></i>
+                </div>
+                <div class="col-xs-9 text-right">
+                    <div class="huge">Menus  </div>
+                    <div>Gestion des Menus</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}
+
+
+        {% block page_content_right %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-suitcase fa-fw"></i>  Actions sur les Menus
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="{{path('add_menu')}}" class="list-group-item">
+                            <i class="fa  fa-plus-circle  fa-fw"></i>  Créer des Menus
+                        </a>
+                        <a href="{{path('list_menu')}}" class="list-group-item">
+                            <i class="fa fa-list   fa-fw"></i>  Liste des Menus
+                        </a>
+                        <a href="{{path('activate_menu')}}" class="list-group-item">
+                            <i class="fa fa-check-circle   fa-fw"></i>  Autoriser les Menus
+                        </a>
+                        <a href="{{path('deactivate_menu')}}" class="list-group-item">
+                            <i class="fa fa-search-minus  fa-fw"></i> Désactiver les Menus
+                        </a>
+                        <a href="{{path('remove_menu')}}" class="list-group-item">
+                            <i class="fa fa-times-circle  fa-fw"></i> Supprimer les Menus
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+
+
+{% block javascripts %} 
+
+    <form action="{{path('status_menu')}}" method="POST" class="hidden" id="modifMenuForm">
+        <input type="" name="idMenusModif" id="idMenusModif" value="" />
+        <input type="" name="status" id="status" value=""  />
+    </form>
+
+    <form action="{{path('remove_menu')}}" method="POST" class="hidden" id="deleteMenuForm">
+        <input type="" name="idMenusDelete" id="idMenusDelete" value="" />
+    </form>
+
+
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+
+        function enregistrer(ids, status, route) {
+
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            } else {
+                //cas d'une suppression
+                if (route === 0) {
+                    $('#idMenusDelete').val(ids);
+                    $('#deleteMenuForm').submit();
+                }
+
+                //cas d'un changement d'etat 
+                else if (route === 1) {
+                    $('#idMenusModif').val(ids);
+                    $('#status').val(status);
+                    $('#modifMenuForm').submit();
+                }
+            }
+        }
+
+
+        function getModuleActions(id) {
+
+            if (id > 0) {
+                getAssociated('eProcessEntityBundle', 'Module', {'id':id}, 'Action', '#actions', {});
+            }
+
+        }
+    </script>
+{% endblock %}
+
+

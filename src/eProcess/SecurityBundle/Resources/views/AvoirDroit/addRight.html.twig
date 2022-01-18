@@ -1,0 +1,64 @@
+{% extends "eProcessSecurityBundle:AvoirDroit:index.html.twig" %}
+
+    {% block page_content_left %}
+         <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i> <b>Liste des Nouveaux droits attribuable au profile : <em>{{profileActif.nom}}</em></b>
+                        <div class="pull-right">
+                            <div class="btn-group"> 
+                                <button type="button" class="btn btn-success btn-sm " onclick="enregistrer(getIDs());">
+                                    Ajouter les droits
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+
+                        <div class="dataTable_wrapper">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Modules</th>
+                                        <th>Actions</th>
+                                        <th>Tout cocher <input type="checkbox" class="checkall" name="checkall"/></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for line in listeDroit %}
+                                        <tr class="odd gradeX">
+                                            <td>{{line.mod}}</td>
+                                            <td class="center">{{line.description}}</td>
+                                            <td  class="center  "> 
+                                    <center><input type="checkbox" name="tab[]" value="{{line.id}}" rel="tab_c" /></center>
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    {% endblock  %}
+
+
+
+{% block javascripts %} 
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+       
+        function enregistrer(ids) {
+
+            $('#idActions').val(ids);
+            if (ids === '') {
+                alert('Selectionner au moins un élément!');
+            } else {
+                $('#ajoutDroitForm').submit();
+            }
+        }
+    </script>
+{% endblock %}
+
+

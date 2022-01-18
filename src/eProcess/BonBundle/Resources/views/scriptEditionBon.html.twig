@@ -1,0 +1,170 @@
+
+<script>
+
+
+        $('.field-valid').html(' <span class=" btn btn-circle btn-success"><i class="fa fa-check-circle"></i> </span>');
+        $('.field-invalid').html('<span class=" btn btn-circle btn-danger"><i class="fa fa-times-circle"></i> </span>');
+
+        function afficherValidation(id, val) {
+            if (val) {
+                $('#' + id).html(' <span class=" btn btn-circle btn-success"><i class="fa fa-check-circle"></i> </span>');
+            } else {
+                $('#' + id).html('<span class=" btn btn-circle btn-danger"><i class="fa fa-times-circle"></i> </span>');
+            }
+
+        }
+        function passerSuivant(idSuivant) {
+            $('.lien ').each(function () {
+                $(this).removeClass('active');
+            });
+            $('#lien' + idSuivant).addClass('active');
+
+            $('.tab-pane').each(function () {
+                $(this).removeClass('in active');
+            });
+            $('#' + idSuivant).addClass('in active');
+        }
+
+        // pour savoir si la page courante est pour bon des articles ou des voyages
+        function isBonArticle() {
+            var isArticle = $.type($('#tab-article').html()) === 'string';
+            return isArticle;
+        }
+
+
+        
+        function changerDevise() {
+            var deviseCourante = $('#eprocess_entitybundle_achat_bon_devise_chosen')
+                    .children('a:first-child').text();
+            $('#deviseArticles').html(deviseCourante);
+        }
+
+        $('#articles').find('.dynamic').on('keyup, keypress, change', mettreAjourChamps);
+        $('#infos').find('.dynamic').on('keyup, change', recapInfoBon);
+
+        function ajusterLigneArticles(ajout) {
+            var uneLigne = $('#lignePrototype').children(':first-child').clone();
+
+            var bloc = isBonArticle() ? $('#tab-article') : $('#tab-voyage');
+            if (ajout) {
+                bloc.last().append(uneLigne);
+            } else {
+                bloc.children().last().remove();
+            }
+            mettreAjourChamps();
+        }
+
+        function mettreAjourChamps() {
+            //MAJ des CSS des champs
+            var isArticle = isBonArticle();
+            mettreAjourCSS(isArticle);
+
+            // MAJ des valeurs des champs
+            var total = isArticle ? calculerTotalArticle() : calculerTotalVoyage();
+            var remise = formatSimple($('#montantRemise').val());
+            var net = total - remise;
+            $('#montantTotal').val(formatMillier(total));
+            $('#montantNet').val(formatMillier(net));
+        {#            $('#eprocess_entitybundle_achat_bon_montant').val(formatMillier(net));#}
+
+                // MAJ des informations saisies dans un champ caché
+                isArticle ? recapArticles() : recapVoyages();
+            }
+
+        function calculerTotalVoyage() {
+                var listeArticle = $('#tab-voyage .ligne');
+                var somme = 0;
+                listeArticle.each(function () {
+                    var prix = $.trim(formatSimple($(this).children('div').eq(5).children('input').val()));
+
+                    if (prix) {
+                        somme += parseFloat(prix);
+                    }
+                });
+        {#            console.log(somme) ;#}
+
+                return somme;
+            }
+
+        function recapVoyages() {
+                var tab = {};
+                var list = new Object();
+
+                var listeVoyage = $('#tab-voyage .ligne');
+
+                tab.remise = $('#montantRemise').val();
+                tab.total = $('#montantTotal').val();
+
+                var i = 0;
+                listeVoyage.each(function () {
+                    var voyage = {};
+                    voyage.nom = $(this).children('div').eq(0).children('input').val();
+                    voyage.villeD = $(this).children('div').eq(1).children('input').val();
+                    voyage.dateD = $(this).children('div').eq(2).children('input').val();
+                    voyage.villeF = $(this).children('div').eq(3).children('input').val();
+                    voyage.dateF = $(this).children('div').eq(4).children('input').val();
+                    voyage.prix = $(this).children('div').eq(5).children('input').val();
+                    voyage.dep = $(this).children('div').eq(6).children('select').val();
+                    list['' + i + ''] = voyage;
+                    i++;
+                });
+                tab.voyage = list;
+                $('#saisieRecap').val(JSON.stringify(tab));
+                console.log($('#saisieRecap').val());
+            }
+
+        {#   pour bloquer la validation automatique du formulaire de generation des bons de commande     #}
+        $('#generateBonForm').keypress(function (event) {
+
+                // Compatibilité IE / Firefox
+                if (!event && window.event) {
+                    event = window.event;
+                }
+                // IE
+                if (event.keyCode == 13) {
+                    event.returnValue = false;
+                    event.cancelBubble = true;
+                }
+                // DOM
+                if (event.which == 13) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            });
+
+
+
+        {#   MAJ de la classe numeric sur les nouvelles lignes créée     #}
+        function mettreAjourCSS(isArticle) {
+
+                if (isArticle) {
+                    var listeArticle = $('#tab-article .ligne');
+                    listeArticle.each(function () {
+                        $(this).children('div').eq(1).children('input').removeClass('numeric').addClass('numeric');
+                        $(this).children('div').eq(2).children('input').removeClass('numeric').addClass('numeric');
+                    });
+                } else {
+                    var listeVoyage = $('#tab-voyage .ligne');
+                    listeVoyage.each(function () {
+                        $(this).children('div').eq(2).children('input').removeClass('.datetime').addClass('.datetime').datepicker();
+                        $(this).children('div').eq(4).children('input').removeClass('.datetime').addClass('.datetime').datepicker();
+                        $(this).children('div').eq(5).children('input').removeClass('numeric dynamic').addClass('numeric dynamic');
+                        $(this).children('div').eq(6).children('select').removeClass('chosen-select-element form-control').addClass('chosen-select-element form-control');
+                    });
+                }
+
+
+                // pour rendre les champs  portant  la classe  numeric en numerique   
+                $('.numeric').numeric("");
+                $('.numeric').css("text-align", 'right');
+                $('.numeric').on("keyup ", function () {
+                    var value = $(this).val();
+                    $(this).val(formatMillier(value));
+                });
+                $('.numeric').on('keyup, change', mettreAjourChamps);
+            }
+
+
+
+     
+</script>

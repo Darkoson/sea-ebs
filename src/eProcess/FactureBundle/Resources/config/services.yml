@@ -1,0 +1,4 @@
+services:
+    facture_manager:
+        class: eProcess\FactureBundle\Services\FactureManager
+        arguments: [ @doctrine.orm.entity_manager, @date_manager]

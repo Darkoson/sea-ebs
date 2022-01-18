@@ -1,0 +1,33 @@
+list_fournisseur:
+    path:     /list
+    defaults: { _controller: eProcessFactureBundle:Fournisseur:listFournisseur }
+
+list_new_fournisseur:
+    path:     /notActivate
+    defaults: { _controller: eProcessFactureBundle:Fournisseur:listNewFournisseur }
+
+
+
+add_fournisseur:
+    path:     /add
+    defaults: { _controller: eProcessFactureBundle:Fournisseur:addFournisseur  }
+    
+edit_fournisseur:
+    path:     /edit/{idFournisseur}
+    defaults: { _controller: eProcessFactureBundle:Fournisseur:editFournisseur , idFournisseur : 1  }
+
+remove_fournisseur:
+    path:     /remove
+    defaults: { _controller: "eProcessFactureBundle:Fournisseur:removeFournisseur"   }
+
+#search_fournisseur:
+#    path:     /search
+#    defaults: { _controller: "eProcessFactureBundle:Fournisseur:searchFournisseur" }
+
+load_fournisseur :
+    path:     /load
+    defaults: { _controller: "eProcessFactureBundle:Fournisseur:chargerFournisseur" }
+
+status_fournisseur :
+    path:     /status
+    defaults: { _controller: "eProcessFactureBundle:Fournisseur:statusFournisseur" }

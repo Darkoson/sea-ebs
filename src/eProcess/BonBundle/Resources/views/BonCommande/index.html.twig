@@ -1,0 +1,183 @@
+{% extends "::layout.html.twig" %}
+
+{% block page_module %}
+    <a href="{{path('index_bonCommande')}}">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class=" text-center">
+                    <div class="banniere-module">Bons</div>
+                    <div>Gestion des Bons </div>
+                </div>
+            </div>
+        </div>  
+    </a>  
+{% endblock  %}
+
+{% block page_content_left %}
+
+    {# Graphe   #}
+    {% block page_content_left_first %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i>  Production des bons de commande
+            </div>
+            <div class="panel-body" >
+                <canvas id="canvas" width="600px" height="300px" ></canvas>
+            </div>
+        </div>
+    {% endblock  %}
+
+{% endblock  %}
+
+{% block page_content_right %}
+
+    {% block page_content_right_first %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-suitcase fa-fw"></i>  Actions sur les Bons
+            </div>
+
+            <div class="panel-body">
+
+                <div class="row " style="margin-bottom: 12px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <a href="{{path('add_bonCommande_article')}}" class="btn btn-block btn-success">
+                            <i class="fa fa-list"></i> Articles
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <a href="{{path('add_bonCommande_voyage')}}"  class="btn btn-block btn-primary btn-bitbucket">
+                            <i class="fa fa-plane"></i> Voyages
+                        </a>
+                    </div>
+                </div>
+
+
+                {% block page_content_right_first_group %}
+
+                    {% if isRECEPTION(CODE_PROFIL) %}
+                    {% elseif isEBS(CODE_PROFIL) %} 
+                        <div class="list-group">
+                            <a href="{{path('list_bon_emis')}}" class="list-group-item">
+                                <i class="fa fa-plus-circle   fa-fw"></i>  Liste des Nouveaux Bons Enregistrés
+                            </a>
+                            <a href="{{path('list_bon_modif')}}" class="list-group-item">
+                                <i class="fa fa-edit   fa-fw"></i>  Liste des Bons Modifiés
+                            </a>
+                            <a href="{{path('list_bon_loaded')}}" class="list-group-item">
+                                <i class="fa fa-upload   fa-fw"></i>  Liste des Nouveaux Bons Chargés
+                            </a>
+                            <a href="{{path('recherche_bon')}}" class="list-group-item">
+                                <i class="fa fa-search-minus  fa-fw"></i> Recherche de bons
+                            </a>
+                        </div>
+                    {% elseif isOPERATION(CODE_PROFIL) %}     
+
+                    {% endif %}   
+
+                {% endblock %} 
+
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}
+
+
+
+{% block javascripts %} 
+
+    {# FORMULAIER DE MODIFICATION DES ETATS OU ETAPES DES BONS #}
+    <form action="{{path('etape_bon')}}" method="POST" class="hidden" id="etapeBonForm">
+        <input type="text" name="idBons" id="idBons" value="" />
+        <input type="text" name="etape" id="etape" value=""  />
+        <input type="text" name="status" id="status" value=""  />
+        <input type="text" name="route" id="route" value=""  />
+    </form>
+
+    {# FORMULAIRE E SUPPRESSION DES BON #}
+    <form action="{{path('remove_bon')}}" method="POST" class="hidden" id="removeBonForm">
+        <input type="text" name="idBonRemove" id="idBonRemove" value="" />
+    </form>
+
+    {# RECAPITULATION SUR LES INFORMATIONS DES ARTICLES OU VOYAGES DU BON #}
+    <input type="text" id="saisieRecap" name="saisieRecap" value=""   class="hidden">
+
+    <script src="{{ asset('Chart/Chart.js') }}"></script>
+    <script src="{{ asset('js/circle-progress.js') }}"></script>
+    <script src="{{ asset('js/circle-progress-bon.js') }}"></script>
+    {#    <script src="{{ asset('bower/bower_components/jquery/dist/jquery.js') }}"></script>#}
+    <script type="text/javascript">
+        // changement de l'etape des bons de commande
+        function etapeBon(ids, etape, route, status) {
+
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            }
+            //cas d'une suppression
+            else {
+                $('#idBons').val(ids);
+                $('#etape').val(etape);
+                $('#status').val(status);
+                $('#route').val(route);
+                $('#etapeBonForm').submit();
+                afficheImageExecution();
+            }
+        }
+
+        // suppression du bon de commande
+        function deleteBon(ids) {
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            }
+            //cas d'une suppression
+            else {
+                $('#idBonRemove').val(ids);
+                $('#removeBonForm').submit();
+                afficheImageExecution();
+            }
+        }
+
+    </script>
+
+    {#  appel du modale de reception de facture  #}
+    {{information.modalAutorisationBonCommande()}}
+    {#  appel du modale de visualisation d'une page  #}
+    {{information.modalVoirFichier()}}
+
+    {% if app.request.attributes.get("_route") == 'index_bonCommande' %}
+        {#      ici j'inclus le code de mon graphe      #}
+        <script  src="{{asset('Chart/Chart.js')}}" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var valeur = JSON.parse("{{stat}}");
+                var data = {
+                    labels: ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"],
+                    datasets: [
+                        {
+                            label: "My First dataset",
+                            fillColor: "rgba(220,220,220,0.2)",
+                            strokeColor: "rgba(220,220,220,1)",
+                            pointColor: "rgba(220,220,220,1)",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(220,220,220,1)",
+                            data: valeur
+                        }
+
+                    ]
+                };
+
+                var ctx = $("#canvas").get(0).getContext("2d");
+                var myLineChart = new Chart(ctx).Line(data, {bezierCurve: false, responsive: true});
+
+
+            });
+
+
+        </script>
+    {% endif %}
+
+
+{% endblock %}
+
+

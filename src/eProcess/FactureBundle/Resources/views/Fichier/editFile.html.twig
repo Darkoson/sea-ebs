@@ -1,0 +1,25 @@
+
+    <div class="panel-body" >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Modification de fichier
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+               {{ form_start(formFile) }}
+               <div class="row">
+                <div class="col-lg-10">
+                    {{ form_widget(formFile.fichier) }}
+                </div>
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-primary"> Modifier </button>
+                </div>
+               </div>
+               {{ form_end(formFile,{'render_rest': true}) }}
+
+            </div>
+            <!-- /.panel-body -->
+        </div>
+
+    </div>

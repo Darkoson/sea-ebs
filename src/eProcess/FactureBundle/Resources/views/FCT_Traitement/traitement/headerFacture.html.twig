@@ -1,0 +1,127 @@
+
+<!-- /.col-lg-4 -->
+<div class="col-lg-4  col-md-4 col-sm-4">
+    <div class="well ">
+        <div class=" row ">
+            <h5 class="col-lg-12  col-md-12 col-sm-12 ">BON DE COMMANDE</h5>
+        </div>
+
+        <div class=" row ">
+            <h5 class="col-lg-3  col-md-3 col-sm-3">Réf </h5>
+            {# <h4 class="col-lg-9  col-md-9 col-sm-9">
+                 {{form_widget(form.bonCommande)}}
+             </h4>#}
+
+            {% if bonCommande %}
+                <select id="idBon"  name="idBon" class=" col-lg-9  col-md-9 col-sm-9 chosen-select-element " onchange="changerBonFournisseur($(this).val(), $('#idFour').val());">
+                    <option value="">-- aucun --</option>    
+                    {% for key, value in listeBonCommande %}
+                        {% if key == bonCommande.id %}  
+                            <option value="{{key}}" selected="true">{{value}}</option>
+                        {% else %} 
+                            <option value="{{key}}">{{value}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% else %} 
+                <select id="idBon"  name="idBon" class=" col-lg-9  col-md-9 col-sm-9 chosen-select-element " onchange="changerBonFournisseur($('#idBon').val(), $(this).val());" >
+                    <option value="">-- aucun --</option>    
+                    {% for key, value in listeBonCommande %}
+                        <option value="{{key}}">{{value}}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- /.col-lg-4 -->
+<div class="col-lg-4  col-md-4 col-sm-4">
+    <div class="well ">
+        <div class=" row ">
+            <h5 class="col-lg-12  col-md-12 col-sm-12">FOURNISSEUR</h5>
+        </div>
+
+        <div class=" row ">
+            <h5 class="col-lg-3  col-md-3 col-sm-3">Nom </h5>
+            {#<h4 class="col-lg-9  col-md-9 col-sm-9">
+                {{form_widget(form.fournisseur)}}
+            </h4>#}
+
+            {% if bonCommande %}
+                <select id="idFour"  name="idFour" class=" col-lg-9 chosen-select-element " disabled="true" required="true">
+                    <option value="{{achat.fournisseur.id}}" selected="true">{{achat.fournisseur}}</option>
+                </select>
+            {% else %}
+                {#                    {{dump(achat.fournisseur)}}#}
+                <select id="idFour"  name="idFour"  class=" col-lg-9 chosen-select-element " required="true" onchange="changerBonFournisseur($('#idBon').val(), $(this).val());">
+                    {% for key, value in getEntities('eProcessEntityBundle','Fournisseur') %}
+                        {#                            {{dump(value)}}#}
+                        {% if key == fournisseur.id %}  
+                            <option value="{{key}}" selected="true">{{value}}</option>
+                        {% else %} 
+                            <option value="{{key}}">{{value}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- /.col-lg-4 -->
+<div class="col-lg-4  col-md-4 col-sm-4">
+    <div class="well ">
+        <div class=" row ">
+
+            <h5 class="col-lg-12  col-md-12 col-sm-12">DEP SUPPORTANT LE COUT</h5>
+        </div>
+        <div class=" row ">
+
+            <h5 class="col-lg-3  col-md-3 col-sm-3">Nom </h5>
+            {#<h4 class="col-lg-9  col-md-9 col-sm-9">
+                {{form_widget(form.departement)}}
+            </h4>#}
+            <h4 class="col-lg-9 ">
+                {% if bonCommande and achat.departement %}
+                    <select id="idDep"  name="idDep"  class="chosen-select-element form-control" disabled="true" >
+                        <option value="{{achat.departement.id}}">{{achat.departement}}</option>
+                    </select>
+                {% elseif  achat.departement%} 
+                    <select id="idDep"  name="idDep"  class="chosen-select-element form-control" onchange ="" >
+                        <option value="">-- choisir --</option>    
+                        {% for key, value in getEntities('eProcessEntityBundle','Departement') %}
+                            {% if  achat.departement.id ==  key %} 
+                                <option value="{{key}}" selected="">{{value}}</option>
+                            {% else %}
+                                <option value="{{key}}" >{{value}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else  %}
+                     <select id="idDep"  name="idDep"  class="chosen-select-element form-control" onchange ="" >
+                        {% for key, value in getEntities('eProcessEntityBundle','Departement') %}
+                            <option value="{{key}}" >{{value}}</option>
+                        {% endfor %}
+                     </select>
+                {% endif %}
+            </h4>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+
+
+</script>

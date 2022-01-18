@@ -1,0 +1,30 @@
+action:
+    path:     /
+    defaults: { _controller: "eProcessEntityBundle:Action:index" }
+
+action_show:
+    path:     /{id}/show
+    defaults: { _controller: "eProcessEntityBundle:Action:show" }
+
+action_new:
+    path:     /new
+    defaults: { _controller: "eProcessEntityBundle:Action:new" }
+
+action_create:
+    path:     /create
+    defaults: { _controller: "eProcessEntityBundle:Action:create" }
+    methods:  POST
+
+action_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "eProcessEntityBundle:Action:edit" }
+
+action_update:
+    path:     /{id}/update
+    defaults: { _controller: "eProcessEntityBundle:Action:update" }
+    methods:  [POST, PUT]
+
+action_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "eProcessEntityBundle:Action:delete" }
+    methods:  [POST, DELETE]

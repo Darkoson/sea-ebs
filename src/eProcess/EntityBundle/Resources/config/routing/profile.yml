@@ -1,0 +1,30 @@
+profile:
+    path:     /
+    defaults: { _controller: "eProcessEntityBundle:Profile:index" }
+
+profile_show:
+    path:     /{id}/show
+    defaults: { _controller: "eProcessEntityBundle:Profile:show" }
+
+profile_new:
+    path:     /new
+    defaults: { _controller: "eProcessEntityBundle:Profile:new" }
+
+profile_create:
+    path:     /create
+    defaults: { _controller: "eProcessEntityBundle:Profile:create" }
+    methods:  POST
+
+profile_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "eProcessEntityBundle:Profile:edit" }
+
+profile_update:
+    path:     /{id}/update
+    defaults: { _controller: "eProcessEntityBundle:Profile:update" }
+    methods:  [POST, PUT]
+
+profile_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "eProcessEntityBundle:Profile:delete" }
+    methods:  [POST, DELETE]

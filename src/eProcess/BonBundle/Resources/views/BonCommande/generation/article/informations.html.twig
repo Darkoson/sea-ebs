@@ -1,0 +1,237 @@
+<div class="row bg-info" style="margin-top: 10px; " >
+    <div class=" medium col-lg-9 col-md-9 col-sm-9" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-info" style="margin-top: 10px;">
+            <div class="panel-heading" id="">
+                <center > INFORMATIONS GENERALES SUR LE BON DE COMMANDE  </center>
+            </div>
+        </div>
+
+    </div>
+    <div class=" col-lg-3 col-md-3 col-sm-3" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-warning" style="margin-top: 10px;">
+            <div class="panel-heading" id="" style="height: fit-content; align-content: center">
+                <div class="first circle bg-warning" data-size="60" data-thickness="20">
+                    <span>20 %</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<ul class="chat">
+    <li class=" clearfix" style="margin-top: 10px; ">
+        <div class="chat-body clearfix"></div>
+    </li>
+    <li class=" clearfix">
+
+        <div class="chat-body clearfix">
+            <div class="header row upAndDownSpace">
+                <strong class="primary-font col-lg-2 col-md-2 col-sm-2">Objet / Motif</strong>
+                <small class=" col-lg-9  col-md-9 col-sm-9  text-muted" style="">
+                    {#                    {{ form_widget(form.objet) }} {{ form_errors(form.objet) }}#}
+                    <input  id="bonObjet" name="bonObjet" type="text" value="" class="form-control   dynamic">
+                </small>
+                <div id="validObjet" class="col-lg-1">  </div>
+            </div>
+        </div>
+    </li>
+    <li class=" clearfix">
+        <div class="chat-body clearfix">
+            <div class="header row upAndDownSpace">
+                <strong class="primary-font col-lg-2 ">Fournisseur</strong>
+                <small class=" col-lg-4   text-muted" style="">
+                    {{ form_widget(form.fournisseur) }} {{ form_errors(form.fournisseur) }}
+                </small>
+
+
+                <strong class="primary-font col-lg-1 ">Devise</strong>
+                <small class=" col-lg-4   text-muted" style="">
+                    {{ form_widget(form.devise) }} {{ form_errors(form.devise) }}
+                </small>
+
+                <div class="field-valid col-lg-1  col-md-1 col-sm-1"> </div>
+            </div>
+        </div>
+    </li>
+
+    <li class=" clearfix">
+
+        <div class="chat-body clearfix">
+            <div class="header row upAndDownSpace">
+                <strong class="primary-font col-lg-3 " >Mode de paiement</strong>
+
+                <div class="col-lg-4">
+                    <div class="form-group input-group">
+                        <span class="input-group-addon text-muted small">A la commande </span>
+                        <input  id="paieACommande" name="paieACommande" type="number" value="0" min="0" class="form-control  numeric dynamic">
+                        <span class="input-group-addon" id="">%</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group input-group">
+                        <span class="input-group-addon text-muted small">A la livraison</span>
+                        <input  id="paieALivraison" name="paieALivraison" type="number" value="" min="0" class="form-control  numeric dynamic">
+                        <span class="input-group-addon" id="">%</span>
+                    </div>
+                </div>
+
+                <div id="validPaiement" class="col-lg-1  col-md-1 col-sm-1"></div>
+            </div>
+        </div>
+    </li>
+
+    <li class=" clearfix">
+
+        <div class="chat-body clearfix">
+            <div class="header row upAndDownSpace">
+                <strong class="primary-font col-lg-3 ">Délai de la livraison</strong>
+                <div class="col-lg-3">
+                    <div class="form-group input-group">
+                        <input  id="delaisLivraison" name="delaisLivraison" type="number" min="0" class="form-control  numeric dynamic">
+                        <span class="input-group-addon"  >semaine(s)</span>
+                    </div>
+                </div>
+                <div class="col-lg-5"> </div>
+
+                <div id="validDelaisLivraison" class=" col-lg-1  col-md-1 col-sm-1">  </div>
+            </div>
+        </div>
+    </li>
+    <li class=" clearfix">
+
+        <div class="chat-body clearfix">
+            <div class="header row upAndDownSpace">
+                <strong class="primary-font col-lg-4 ">Département supportant le coût</strong>
+                <small class=" col-lg-7   text-muted" style="">
+                    <select name="dep" class="chosen-select-element form-control dynamic" required="true" id="departement">
+                        {%for key, value in getEntities('eProcessEntityBundle','Departement') %}
+                            <option value="{{key}}">{{value}}</option>
+                        {% endfor %}
+                    </select>
+                </small>
+                <div class="field-valid col-lg-1  col-md-1 col-sm-1"> </div>
+            </div>
+        </div>
+    </li>
+
+
+</ul>
+
+<div class="btn btn-primary" id="info-suiv" style="margin-left: 50px; display: none" onclick="passerSuivant('checklist');
+        changerDevise();">
+    <strong>Suivant</strong> <i class="fa fa-angle-right"></i>
+</div> 
+
+
+
+<script type="text/javascript">
+    // initialisation apres  chargement
+    $(document).ready(function () {
+        $('#bonObjet').val('');
+        $('#paieACommande').val(0);
+        $('#paieALivraison').val(100);
+    });
+
+    $('#bonObjet').on('keyup, keydown', function () {
+        $(this).val($(this).val().toUpperCase());
+        $('#objetArticles center').html($(this).val());
+    });
+    $('#eprocess_entitybundle_achat_bon_devise_chosen').click(function () {
+        var deviseCourante = $(this).children('a:first-child').text();
+        $('#deviseArticles').html(deviseCourante);
+    });
+
+
+    $('#paieACommande , #paieALivraison').on('keydown, keyup , click', function () {
+        var id1 = 'paieACommande';
+        var id2 = 'paieALivraison';
+        // en cas de modification de id1
+        if ($(this).attr('id') === id1) {
+            $('#' + id2).val(100 - parseInt($('#' + id1).val()));
+        }
+        // en cas de modification de id2
+        if ($(this).attr('id') === id2) {
+            $('#' + id1).val(100 - parseInt($('#' + id2).val()));
+        }
+        recapInfoBon();
+    });
+
+
+
+
+    /**
+     * recapInfoBon : fonction de verification des informations saisie sur le bon de commande 
+     * afin d'afficher le bouton de passage à l'étape suivante
+     * 
+     * @returns {undefined}
+     */
+    function recapInfoBon() {
+        var ok = true; // initialisation
+        var objetVide = isNullOrEmpty('bonObjet');
+        var modePaieIncorrecte = ((parseInt($('#paieACommande').val()) === 0) && (parseInt($('#paieALivraison').val()) === 0))
+                || (isNullOrEmpty('paieACommande') && isNullOrEmpty('paieALivraison'));
+
+        var delaisIncorrecte = isNullOrEmpty('delaisLivraison');
+
+        // controle que  l'objet soit non vide
+        if (objetVide) {
+            ok = false;
+        }
+        afficherValidation('validObjet', ok);
+
+
+
+        // controle que  le delais de livraison soit non vide
+        if (delaisIncorrecte) {
+            ok = false;
+            afficherValidation('validDelaisLivraison', ok);
+        } else {
+            afficherValidation('validDelaisLivraison', true);
+        }
+
+
+        // controle des pourcentage du mode de paiement 
+        if (modePaieIncorrecte) {
+            ok = false;
+            afficherValidation('validPaiement', ok);
+        } else {
+            afficherValidation('validPaiement', true);
+        }
+
+        //ok = true;
+        changerDevise(); // MAJ de la devise seltionnée sur l'onglet de saisie des articles
+        (ok) ? $("#info-suiv").show() : $("#info-suiv").hide();
+
+        // recuperation des valeurs saisies
+        var result = {};
+        result.objet = $('#bonObjet').val();
+        result.paieCommande = $('#paieACommande').val();
+        result.delaisLivraison = $('#delaisLivraison').val();
+        result.departement = $('#departement').val();
+        var nomDep = $('#departement_chosen').children().first().children().first().text();
+{#                console.log(result.departement);#}
+
+            // Mise à jour des inormations sur l'onglet d'enregistrement
+            var fournisseur = $('#eprocess_entitybundle_achat_bon_fournisseur_chosen').children().first().children().first().text();
+            var devise = $('#eprocess_entitybundle_achat_bon_devise_chosen').children().first().children().first().text();
+
+            
+            $("#recap_fournisseur").val(fournisseur);
+            $("#recap_devise").val(devise);
+            $("#recap_objet").val(result.objet);
+            $("#recap_paieCommande").val(result.paieCommande + " %");
+            $("#recap_paieLivraison").val((100 - result.paieCommande) + " %");
+            $("#recap_delaisLivraison").val(result.delaisLivraison);
+            $("#recap_departement").val(nomDep);
+
+            return result;
+        }
+
+
+        
+
+
+</script>

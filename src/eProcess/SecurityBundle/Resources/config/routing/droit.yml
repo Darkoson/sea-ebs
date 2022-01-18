@@ -1,0 +1,16 @@
+list_right:
+    path:     /list/{idProfile}
+    defaults: { _controller: eProcessSecurityBundle:Droit:listRight, idProfile : 1  }
+
+add_right:
+    path:     /add/{idProfile}
+    defaults: { _controller: eProcessSecurityBundle:Droit:addRight , idProfile : 1  }
+
+remove_right:
+    path:     /remove/{idProfile}
+    defaults: { _controller: "eProcessSecurityBundle:Droit:removeRight" , idProfile : 1  }
+
+status_right:
+    path:     /{idProfile}/changestatus
+    defaults: { _controller: "eProcessSecurityBundle:Droit:changeRightStatus" , idProfile : 1  }
+

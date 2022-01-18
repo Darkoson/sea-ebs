@@ -1,0 +1,70 @@
+{% extends "eProcessFactureBundle:FCT_Traitement:index.html.twig" %}
+
+{% block page_content %}
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Liste des factures à problème.  
+            <div class="pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        Actions
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li class="alert-warning"><a href="#" onclick=" changerEtapeFacture(getIDs(),'{{factureArriveEBS()}}');"> <span class="fa fa-backward btn btn-primary btn-circle"></span> Envoyer dans nouveaux Traitements</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+            <div class="dataTable_wrapper">
+                <table class="table table-striped table-bordered table-hover"  id="dataTables-example" >
+                    <thead class="element">
+                        <tr class="alert-warning">
+                            <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                            <th >Ordre</th>
+                            <th >Objet</th>
+                            <th style="width: 15%" >Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {%for entity in listeFacture %}
+                            <tr class="odd gradeX">
+                                <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                <td>{{ entity.ordreArrive }}</td>
+                                <td>{{ entity.achat.objet }}</td>
+                                <td>
+{#                                    <button type="button" class="btn btn-warning btn-circle" data-toggle="tooltip" data-placement="top" title="classer dans facture à problème" onclick="changerEtapeFacture('{{entity.id}}','{{factureProblemeEBS()}}');"><i class="fa fa-times"></i> </button>#}
+                                    <a href="{{path('facture_traitement_voir',{'id':entity.id})}}"><button type="button" class="btn btn-primary btn-circle" data-toggle="tooltip" data-placement="top" title="voir facture"><i class="fa fa-list" ></i> </button></a>
+                                    <a href="{{path('facture_traitement_encours',{'id':entity.id})}}"><button type="button" class="btn btn-success btn-circle" data-toggle="tooltip" data-placement="top" title="Traiter facture"><i class="fa fa-gears" ></i> </button> </a>
+
+                                </td>
+                            </tr>
+                        {% endfor %}                    
+                    </tbody>
+                </table>
+
+                {#                {%endfor %} #}
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+    
+
+{% endblock %}
+
+
+{% block javascripts %} 
+   
+    
+    
+    
+    {{parent()}}
+
+{% endblock %}
+
+

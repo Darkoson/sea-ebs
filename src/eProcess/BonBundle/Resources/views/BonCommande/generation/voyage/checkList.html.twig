@@ -1,0 +1,171 @@
+
+
+<div class="row bg-info" style="margin-top: 10px; " >
+    <div class=" medium col-lg-9 col-md-9 col-sm-9" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-info" style="margin-top: 10px;">
+            <div class="panel-heading" id="">
+                <center >  CHECKLIST DES DOCUMENTS RELATIFS AU BON DE COMMANDE  </center>
+            </div>
+        </div>
+
+    </div>
+    <div class=" col-lg-3 col-md-3 col-sm-3" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-warning" style="margin-top: 10px;">
+            <div class="panel-heading" id="" style="height: fit-content; align-content: center">
+                <div class="second circle bg-warning" data-size="60" data-thickness="20">
+                    <span>40 %</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+ 
+<div  class="  row upAndDownSpace">
+    <p class="col-lg-3"> Tout cocher </p>
+    <input type="checkbox" class="col-lg-1 checkall"  id="" val="">
+</div>
+
+<ul class="chat">
+
+    <li style="margin-top: 10px;">
+        <div class="chat-panel  row" id="listNormal"> 
+            <div class="header col-lg-12">
+
+                <div  class=" factNormal row upAndDownSpace">
+                    <p class="col-lg-3"> Demande </p>
+                    <input type="checkbox" class="col-lg-1"  name="hasDemande">
+                    <input type="text"  name="hasDemandeComment" value="" placeholder=" " class="col-lg-7 form-control" style="width: 50%">
+                    <div id="validDemande" class=" col-lg-1  col-md-1 col-sm-1">  </div>
+                </div>
+                <div class="factNormal row upAndDownSpace">
+                    <p class="col-lg-3"> Proforma </p>
+                    <input type="checkbox" class="col-lg-1"   name="hasProforma">
+                    <input type="text" name="hasProformaComment" value="" placeholder="" class="col-lg-7 form-control" style="width: 50%"> 
+                    <div id="validProforma" class=" col-lg-1  col-md-1 col-sm-1">  </div>
+                </div>
+                <div class="factNormal row upAndDownSpace">
+                    <p class="col-lg-3"> Approbation Budget </p>
+                    <input type="checkbox" class="col-lg-1" name="hasApprobationBudget" >
+                    <input type="text" name="hasApprobationBudgetComment" value="" placeholder=" " class="col-lg-7 form-control" style="width: 50%">
+                    <div id="validApprobBuget" class=" col-lg-1  col-md-1 col-sm-1">  </div>
+                </div>
+                <div class="factNormal row upAndDownSpace">
+                    <p class="col-lg-3"> Approbation Hierarchique </p>
+                    <input type="checkbox" class="col-lg-1" name="hasApprobationHier" >
+                    <input type="text" name="hasApprobationHierComment" value="" placeholder=" " class="col-lg-7 form-control" style="width: 50%">
+                    <div id="validApprobHier" class=" col-lg-1  col-md-1 col-sm-1">  </div>
+                </div>
+            </div>
+        </div>
+
+    </li>
+
+</ul>
+
+<div class="btn btn-warning" style="margin-left: 50px" onclick="passerSuivant('infos');">
+    <i class="fa fa-angle-left"></i><strong> Précédant</strong> 
+</div>  
+<div class="btn btn-primary" id="checklist-suiv" style="margin-left: 50px; display: none;" onclick="passerSuivant('articles');
+        recapCheckList();">
+    <strong>Suivant</strong> <i class="fa fa-angle-right"></i>
+</div> 
+
+
+
+<script>
+
+    // on décoche tous les checkbox
+    $(document).ready(function () {
+        $('#listNormal').find("input[type=checkbox]").prop("checked", false);
+        $('.checkall').prop("checked", false)
+    });
+    
+    // on recapitule le check list à chaque fois qu'on clique sur un checkbox
+    $('#listNormal').find("input[type=checkbox]").click(recapCheckList);
+
+    // autre forme d'utilisation de .checkall dans un contexte hors tableau
+    // on recapitule le check list à chaque fois qu'on clique sur le checkall apres avoir cocher les autres
+    $('.checkall').click(function () {
+        $('#listNormal').find("input[type=checkbox]").prop("checked", this.checked);
+        recapCheckList(); // MAJ du recapitulatif du checklist
+    });
+
+
+    /**
+     * changerValeurs : fonction de changement des valeurs des checkboxs à true ou false
+     * 
+     * @param 
+     * @returns 
+     */
+    function changerValeurs() {
+        $('#listNormal').find("input[type=checkbox]").each(function () {
+            var idValidation = $(this).siblings('div').first().attr('id');
+
+            if ($(this).is(':checked')) {
+                $(this).val(1);
+{#                $(this).siblings('input[type=text]').show();#}
+                afficherValidation(idValidation, true);// affichage des boutons de validation
+            } else {
+                $(this).val(0);
+{#                $(this).siblings('input[type=text]').hide();#}
+                afficherValidation(idValidation, false); // affichage des boutons de validation
+            }
+        });
+    }
+
+    /*
+     * recapCheckList : fonction de recuperation des information nécéssaire sur le check list
+     */
+    function recapCheckList() {
+        // appel de cette fonction pour modifier la valeur des check boxes à true ou false
+        changerValeurs();
+
+        // recuperation des valeurs des input de commentaire
+        var result = {};
+        var list = $('#listNormal .factNormal');
+
+        list.each(function () {
+            var element = $(this).children('input');
+            element.each(function () {
+                // ajout des informations dans 
+                var clef = $(this).attr('name');
+                var value = $(this).val();
+                result[clef] = value;
+            });
+        });
+
+{#        $('#checklistRecap').val();#}
+
+        // verification si tout est coché
+        var totalCoche = $('#listNormal').find("input[type=checkbox ]").filter(':checked').size();
+
+        // affichage du bouton suivant si tout est bien coché
+        if (totalCoche > 3) {
+            $("#checklist-suiv").show();
+        } else {
+            $("#checklist-suiv").hide();
+        }
+        
+        return result;
+
+    {#            console.log($('#checklistRecap').val());#}
+
+        }
+
+
+</script>
+
+
+
+
+
+
+
+
+
+

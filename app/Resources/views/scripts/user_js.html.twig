@@ -1,0 +1,74 @@
+<script type="text/javascript">
+    
+            $(document).ready(function () {
+                setTimeout("setTaille()", 250);
+                $('#banniere-description').click(function () {
+
+                    var reduit = $('#page_content_left').hasClass('col-lg-8');
+
+                    // si la fenetre gauche est reduite alors on l'augmente
+                    if (reduit) {
+                        $('#page_content_right').hide(1000);
+                        $('#page_content_left').removeClass('col-lg-8 col-md-8  col-sm-8').addClass('col-lg-12 col-md-12  col-sm-12');
+                    } else {
+                        $('#page_content_right').show(1000);
+                        $('#page_content_left').removeClass('col-lg-12 col-md-12  col-sm-12').addClass('col-lg-8 col-md-8  col-sm-8');
+                    }
+
+                });
+            });
+
+            $('#side-menu').click(function () {
+                // ceci est ajouté pour controller le fait que les menus du side bar ne depassent pas 
+                // la bordure du bloc page_content sur cetaines certain 
+{#                setTimeout("setTaille()", 250);#}
+
+            });
+
+
+            function setTaille() {
+                var t_sidebar = $('#side-menu').height();
+                var t_content = $('#pagecontent').height();
+                if (t_sidebar > t_content) {
+                    $('#pageconentwrapper').css("height", (t_sidebar + 5) + "px");
+                } else if (t_sidebar < t_content) {
+                    $('#pageconentwrapper').css("height", (t_content + 5) + "px");
+                }
+            }
+
+
+            window.onload = function () {
+                date_heure('div_horloge');
+            };
+
+
+            function date_heure(id)
+            {
+                date = new Date;
+                annee = date.getFullYear();
+                moi = date.getMonth();
+                mois = new Array('Janvier', 'F&eacute;vrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Ao&ucirc;t', 'Septembre', 'Octobre', 'Novembre', 'D&eacute;cembre');
+                j = date.getDate();
+                jour = date.getDay();
+                jours = new Array('Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi');
+                h = date.getHours();
+                if (h < 10)
+                {
+                    h = "0" + h;
+                }
+                m = date.getMinutes();
+                if (m < 10)
+                {
+                    m = "0" + m;
+                }
+                s = date.getSeconds();
+                if (s < 10)
+                {
+                    s = "0" + s;
+                }
+                resultat = jours[jour] + ' ' + j + ' ' + mois[moi] + ' ' + annee + ' il est ' + h + ':' + m + ':' + s;
+                document.getElementById(id).innerHTML = resultat;
+                setTimeout('date_heure("' + id + '");', '1000');
+                return true;
+            }
+</script> 

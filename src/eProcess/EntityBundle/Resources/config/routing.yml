@@ -1,0 +1,13 @@
+#e_process_entity_profile:
+#    resource: "@eProcessEntityBundle/Resources/config/routing/profile.yml"
+#    prefix:   /profile
+#
+#e_process_entity_utilisateur:
+#    resource: "@eProcessEntityBundle/Resources/config/routing/utilisateur.yml"
+#    prefix:   /utilisateur
+#
+#e_process_entity_achat:
+#    resource: "@eProcessEntityBundle/Resources/config/routing/achat.yml"
+#    prefix:   /achat
+#
+#

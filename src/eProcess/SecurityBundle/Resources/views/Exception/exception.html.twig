@@ -1,0 +1,77 @@
+{% extends "::base.html.twig" %}
+
+
+{% block body %}
+
+
+    <br><br>
+
+
+    <div style="text-align: center">
+
+        <h1 id="btn_voir_error">Erreur {#{{ exception.statusCode }}#}</h1>
+
+
+        <br><br><br>
+
+
+        <p style="font-size: 50px; color: #ffffff"> La page  est indisponible .  <br><br></p>
+
+        <p style="">
+
+            <a href="{{path('dashboard')}}"><button class="btn btn-lg btn-success"> Retour au tableau de bord </button> </a>
+        </p>
+
+
+
+
+    </div>
+
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"> <center>Information pour le Concepteur </center></h4>
+                </div>
+                <div class="modal-body">
+                    <div class=""> {{exception}} </div>
+                </div>
+                <div class="modal-footer alert-info">
+                    <a href="mailto:darkothomas80@gmail.com"  class="pull-left " >Copiez ce Message  et envoyez au courriel :  darkothomas80@gmail.com </a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="redirectoDashBoard(); afficheImageExecution();">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% block javascripts %} 
+
+        <style type="text/css">
+            .modal-body {
+                position: relative;
+                overflow-y: auto;
+                max-height: 600px;
+                padding: 10px;
+            }
+        </style>
+
+        {{parent()}}
+        <script type="text/javascript">
+            $('#btn_voir_error').click(function () {
+                $('#myModal').modal('show');
+            });
+
+            function redirectoDashBoard() {
+                window.location = " {{ path('dashboard')}}";
+            }
+
+
+        </script> 
+    {% endblock %}
+
+
+{% endblock %}

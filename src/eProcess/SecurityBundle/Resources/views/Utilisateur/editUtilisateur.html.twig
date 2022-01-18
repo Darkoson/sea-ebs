@@ -1,0 +1,103 @@
+{% extends "eProcessSecurityBundle:Utilisateur:index.html.twig" %}
+
+{% block page_content_left %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Informations non Modifiables : {{entity}} 
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+            <fieldset >
+                <div class="row">
+                    <label  class="col-lg-4">Nom d'utilisateur :</label>
+                    <input class=""  class="col-lg-6" name="username" id="name" value=" {{entity.username}}" disabled="true" placeholder="Nom d'utilisateur" > 
+                </div>
+                
+                <div class="row">
+                    <label class="col-lg-4" >Nom :</label>
+                    <input class="col-lg-6" name="nom" id="nom"value="{{entity.nom}}"  disabled="true" placeholder="Nom " > 
+                </div>
+
+                <div class="row">
+                    <label class="col-lg-4">Prénom :</label>
+                    <input class="col-lg-6" name="prenom" value="{{entity.prenom}}"  disabled="true" placeholder="Description du utilisateur" required="true"> 
+                </div>
+            </fieldset>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Mise à jour de l'utilisateur : {{entity}} 
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+            <form role="form" method="POST" action="{{path('edit_utilisateur',{'idUtilisateur': entity.id})}}">
+
+
+                <div class="form-group">
+                    <label>Profile</label>
+                    <select name="idProfile" class="form-control chosen-select-element">
+                        <option value=""> -- choisir Profile -- </option>   
+                        {%for key, value in getEntities('eProcessEntityBundle','Profile',1) %}
+                            {% if entity.profile and  key == entity.profile.id %}
+                                <option value="{{key}}" selected="true">{{value}}</option>
+                            {% else %}
+                            <option value="{{key}}">{{value}}</option>
+                            {% endif %}
+                        {% endfor %}
+                       
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Département</label>
+                    <select name="idDepartement" class="form-control chosen-select-element">
+                        {% if (getMenuParents()|length) < 10 %}
+                            <option value="">-- choisir Département -- </option>   
+                        {% endif %}
+                        {%for key, value in getEntities('eProcessEntityBundle','Departement') %}
+                            {% if entity.departement and  key == entity.departement.id %}
+                                <option value="{{key}}" selected="true">{{value}}</option>
+                            {% else %}
+                            <option value="{{key}}">{{value}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">Modifier </button>
+                <button type="reset" class="btn btn-primary">Annuler</button>
+            </form>
+
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+     
+        function getModuleActions(id) {
+
+            if (id > 0) {
+                getAssociated('eProcessEntityBundle', 'Module', {'id':id}, 'Action', '#actions',{});
+            }
+
+        }
+    </script>
+{% endblock %}
+
+

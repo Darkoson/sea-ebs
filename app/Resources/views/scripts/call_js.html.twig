@@ -1,0 +1,230 @@
+
+<!-- others JavaScript -->
+<script src="{{ asset('js/chosen/chosen.jquery.js') }}"></script>
+<script src="{{ asset('js/jquery.numeric.js') }}"></script>
+<script src="{{ asset('js/jquery-ui-1.10.4.min.js') }}"></script>
+<script src="{{ asset('js/jquery.ui.datepicker-fr.js') }}"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+<script src="{{ asset('bower/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="{{ asset('bower/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
+
+<!-- Morris Charts JavaScript -->
+<script src="{{ asset('bower/bower_components/raphael/raphael-min.js') }}"></script>
+{#<script src="{{ asset('bower/bower_components/morrisjs/morris.min.js') }}"></script>
+<script src="{{ asset('bower/js/morris-data.js') }}"></script>
+#}
+{% if isADMIN(getUserProfilCode()) %}
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ asset('bower/dist/js/sb-admin-2.js') }}"></script>
+{% else %}
+    <script src="{{ asset('bower/dist/js/sb-admin-2.ebs.js') }}"></script>
+{% endif %}
+
+<!-- DataTables JavaScript -->
+<script src="{{ asset('bower/bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('bower/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js') }}"></script>
+
+
+<!-- ckeditor -->
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('ckeditor/config.js') }}"></script>
+{#<script src="{{ asset('styles.js') }}"></script>#}
+
+
+<div id="chargementIcon"  style="opacity: 1; display: none">
+    <div onclick="cacherImageExecution();">
+        <center> <img src="{{asset('images/chargement/loading51.gif')}}" width="200px" /> </center>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function afficheImageExecution() {
+        $("#chargementIcon").dialog({
+            title: "Ecours d'exécution",
+            modal: true,
+            width: 250,
+            height: 260,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar", $(this).parent()).hide();
+            }
+        });
+    }
+
+    function cacherImageExecution() {
+        $("#chargementIcon").dialog("close");
+    }
+
+
+    $('a').click(function () {
+        var lien = $.trim($(this).attr('href'));
+        // je suppose que si le lien contient un slash alors c'est un URL
+        var isUrl = lien.indexOf('/') !== -1;
+
+
+        // on affiche le modale de chargement si le lien cliqué indique une autre 
+        // page qui est différente de la page courante et que le lien n'a pas de classe :noExecution
+
+        if (lien !== '#' && isUrl && !$(this).hasClass('noExecution')) {
+            afficheImageExecution();
+        }
+    });
+    {#  $('form').submit(afficheImageExecution());
+      $(document).ajaxStart(afficheImageExecution());
+      $(document).ajaxComplete( cacherImageExecution());
+      $(document).ready(function (){
+          setTimeout(function(){  cacherImageExecution(); }, 1000);
+      });#}
+
+      $(document).ready(function () {
+
+          $('.tooltip-demo').tooltip({
+              selector: "[data-toggle=tooltip]",
+              container: "body"
+          });
+          $("[data-toggle=popover]")
+                  .popover();
+
+          $('#dataTables-example').DataTable({
+              responsive: true,
+              "oLanguage": {
+                  "sProcessing": "Traitement en cours...",
+                  "sSearch": "Rechercher&nbsp;:",
+                  "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
+                  "sInfo": "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                  "sInfoEmpty": "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+                  "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                  "sInfoPostFix": "",
+                  "sLoadingRecords": "Chargement en cours...",
+                  "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                  "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
+                  "oPaginate": {
+                      "sFirst": "Premier",
+                      "sPrevious": "Pr&eacute;c&eacute;dent",
+                      "sNext": "Suivant",
+                      "sLast": "Dernier"
+                  },
+                  "oAria": {
+                      "sSortAscending": ": activer pour trier la colonne par ordre croissant",
+                      "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+                  }
+              }
+
+
+          });
+      });
+      /**
+       * isNullOrEmpty : fonction de verification si un champ est vide ou null à partir de son ID
+       * 
+       * @param {type} id
+       * @returns {Boolean}
+       */
+      function isNullOrEmpty(id) {
+          return  ($.trim($('#' + id).val()) === '') || ($.trim($('#' + id).val()) === ' ');
+      }
+
+
+      $('.chosen-select-element').chosen({
+          no_results_text: "Aucun élément trouvé ! ",
+          placeholder_text_single: "Selecionez un élément"
+      });
+      $('.datetime').datepicker();
+      $('.numeric').numeric();
+      $('.numeric').css("text-align", 'right');
+
+      $('.numeric').on("keyup", function () {
+          var value = $(this).val();
+          $(this).val(formatMillier(value));
+      });
+
+      $(".checkall").click(function () {
+          $(this).closest("table").find("input[type=checkbox]").prop("checked", this.checked);
+      });
+
+      function getIDs() {
+          var id = "";
+          $(":input[rel=tab_c]:checked").each(function () {
+              id = id.concat("/" + $(this).val());
+          });
+          return id;
+      }
+
+      function formatMillier(mont) {
+
+          var string = mont + ''; // just pour le transformer en string afin d'appliquer la fonction .replace()
+          return string.replace(/(\d)(?=(?:\d{3})+(?:$))/g, '$1 ');
+    {#            return string.replace(/(\d{3})(?!\d.)(?=\d)|(\d{1,3})(?=(?:\d{3})+(?:.))/g, '$1 ');#}
+    }
+
+    function formatSimple(montant) {
+        var string = montant + '';
+        var regex = new RegExp(' ', 'g');
+        return string.replace(regex, '');
+
+    }
+
+    // fonction permettante de recuperer les elements qui sont liee a un objet selectionne
+    function getAssociated(bundle, classFrom, attrFrom, classTo, idTarget, attrTo) {
+        if ((bundle !== '') && (classFrom !== 0) && (classTo !== '')) {
+
+            $.ajax({
+                type: "POST",
+                url: "{{ path('getAssociated')}}",
+                data: {
+                    bundle: bundle,
+                    entityFrom: classFrom,
+                    attrFrom: attrFrom,
+                    entityTo: classTo,
+                    attrTo: attrTo
+                },
+                cache: false,
+                beforeSend: function (xhr) {
+                    $(idTarget).html('');
+                    $('#loadAssociated').show('fast');
+                    $('#target').hide('fast');
+                },
+                success: function (data) {
+//                            $('#loadAssociated').hide('fast');
+//                            $('#target').show('fast');
+                    var answer = jQuery.parseJSON(data);
+                    var options = '';
+                    if (answer.status) {
+                        //on vide les anciennes options
+                        $(idTarget).html('');
+                        var liste = answer.rep;
+
+                        //construction des options de l'objet destination
+                        if (liste.length === 0) {
+                            options += '<option value=""> Aucun élement trouvé! </option>';
+                        } else {
+                            for (var i = 0; i < liste.length; i++) {
+                                options += '<option value="' + liste[i].id + '"> ' + liste[i].libelle + '</option>';
+                            }
+                        }
+
+
+                        //affichage des nouvelles options
+                        $(idTarget).append(options);
+                    } else {
+                        alert(answer.message);
+                    }
+                    $('#loadAssociated').hide('fast');
+                }
+            });
+        }
+        // cas ou un champ et vide
+        else {
+            $(idTarget).html('');
+            var options = '<option value=""> Aucun élement trouvé! </option>';
+            //affichage des nouvelles options
+            $(idTarget).append(options);
+        }
+    }
+
+
+</script>

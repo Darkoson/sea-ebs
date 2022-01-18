@@ -1,0 +1,40 @@
+
+{% set session = app.session.get(getSessionKey()) %}
+
+{# c'est le layout par défaut que tous les pages utilisent #}
+{% set parentLayout = "::templates/userLayout.html.twig" %}
+
+{% if session is not null %}
+
+    {#  deinition  des variables utilisables sur les vues au cas où il ya une session existante  #}
+    {% set NOM_PROFIL = getUserProfil() %}
+    {% set PROFIL_ID = getUserProfilId() %}
+    {% set CODE_PROFIL = getUserProfilCode() %}
+    {% set NOM_ACTIONS =  getUserActionNames()%}
+    {% set ID_ACTIONS =  getUserActionIDs()%}
+    {% set USER_NOM_PRENOM = getCurrentUser() %}
+    {% set USER_ID = getCurrentID() %}
+    {% set USER_USERNAME = getUsername() %}
+    {% set HOME_ROUTE = getHomeRoute() %}
+    {% set MENUS_TITRE = getMenusActives() %}
+    {% set MENUS_SIDE = getMenusActives() %}
+
+
+    {#  Chargement du layout admin au cas où le profil connecté est un administrateur  #}
+    {% if isADMIN(getUserProfilCode()) %}
+        {% set parentLayout = "::templates/adminLayout.html.twig" %}
+    {% endif %}
+{% endif %}
+
+{#   ici, on étend le layout retenu  #}
+{% extends parentLayout %} 
+
+
+
+
+{# c'est le bloc que toutes la pages du projet doivent étendre pour s'afficher dans la layout du profil #}
+{% block page_content %}
+    
+    {{ parent() }}
+    
+{% endblock %}

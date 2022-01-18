@@ -1,0 +1,46 @@
+facture_traitement_arrive:
+    path:     /new
+    defaults: { _controller: eProcessFactureBundle:FactureTraitement:arriveFactureTraitement }
+
+facture_traitement_encours:
+    path:     /{id}/registration/{etape}
+    defaults: { _controller: eProcessFactureBundle:FactureTraitement:traiterFacture , id : 0,  etape : 1}
+
+
+facture_traitement_probleme:
+    path:     /problem
+    defaults: { _controller: eProcessFactureBundle:FactureTraitement:factureProbleme }
+
+
+facture_traitement_termine:
+    path:     /finished
+    defaults: { _controller: "eProcessFactureBundle:FactureTraitement:finiTraitementFacture"   }
+
+facture_traitement_rejete:
+    path:     /rejected 
+    defaults: { _controller: "eProcessFactureBundle:FactureTraitement:arriveFactureRejete"   }
+
+facture_traitement_journee:
+    path:     /day 
+    defaults: { _controller: "eProcessFactureBundle:FactureTraitement:traitementFactureJournee"   }
+
+facture_traitement_recherche:
+    path:     /search
+    defaults: { _controller: "eProcessFactureBundle:FactureTraitement:rechercheFactureMulticritere"   }
+
+facture_traitement_voir:
+    path:     /{id}/view
+    defaults: { _controller: "eProcessFactureBundle:FactureTraitement:voirFacture", id : 0 }
+
+facture_traitement_status:
+    path:     /status
+    defaults: { _controller: "eProcessFactureBundle:FactureTraitement:statusFacture" }
+
+facture_traitement_etape:
+    path:     /etape
+    defaults: { _controller: "eProcessFactureBundle:FactureTraitement:etapeFacture" }
+
+export_excel_facture:
+    path:     /excel/export
+    defaults: { _controller: eProcessFactureBundle:FactureTraitement:exportExcelFacture }
+

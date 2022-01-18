@@ -1,0 +1,78 @@
+{% extends "eProcessFactureBundle:FCT_Traitement:index.html.twig" %}
+
+
+
+{% block page_content_right %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i>  Edition des Departements
+        </div>
+        <div class="panel-body">
+             <div class="list-group">
+                <a href="{{path('add_departement')}}" class="list-group-item">
+                    <i class="fa  fa-plus-circle  fa-fw"></i>  Ajouter un Departement
+                </a>
+                <a href="{{path('list_departement')}}" class="list-group-item">
+                    <i class="fa  fa-list  fa-fw"></i>  Liste des Departements
+                </a>
+                    
+                <a href="#" onclick="enregistrer(getIDs(), 1, 1);" class="list-group-item">
+                    <i class="fa fa-check-circle   fa-fw"></i>  Autoriser les Departements
+                </a>
+                <a href="#" onclick="enregistrer(getIDs(), 0, 1);" class="list-group-item">
+                    <i class="fa fa-times   fa-fw"></i>  Désactiver les Departements
+                </a>
+
+            </div>
+
+            {#                            <a href="{{path('remove_departement')}}" class="btn btn-danger btn-block">Supprimer les Departements </a>#}
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+
+    <form action="{{path('status_departement')}}" method="POST" class="hidden" id="modifDepartementForm">
+        <input type="" name="idDepartementsModif" id="idDepartementsModif" value="" />
+        <input type="" name="status" id="status" value=""  />
+    </form>
+
+    <form action="{{path('remove_departement')}}" method="POST" class="hidden" id="deleteDepartementForm">
+        <input type="" name="idDepartementsDelete" id="idDepartementsDelete" value="" />
+    </form>
+
+
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+        $(document).ready(function () {
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
+        });
+
+
+        function enregistrer(ids, status, route) {
+
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            }   //cas d'une suppression
+            else if (route === 0) {
+                $('#idDepartementsDelete').val(ids);
+                $('#deleteDepartementForm').submit();
+            } else if (route === 1) {
+                $('#idDepartementsModif').val(ids);
+                $('#status').val(status);
+                $('#modifDepartementForm').submit();
+            }
+        }
+
+    </script>
+{% endblock %}
+
+

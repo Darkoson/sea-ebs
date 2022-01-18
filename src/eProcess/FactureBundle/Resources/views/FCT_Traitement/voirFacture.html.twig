@@ -1,0 +1,367 @@
+{% extends "eProcessFactureBundle:FCT_Reception:index.html.twig" %}
+
+{% block page_content %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Information sur la facture
+        </div>
+
+
+        <!-- .panel-heading -->
+        <div class="panel-body">
+
+
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <center>
+                        <h3 class="panel-title">
+                            {{ entity.achat.objet }}
+                        </h3>
+                    </center>
+                </div>
+            </div>
+
+
+
+
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Information Générale</a>
+                        </h4>
+                    </div>
+
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class=" row">
+                                <table class="table table-striped  table-hover col-lg-12">
+                                    <tr class="row">
+                                        <th class="col-lg-2">Ordre :</th>
+                                        <td class="col-lg-10"> <input value="{{ entity.ordreArrive }}" readonly="" class="form-control"></td>
+                                    </tr>
+
+                                    <tr class="row">
+                                        <th class="col-lg-2">Référence Facture :</th>
+                                        <td class="col-lg-10"> <input value="{{ entity.referenceFournisseur }}" readonly="" class="form-control"></td>
+                                    </tr>
+
+                                    <tr class="row">
+                                        <th class="col-lg-3" >Fournisseur</th>
+                                        <td class="col-lg-9"><input value="{{ entity.achat.fournisseur }}" readonly="" class="form-control"></td>
+                                    </tr> 
+                                    <tr class="row">
+                                        <th class="col-lg-3" >Montant</th>
+                                        <td class="col-lg-9"><input value="{{ entity.achat.montant }}" readonly="" class="form-control"></td>
+                                    </tr> 
+                                    <tr class="row">
+                                        <th class="col-lg-6">Devise</th>
+                                        <td  class="col-lg-4"><input value="{{ entity.achat.devise }}" readonly="" class="form-control"> </td>
+                                    </tr>
+
+                                    <tr class="row">
+                                        <th class="col-lg-6">Date Arrivée</th>
+                                        <td  class="col-lg-4"><input value="{{entity.dateArrive | date('d-m-Y')}}" readonly="" class="form-control"> </td>
+                                    </tr>
+                                    <tr class="row">
+                                        <th class="col-lg-6">Département supportant le coût</th>
+                                        <td  class="col-lg-6"><input value="{{ entity.achat.departement }}" readonly="" class="form-control"> </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                Information Sur Traitement
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <ul class="chat">
+
+                                <li class="left clearfix">
+
+
+                                        <div class="header">
+                                            <center> <strong class="primary-font "> Opérations sur la facture </strong></center>
+                                        </div>
+
+                                        <div class=" row">
+                                            <table class="table table-striped  table-hover col-lg-12">
+                                                <tr class="row">
+                                                    <th class="col-lg-3">Reçue Par:</th>
+                                                    <td class="col-lg-5"> <input value="{{createur}}" readonly="" class="form-control"></td>
+                                                    <td class="col-lg-4"> <input value="Le {{entity.dateCreation | date('    d-m-Y   à    H:m:s')}}" readonly="" class="form-control"></td>
+                                                </tr>
+
+                                                <tr class="row">
+                                                    <th class="col-lg-3">Facture Traitée Par:</th>
+                                                    <td class="col-lg-5"> <input value="{% if traiteur is null %} --- {% else%} {{traiteur}}{% endif%}" readonly="" class="form-control"></td>
+                                                    <td class="col-lg-4"> <input value="Le {% if entity.dateTraitement is null %} --- {% else%}{{entity.dateTraitement | date('    d-m-Y   à    H:m:s')}} {% endif %}" readonly="" class="form-control"></td>
+                                                </tr>
+
+                                                <tr class="row">
+                                                    <th class="col-lg-3">Traitement Aprouvé Par:</th>
+                                                    <td class="col-lg-5"> <input value="{% if activateur is null %} --- {% else%} {{activateur}}{% endif%}" readonly="" class="form-control"></td>
+                                                    <td class="col-lg-4"> <input value="Le {% if entity.dateActivation is null %} --- {% else%}{{entity.dateActivation | date('    d-m-Y   à    H:m:s')}} {% endif %}" readonly="" class="form-control"></td>
+                                                </tr>
+                                                <tr class="row">
+                                                    <th class="col-lg-3">Etape Actuelle:</th>
+                                                    <td colspan="2" class=" col-lg-9"> <input value="{{readEtapeFacture(entity.etape)}}" readonly="" class="form-control"></td>
+                                                </tr>
+                                            </table>
+
+                                        </div>
+
+                                </li>
+
+
+                                <li class="left clearfix">
+
+                                    <div class="header">
+                                        <center> <strong class="primary-font "> Les envois et réception </strong></center>
+                                    </div>
+
+                                    {% for transf in transferts %}
+                                        <div class="  row" >
+
+                                            <div class="" style="margin-top: 12px;">
+
+                                                <div class=" panel panel-warning">
+                                                    <div class="  panel-heading">
+                                                        <h3 class="panel-title">
+                                                             {{readEtapeTransfert(transf.transfert.etape)}}
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <table class="table table-striped  table-hover col-lg-12">
+                                                <tr class="row">
+                                                    <td class="col-lg-3"> Envoyeur <input value="{{transf.transfert.envoyeur}}" readonly="" class="form-control"></td>
+                                                    <td class="col-lg-3"> Date <input value="{{transf.transfert.dateCreation | date('d-m-Y  à  H:m:s')}}" readonly="" class="form-control"></td>
+
+                                                    <td class="col-lg-3"> Récepteur <input value="{{transf.transfert.recepteur}}" readonly="" class="form-control"></td>
+                                                    <td class="col-lg-3"> Date <input value="{% if transf.transfert.dateActivation is null %} --- {% else%}{{transf.transfert.dateActivation | date('d-m-Y à H:m:s')}} {% endif %}" readonly="" class="form-control"></td>
+                                                </tr>
+                                            </table>
+
+
+
+                                        </div>
+                                    {% else  %}
+                                        <div class="  row" >
+                                            <div class="header col-lg-12">
+                                                Pas d'envoi
+                                            </div>
+                                        </div>
+
+                                    {% endfor  %}
+
+                                </li>
+
+
+                                <li class="left clearfix">
+
+                                    <div class=" ">
+                                        <div class="header">
+                                            <center> <strong class="primary-font ">CheckList</strong></center>
+                                        </div>
+
+                                        <div class="chat-panel  row" id="listNormal">
+
+                                            {% if checkList is null %}
+                                                <div class="header col-lg-12">
+                                                    Pas de checkList
+                                                </div>
+                                            {% elseif checkList.fctNormale %}
+                                                 <div class="header col-lg-12">
+                                                    <div  class=" factNormal row upAndDownSpace">
+                                                        <p class="col-lg-4"> Demande </p>
+                                                        <input type="checkbox" class="col-lg-2" disabled="true" {% if checkList.hasDemande %} checked="true" {% endif %} name="hasDemande">
+                                                        <input type="text"  name="hasDemandeComment" readonly=""  value="{{checkList.hasDemandeComment}}" placeholder=" aucun " class="col-lg-6 form-control" style="width: 45%">
+                                                    </div>
+                                                    <div class="factNormal row upAndDownSpace">
+                                                        <p class="col-lg-4"> Proforma </p>
+                                                        <input type="checkbox" class="col-lg-2" {% if checkList.hasProforma %} checked="true" {% endif %} disabled="true"   name="hasProforma">
+                                                        <input type="text" name="hasProformaComment" readonly=""  value="{{checkList.hasProformaComment}}" placeholder=" aucun" class="col-lg-6 form-control" style="width: 45%">
+                                                    </div>
+                                                    <div class="factNormal row upAndDownSpace">
+                                                        <p class="col-lg-4"> Approbation </p>
+                                                        <input type="checkbox" class="col-lg-2" {% if checkList.hasApprobation %} checked="true" {% endif %}  disabled="true"  readonly=""  name="hasApprobation" >
+                                                        <input type="text" name="hasApprobationComment"  readonly="" value="{{checkList.hasApprobationComment}}" placeholder=" aucun " class="col-lg-6 form-control" style="width: 45%">
+                                                    </div>
+                                                    <div class="factNormal row upAndDownSpace">
+                                                        <p class="col-lg-4"> Facture </p>
+                                                        <input type="checkbox" class="col-lg-2" {% if checkList.hasFacture %} checked="true" {% endif %}  disabled="true"  readonly=""  name="hasFacture" >
+                                                        <input type="text" name="hasFactureComment"  readonly="" value="{{checkList.hasFactureComment}}" placeholder=" aucun " class="col-lg-6 form-control" style="width: 45%">
+                                                    </div>
+                                                </div>
+                                            {% else%}
+                                                 <div class="header col-lg-12">
+                                                   
+                                                    <div class="factNormal row upAndDownSpace">
+                                                        <p class="col-lg-4"> Facture </p>
+                                                        <input type="checkbox" class="col-lg-2" {% if checkList.hasFacture %} checked="true" {% endif %}  disabled="true"  readonly=""  name="hasFacture" >
+                                                        <input type="text" name="hasFactureComment"  readonly="" value="{{checkList.hasFactureComment}}" placeholder=" aucun " class="col-lg-6 form-control" style="width: 45%">
+                                                    </div>
+                                                    
+                                                    <div class="factNormal row upAndDownSpace">
+                                                        <p class="col-lg-4"> Contrat </p>
+                                                        <input type="checkbox" class="col-lg-2" {% if checkList.hasContrat %} checked="true" {% endif %}  disabled="true"  readonly=""  name="hasApprobation" >
+                                                        <input type="text" name="hasApprobationComment"  readonly="" value="{{checkList.hasContratComment}}" placeholder=" aucun " class="col-lg-6 form-control" style="width: 45%">
+                                                    </div>
+                                                </div>
+                                                    
+                                            {% endif %}
+
+                                        </div>
+
+
+
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                Fichiers Relatifs à la facture
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ul class="chat">
+                                <li class=" clearfix">
+                                    <div class="chat-body clearfix">
+                                        <div class="header row">
+                                            <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficDemande())}}</strong>
+
+                                            {% if entity.achat.ficDemande is null%}
+                                                <small class="col-lg-6   pull-right" > Acun fichier </small>
+                                            {%  else %}
+                                                <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                                                    <a href="{{path('file_view',{'id':entity.achat.ficDemande.id}) }}" target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                                                </small>
+                                                <small class=" col-lg-3 pull-right text-muted">
+                                                    <a href="{{path('file_download',{'id':entity.achat.ficDemande.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                                                </small>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class=" clearfix">
+
+                                    <div class="chat-body clearfix">
+                                        <div class="header row">
+                                            <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficProformat())}}</strong>
+                                            {% if entity.achat.ficProformat is null%}
+                                                <small class="col-lg-6   pull-right" > Acun fichier </small>
+                                            {%  else %}
+                                                <small class="col-lg-3   text-muted">
+                                                    <a href="{{path('file_view',{'id':entity.achat.ficProformat.id}) }}" target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                                                </small>
+                                                <small class=" col-lg-3 pull-right text-muted">
+                                                    <a href="{{path('file_download',{'id':entity.achat.ficProformat.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                <li class=" clearfix">
+
+                                    <div class="chat-body clearfix">
+                                        <div class="header row">
+                                            <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficApprobation())}}</strong>
+                                            {% if entity.achat.ficApprobation is null%}
+                                                <small class="col-lg-6   pull-right" > Acun fichier </small>
+                                            {%  else %}
+                                                <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                                                    <a href="{{path('file_view',{'id':entity.achat.ficApprobation.id}) }}" target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                                                </small>
+                                                <small class=" col-lg-3 pull-right text-muted">
+                                                    <a href="{{path('file_download',{'id':entity.achat.ficApprobation.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                
+                                <li class=" clearfix">
+
+                                    <div class="chat-body clearfix">
+                                        <div class="header row">
+                                            <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficLivraison())}}</strong>
+                                            {% if entity.achat.ficLivraison is null%}
+                                                <small class="col-lg-6   pull-right" > Acun fichier </small>
+                                            {%  else %}
+                                                <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                                                    <a href="{{path('file_view',{'id':entity.achat.ficLivraison.id}) }}" target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                                                </small>
+                                                <small class=" col-lg-3 pull-right text-muted">
+                                                    <a href="{{path('file_download',{'id':entity.achat.ficLivraison.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+
+                                
+                                <li class=" clearfix">
+
+                                    <div class="chat-body clearfix">
+                                        <div class="header row">
+                                            <strong class="primary-font col-lg-6 ">{{readTypeFichier( ficFacture())}}</strong>
+                                            {% if entity.fichier is null%}
+                                                <small class="col-lg-6   pull-right" > Acun fichier </small>
+                                            {%  else %}
+                                                <small class="col-lg-3   text-muted" style="margin-left: 50px ">
+                                                    <a href="{{path('file_view',{'id':entity.fichier.id}) }}" target="_blank" > <i class="fa fa-eye "></i> Voir  </a>
+                                                </small>
+                                                <small class=" col-lg-3 pull-right text-muted">
+                                                    <a href="{{path('file_download',{'id':entity.fichier.id}) }}"> <i class="fa fa-download"></i> Télécharger </a>
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- .panel-body -->
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts %} 
+    {{parent()}}
+
+{% endblock %}
+
+

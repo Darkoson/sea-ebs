@@ -1,0 +1,20 @@
+list_profile:
+    path:     /list
+    defaults: { _controller: eProcessSecurityBundle:Profile:listProfile }
+
+add_profile:
+    path:     /add
+    defaults: { _controller: eProcessSecurityBundle:Profile:addProfile  }
+    
+edit_profile:
+    path:     /edit/{idProfile}
+    defaults: { _controller: eProcessSecurityBundle:Profile:editProfile , idProfile : 1  }
+
+remove_profile:
+    path:     /remove
+    defaults: { _controller: "eProcessSecurityBundle:Profile:removeProfile"   }
+
+status_profile:
+    path:     /changestatus
+    defaults: { _controller: "eProcessSecurityBundle:Profile:changeProfileStatus" }
+

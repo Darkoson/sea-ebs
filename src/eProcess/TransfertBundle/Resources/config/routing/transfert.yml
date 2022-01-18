@@ -1,0 +1,46 @@
+# tableau de bord 
+index_transfert:
+    path:     /dashboard
+    defaults: { _controller: eProcessTransfertBundle:Transfert:indexTransfert  }
+
+# route de la fonction ajax qui envoi les factures
+e_process_transfert:
+    path:     /sending
+    defaults: { _controller: eProcessTransfertBundle:Transfert:transfertFacture }
+
+# route de la fonction ajax qui reçoit les factures
+e_process_transfert_reception:
+    path:     /receiving/{id}
+    defaults: { _controller: eProcessTransfertBundle:Transfert:receptionFactureTransfere , id: 0 }
+    
+# route d'affichage des factures qui sont envoyées par le profile connecté et qui n'est pas encore reçu    
+e_process_transfert_encours_envoi:
+    path:     /pending/send
+    defaults: { _controller: eProcessTransfertBundle:Transfert:transfertEncoursEnvoi }
+
+# route d'affichage des factures qui sont envoyées  par le profile connecté  et reçus  par le destinataire
+e_process_transfert_envoye:
+    path:     /sent
+    defaults: { _controller: eProcessTransfertBundle:Transfert:transfertEnvoye }
+
+# route d'affichage des factures qui sont à recevoir par le profile connecté    
+e_process_transfert_encours_recept:
+    path:     /pending/recieve
+    defaults: { _controller: eProcessTransfertBundle:Transfert:transfertEncoursReception }
+    
+e_process_transfert_encours_recept:
+    path:     /pending/recieve
+    defaults: { _controller: eProcessTransfertBundle:Transfert:transfertEncoursReception }
+    
+e_process_transfert_recu:
+    path:     /recieved
+    defaults: { _controller: eProcessTransfertBundle:Transfert:transfertRecu }
+    
+    
+e_process_transfert_approbation:
+    path:     /recieved/confirmation/{id}
+    defaults: { _controller: eProcessTransfertBundle:Transfert:transfertApprobation , id : 0}
+   
+e_process_transfert_voir:
+    path:     /{id}/view
+    defaults: { _controller: eProcessTransfertBundle:Transfert:voirTransfert }

@@ -1,0 +1,27 @@
+dashboard:
+    path:     /home/{error}
+    defaults: { _controller: eProcessSecurityBundle:Dashboard:index, error: false  }
+
+dashboard_admin:
+    path:     /admin/{error}
+    defaults: { _controller: "eProcessSecurityBundle:Dashboard:homeADMIN", error: false  }
+
+dashboard_ebs:
+    path:     /ebs/{error}
+    defaults: { _controller: "eProcessSecurityBundle:Dashboard:homeEBS", error: false  }
+
+dashboard_ops:
+    path:     /ops/{error}
+    defaults: { _controller: "eProcessSecurityBundle:Dashboard:homeOPS", error: false }
+
+dashboard_reception:
+    path:     /recep/{error}
+    defaults: { _controller: "eProcessSecurityBundle:Dashboard:homeRECEPTION", error: false  }
+   
+dashboard_default:
+    path:     /default/{error}
+    defaults: { _controller: "eProcessSecurityBundle:Dashboard:homeDEFAULT", error: false  }
+   
+getAssociated:
+    path:     /associated
+    defaults: { _controller: eProcessSecurityBundle:Dashboard:associatedEntity }

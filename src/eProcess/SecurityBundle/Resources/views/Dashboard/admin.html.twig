@@ -1,0 +1,86 @@
+{% extends "::layout.html.twig" %}
+
+{% block profile_modules %} 
+    {% include 'eProcessSecurityBundle:Dashboard:modules/moduleADMIN.html.twig' %} 
+{% endblock  %}
+
+
+
+
+{% block page_content_left %} 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Graphe des utilisateurs par profil
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="flot-chart">
+
+
+
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock  %}
+
+
+{% block page_content_right %} 
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-briefcase fa-fw"></i> Actions
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="list-group">
+                <a href="{{path('add_utilisateur')}}" class="list-group-item">
+                    <i class="fa  fa-user  fa-fw"></i> Creer un utilisateur
+                    <span class="pull-right text-muted small">
+                    </span>
+                </a>
+                <a href="{{path('list_utilisateur')}}" class="list-group-item">
+                    <i class="fa  fa-users  fa-fw"></i> Liste des utilisateurs
+                    <span class="pull-right text-muted small">
+                    </span>
+                </a>
+                <a href="{{path('add_profile')}}" class="list-group-item">
+                    <i class="fa   fa-reddit-square fa-fw"></i> Creer un profil
+                    </span>
+                </a>
+                <a href="{{path('list_profile')}}" class="list-group-item">
+                    <i class="fa  fa-gear fa-fw"></i> Liste des profils
+                    </span>
+                </a>
+                <a href="{{path('list_menu')}}" class="list-group-item">
+                    <i class="fa  fa-cube fa-fw"></i> Liste des menus
+                    </span>
+                </a>
+                <a href="{{path('list_right')}}" class="list-group-item">
+                    <i class="fa fa-gears fa-fw"></i> Gerer les droits
+                </a>
+
+
+            </div>
+            <!-- /.list-group -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock  %}
+
+{% block javascripts %} 
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var url = window.location;
+            if (url.href.indexOf('dashboard') !== 0) {
+                $('#side-menu li ul').removeClass('collapse');
+            }
+        });
+
+    </script>
+
+{% endblock %}
+
+

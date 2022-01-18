@@ -1,0 +1,20 @@
+list_departement:
+    path:     /list
+    defaults: { _controller: eProcessFactureBundle:Departement:listDepartement }
+
+add_departement:
+    path:     /add
+    defaults: { _controller: eProcessFactureBundle:Departement:addDepartement  }
+    
+edit_departement:
+    path:     /edit/{idDepartement}
+    defaults: { _controller: eProcessFactureBundle:Departement:editDepartement , idDepartement : 1  }
+
+remove_departement:
+    path:     /remove
+    defaults: { _controller: "eProcessFactureBundle:Departement:removeDepartement"   }
+
+status_departement:
+    path:     /changestatus
+    defaults: { _controller: "eProcessFactureBundle:Departement:changeDepartementStatus" }
+

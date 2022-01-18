@@ -1,0 +1,30 @@
+achat:
+    path:     /
+    defaults: { _controller: "eProcessEntityBundle:Achat:index" }
+
+achat_show:
+    path:     /{id}/show
+    defaults: { _controller: "eProcessEntityBundle:Achat:show" }
+
+achat_new:
+    path:     /new
+    defaults: { _controller: "eProcessEntityBundle:Achat:new" }
+
+achat_create:
+    path:     /create
+    defaults: { _controller: "eProcessEntityBundle:Achat:create" }
+    methods:  POST
+
+achat_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "eProcessEntityBundle:Achat:edit" }
+
+achat_update:
+    path:     /{id}/update
+    defaults: { _controller: "eProcessEntityBundle:Achat:update" }
+    methods:  [POST, PUT]
+
+achat_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "eProcessEntityBundle:Achat:delete" }
+    methods:  [POST, DELETE]

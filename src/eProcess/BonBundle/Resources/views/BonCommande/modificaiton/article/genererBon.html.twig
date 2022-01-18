@@ -1,0 +1,242 @@
+
+
+<div class="row bg-info" style="margin-top: 10px; margin-bottom: 20px " >
+    <div class=" medium col-lg-9 col-md-9 col-sm-9" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-info" style="margin-top: 10px;">
+            <div class="panel-heading" id="">
+                <center > RECAPITULATIF DES INFORMATION DU BON DE COMMANDE  </center>
+            </div>
+        </div>
+
+    </div>
+    <div class=" col-lg-3 col-md-3 col-sm-3" style="font-family: fantasy; font-weight:  bold; font-size: larger">
+        <div class="panel panel-warning" style="margin-top: 10px;">
+            <div class="panel-heading" id="" style="height: fit-content; align-content: center">
+                <div class="fifth circle" data-value="1" data-size="60" data-thickness="20" data-reverse="true" >
+                    <span>100 %</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row"style="padding-bottom: 50px">
+
+
+
+</div>         
+
+{#  RECAPITULATIF INFORMATIONS SAISIES        #}                 
+<div class="col-lg-8 ">
+    <div class="panel panel-default ">
+        <div class="panel-heading">
+            <i class="fa fa-comments fa-fw"></i> Information Générales
+            <div class="btn btn-primary btn-sm pull-right" onclick="passerSuivant('infos');">Editer</div>
+        </div>
+
+        <div class="panel-body">
+            <div class="clearfix">
+                <div class=" primary-font small col-lg-3">Objet:</div>
+                <input type="text" id="recap_objet" readonly="" class="form-control col-lg-9 text-muted " style="width: 70%"> 
+            </div>
+            <div class="clearfix">
+                <div class=" primary-font small col-lg-3">Fournisseur:</div>
+                <input type="text" id="recap_fournisseur" readonly="" class="form-control  text-muted col-lg-9"style="width: 70%"> 
+            </div>
+
+            <div class="clearfix">
+                <div class=" primary-font small col-lg-3">Devise:</div>
+                <input type="text" id="recap_devise" readonly="" class="form-control  " style="width: 60%"> 
+            </div>
+            <div class="clearfix">
+                <div class=" primary-font small ">Mode Paiement:</div>
+                <div class="col-lg-6">
+                    <div class="form-group input-group">
+                        <span class="input-group-addon text-muted small">commande </span>
+                        <input  id="recap_paieCommande"  type="text"  readonly=""  class="form-control  ">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group input-group">
+                        <span class="input-group-addon text-muted small">livraison</span>
+                        <input  id="recap_paieLivraison"   type="text" readonly=""  class="form-control ">
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class=" primary-font small col-lg-3">Délais :</div>
+                <div class="form-group input-group text-muted col-lg-9" style="width: 70%">
+                    <input  id="recap_delaisLivraison" name="delaisLivraison" readonly="" type="text" class="form-control  ">
+                    <span class="input-group-addon"  >semaine(s)</span>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class=" primary-font col-lg-3 ">Département:</div>
+                <input type="text" id="recap_departement" readonly="" class="form-control text-muted col-lg-9 " style="width: 70%"> 
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+{#  RECAPITULATIF DUCHECKLIST        #}
+<div class="col-lg-4 ">
+    <div class="panel panel-default ">
+        <div class="panel-heading">
+            <i class="fa fa-comments fa-fw"></i> CheckList 
+            <div class="btn btn-primary btn-sm pull-right" onclick="passerSuivant('checklist');">Editer</div>
+        </div>
+
+        <div class="panel-body">
+            <div class="clearfix">
+
+                <input type="checkbox" checked="" id="recap_demande" disabled=""  class="small ">
+                <span class=" small">: Demande</span>
+            </div>
+            <div class="clearfix">
+                <input type="checkbox" checked="" id="recap_proforma" disabled="" class=" " >
+                <span class=" small">: Proforma</span>
+                <div class="header primary-font Bold"></div>
+            </div>
+            <div class="clearfix">
+                <input type="checkbox" checked="" id="recap_appro_budget" disabled=""  class=" " style=""> 
+                <span class=" small">: Approbation Budget</span>
+            </div>
+            <div class="clearfix">
+                <input  id="recap_appro_hier"  type="checkbox" checked=""     disabled=""   class=" ">
+                <span class=" small">: Approbation Hierarchique</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{#  RECAPITULATIF DES FICHIERS CHARGES        #}
+<div class="col-lg-4 ">
+    <div class="panel panel-default ">
+        <div class="panel-heading">
+            <i class="fa fa-comments fa-fw"></i> Fichiers 
+            <div class="btn btn-primary btn-sm pull-right" onclick="passerSuivant('fics');">Editer</div>
+        </div>
+
+        <div class="panel-body">
+            <div class="clearfix">
+                <input  id=""  type="checkbox" checked=""     disabled=""   class=" ">
+                <span class="  text-muted" style=""> Demande  </span>
+            </div>
+            <div class="clearfix">
+                <input  id=""  type="checkbox" checked=""     disabled=""   class=" ">
+                <span class="  text-muted" style=""> Proforma  </span>
+            </div>
+            <div class="clearfix">
+                <input  id=""  type="checkbox" checked=""     disabled=""   class=" ">
+                <span class="  text-muted" style=""> Approbation budget  </span>
+            </div>
+            <div class="clearfix">
+                <input  id=""  type="checkbox" checked=""     disabled=""   class=" ">
+                <span class="  text-muted" style=""> Approbation Hierar  </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{#  RECAPITULATIF DES ARTICLES SAISIES        #}
+<div class="col-lg-12 ">
+    <div class="panel panel-default ">
+        <div class="panel-heading">
+            <i class="fa fa-comments fa-fw"></i> Détails des besoins
+            <div class="btn btn-primary btn-sm pull-right" onclick="passerSuivant('articles');">Editer</div>
+        </div>
+        <div class="panel-body">
+
+
+            <ul class="chat">
+                <li class=""style="">
+                    <div class="row clearfix">
+                        <div class="col-lg-3">
+                            <div class="form-group input-group">
+                                <span class="input-group-addon text-muted small">Taxe </span>
+                                <input  id="recap_taxe"  type="text"  readonly=""  class="form-control  ">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group input-group">
+                                <span class="input-group-addon text-muted small">Total </span>
+                                <input  id="recap_total"  type="text"  readonly=""  class="form-control  ">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group input-group">
+                                <span class="input-group-addon text-muted small">Remise </span>
+                                <input  id="recap_remise"  type="text"  readonly=""  class="form-control  ">
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+
+                <li class="">
+
+                    <table class="table table-striped table-bordered table-hover" id="">
+                        <thead>
+                            <tr>
+                                <th>Désignation</th>
+                                <th>P.Unitaire</th>
+                                <th>Quantité</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recap-tab-article">
+
+                        </tbody>
+                    </table>
+
+                </li>
+
+
+
+            </ul>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="panel-body ">
+
+    <ul class="chat">
+
+        <div class="btn btn-warning" style="margin-left: 50px" onclick="passerSuivant('fics');">
+            <i class="fa fa-angle-left"></i><strong> Précédant</strong> 
+        </div>
+        <div class="btn btn-success" style="margin-left: 50px" onclick="enregistrerBon();">
+            <i class="fa fa-save"></i><strong> Enregistrer</strong> 
+        </div>
+
+    </ul>
+</div>
+
+
+<script type="text/javascript">
+    function enregistrerBon() {
+        var result = {};
+        result.info = recapInfoBon();
+        result.checkList = recapCheckList();
+        result.article = recapArticles();
+        $('#formRecap').val(JSON.stringify(result));
+
+            $('#modifBonForm').submit();
+     }
+
+</script>                    
+

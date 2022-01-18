@@ -1,0 +1,76 @@
+index_bonCommande:
+    path:     /dashboard
+    defaults: { _controller: eProcessBonBundle:BonCommande:indexBonCommande  }
+
+add_bonCommande_article:
+    path:     /add/article
+    defaults: { _controller: eProcessBonBundle:BonCommande:addBonArticle  }
+    
+add_bonCommande_voyage:
+    path:     /add/voyage
+    defaults: { _controller: eProcessBonBundle:BonCommande:addBonVoyage  }
+
+remove_bon:
+    path:     /remove
+    defaults: { _controller: "eProcessBonBundle:BonCommande:removeBon"   }
+    
+recherche_bon:
+    path:     /{isNum}/search
+    defaults: { _controller: "eProcessBonBundle:BonCommande:rechercheBon" , isNum :0  }
+
+status_bon:
+    path:     /changestatus
+    defaults: { _controller: "eProcessBonBundle:BonCommande:changeBonStatus" }
+    
+etape_bon:
+    path:     /changeetape
+    defaults: { _controller: "eProcessBonBundle:BonCommande:changeBonEtape" }
+
+
+list_bon_emis:
+    path:     /list/new
+    defaults: { _controller: eProcessBonBundle:BonCommande:bonEmis }
+   
+list_bon_modif:
+    path:     /list/update
+    defaults: { _controller: eProcessBonBundle:BonCommande:listeBonModifie }
+   
+ 
+bon_soumis_approbation:
+    path:     /pending/approval/{etape}
+    defaults: { _controller: eProcessBonBundle:BonCommande:bonSoumisApprob, etape : 1 }
+
+bon_approuve:
+    path:     /approved
+    defaults: { _controller: eProcessBonBundle:BonCommande:listBonApprouve }
+
+bon_attente_envoi:
+    path:     /pending/reception
+    defaults: { _controller: eProcessBonBundle:BonCommande:bonAttenteEnvoi }
+
+   
+voir_bonCommande:
+    path:     /{idBon}/info/{fromApprobation}
+    defaults: { _controller: eProcessBonBundle:BonCommande:voirBon , idBon : 0 , fromApprobation : 0 }
+   
+edit_bonCommande:
+    path:     /{idAchat}/edit
+    defaults: { _controller: eProcessBonBundle:BonCommande:editBonActionArticle , idAchat : 0  }
+   
+apercu_bonCommande:
+    path:     /{idBon}/generatepdf
+    defaults: { _controller: eProcessBonBundle:BonCommande:genererPDFBon , idBon : 0 }
+
+export_excel_bonCommande:
+    path:     /excel/export
+    defaults: { _controller: eProcessBonBundle:BonCommande:exportExcelBonCommande }
+
+
+load_bon:
+    path:     /load
+    defaults: { _controller: eProcessBonBundle:BonCommande:chargerBon }
+
+list_bon_loaded:
+    path:     /list/loaded
+    defaults: { _controller: eProcessBonBundle:BonCommande:listBonCharge }
+

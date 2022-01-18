@@ -1,0 +1,33 @@
+index_facture:
+    path:     /dashboard
+    defaults: { _controller: eProcessFactureBundle:FactureArrive:indexFacture  }
+
+
+facture_reception:
+    path:     /new
+    defaults: { _controller: eProcessFactureBundle:FactureArrive:receptionFacture }
+    
+edit_facture:
+    path:     /{idAchat}/edit
+    defaults: { _controller: eProcessFactureBundle:FactureArrive:editFacture }
+
+facture_reception_enreg:
+    path:     /enreg/{existBon}
+    defaults: { _controller: eProcessFactureBundle:FactureArrive:enregistrerFactureArrive , existBon : 0 }
+
+facture_liste_reception:
+    path:     /list
+    defaults: { _controller: eProcessFactureBundle:FactureArrive:listeReceptionFacture }
+
+facture_liste_rejet:
+    path:     /rejected
+    defaults: { _controller: eProcessFactureBundle:FactureArrive:listeRejetFactureParEBS }
+
+facture_liste_periode:
+    path:     /period
+    defaults: { _controller: eProcessFactureBundle:FactureArrive:listePeriodeFacture }
+
+
+facture_remove:
+    path:     /remove
+    defaults: { _controller: "eProcessFactureBundle:FactureArrive:removeFacture"   }

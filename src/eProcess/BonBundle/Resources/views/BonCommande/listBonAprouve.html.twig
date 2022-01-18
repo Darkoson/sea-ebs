@@ -1,0 +1,164 @@
+{% extends "eProcessBonBundle:BonCommande:index.html.twig" %}
+
+{% block page_content_left %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+           Liste des bons Approuvés
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#arrive" data-toggle="tab" id="lienCheckList"> Bons de commande acceptés </a>
+                </li>
+                <li><a href="#approuve" data-toggle="tab" id="lienInfos"> Bons de commande rejetés</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content col-lg-12" style="padding-top: 20px">
+
+                {#  ****  block des bons acceptés   ***  #}        
+                <div class="tab-pane fade in active" id="arrive">
+
+                <div class=" row dataTable_wrapper">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr >
+                                <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                                <th >Numero</th>
+                                <th >Montant</th>
+                                <th >Devise</th>
+                                <th >signature</th>
+                                <th colspan="3" > <center>Actions </center> </th>
+                        </tr>
+                        </thead>
+                        
+                         <tbody >
+                        {%for entity in bonAccepte %}
+                            <tr class="odd gradeX">
+                                <td>
+                                    {% if entity.fichier.isActif %}
+                                    <input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" />
+                                    {% else %}
+                                         * 
+                                    {% endif %}
+                                    
+                                </td>
+                                <td>{{ entity.numero }}</td>
+                                <td>{% if entity.achat is  null %} -- {% else %}{{entity.achat.montant}} {% endif %}  </td>
+                                <td>{{ entity.achat.devise}} </td>
+                                <td class="center">
+                                    {% if entity.isActif %}  <i class="btn btn-success btn-circle fa fa-check-circle fa-fw"></i> 
+                                    {% else %} <i class="btn btn-danger btn-circle fa fa-times-circle-o fa-fw"></i>{% endif %}
+                                </td>
+                                <td class="tooltip-demo"><a href="{{path('voir_bonCommande',{'idBon':entity.id})}}"  data-target="#fichierModal" data-toggle="modal"   > <button class="btn btn-success" data-container="body" data-toggle="tooltip" data-placement="top" title="voir" > <i class="fa fa-eye fa-fw"></i> </button></a></td>
+                                <td class="tooltip-demo"><a href="{{path('impression_bonCommande',{'idBon':entity.id})}}" target="_blank" class="noExecution"> <button class="btn btn-warning" data-container="body" data-toggle="tooltip" data-placement="top" title="imprimer"><i class=" fa fa-print fa-fw"></i> </button></a></td>
+                                {% if entity.fichier  and not entity.fichier.isActif %}
+                                <td class="tooltip-demo"><a href="{{ path('file_edit',{'id': entity.fichier.id }) }}"  data-target="#fichierModal" data-toggle="modal" > <button class="btn btn-info" data-container="body" data-toggle="tooltip" data-placement="top" title="MAJ du fichier"><i class=" fa fa-file-pdf-o fa-fw"></i> </button></a></td>
+                                {% elseif entity.fichier  and  entity.fichier.isActif %}
+                                     <td class="tooltip-demo"><a href="{{ path('file_download',{'id': entity.fichier.id }) }}"   > <button class="btn btn-primary" data-container="body" data-toggle="tooltip" data-placement="top" title="telecharger"><i class=" fa fa-download fa-fw"></i> </button></a></td>
+                                {% else %}
+                                     <td class="tooltip-demo"> --- </td>
+                                {% endif %}
+                            </tr>
+                        {% else %} 
+                            <tr class="odd gradeX">
+                                <td colspan="8"><center> Aucun Bon </center></td>
+                            </tr>
+                        {% endfor %}                    
+                        </tbody>
+                    </table>
+                </div>
+               {% if bonAccepte|length > 0 %}
+                <div class=" row">
+                    <div class=" col-lg-6">
+                        <button class="btn btn-success" onclick="etapeBon(getIDs(), '{{bonAttenteEnvoi()}}', '{{route}}', -1); "> Envoyer à la reception </button>
+                    </div>
+                    <div class=" col-lg-6">
+                        <a href="{{path('impression_list_bonNonSigne')}}" target="_blank" class="noExecution"> <button class="btn btn-primary" onclick=""> <i class=" fa fa-print fa-fw"></i> Imprimer la liste des bons non signés </button> </a>
+                    </div>
+                </div>
+                 {% endif %}
+                </div>
+
+                {#  ****  block des bons non approuve ***  #}
+                <div class="tab-pane fade " id="approuve">
+                      <div class=" dataTable_wrapper row">
+                    <table class="table table-striped  table-hover col-lg-12">
+                        <thead class="element row">
+                            <tr class="alert-warning">
+                                <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                                <th >Numero</th>
+                                <th >Objet</th>
+                                <th >Montant</th>
+{#                                <th >statut</th>#}
+                                <th >Actions</th>
+                            </tr>
+                        </thead>
+                        
+                         <tbody >
+                        {%for entity in bonRejete %}
+                            <tr class="odd gradeX">
+                                <td><input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /></td>
+                                <td>{{ entity.numero }}</td>
+                                <td><a href="{{path('voir_bonCommande',{'idBon':entity.id})}}"  data-target="#fichierModal" data-toggle="modal"  >{{ entity.achat.objet }}</a></td>
+                                <td>{{ entity.achat.montant}}</td>
+                               {# <td class="center">
+                                    {% if  isBlocked(entity.isActif) %}  {% endif %}
+                                </td>#}
+                                <td class="tooltip-demo">
+                                    <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="left" data-content="{{entity.motif}}.">  <i class=" fa fa-bell fa-fw"></i></button>
+                                    <a href="{{path('edit_bonCommande',{'idAchat':entity.achat.id})}}" data-container="body" data-toggle="tooltip" data-placement="top" title="mofifier"> <button type="button" class="btn btn-default" >  <i class="fa fa-pencil fa-fw"></i></button>
+                                   </a>
+                                </td>
+                            </tr>
+                        {% else %} 
+                            <tr class="odd gradeX">
+                                <td colspan="4"><center> Aucun Bon </center></td>
+                            </tr>
+                        {% endfor %}                    
+                        </tbody>
+                        
+                    </table>
+                </div>
+
+                        {% if bonRejete|length > 0 %}
+                <div class=" row">
+                    <div class=" col-lg-6">
+                        <button class="btn btn-danger" onclick="autorisationBon(getIDs(), '{{statusDeleted()}}', '{{route}}', '{{bonSupprime()}}');"> Suprrimer </button>
+                    </div>
+                    
+                    <div class=" col-lg-6">
+                        <button class="btn btn-warning" onclick="autorisationBon(getIDs(),  '{{statusInactive()}}' , 'list_bon_emis', '{{bonSoumisAutor()}}' );"> Re-Soumettre </button>
+                    </div>
+                    
+                </div>
+                 {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+     
+    {{parent()}}
+    <script type="text/javascript" > 
+        
+    </script>
+    
+    
+{% endblock %}
+
+

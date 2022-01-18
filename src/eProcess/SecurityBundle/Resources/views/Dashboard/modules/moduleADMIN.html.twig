@@ -1,0 +1,66 @@
+
+<div class="row">
+    {% block page_content_top %} 
+
+        {#    notification des bons de commande #}
+        <a href="{{path('list_utilisateur')}}">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-user fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">utilisateurs</div>
+                                <div>Gestion des Utilisateurs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+
+        {#    notification sur la gestion des factures    #}
+        <a href="{{path('list_profile')}}">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">   
+                            <div class="col-xs-3">
+                                <i class="fa fa-gear fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">Profils</div>
+                                <div>Gestion des Droits et Profils </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        {#    notification sur les transferts de factures   #}           
+        <a href="{{path('list_menu')}}">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-cube fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">Menus  </div>
+                                <div>Gestion des Menus</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    {% endblock %} 
+</div>
+<!-- /.row -->
+
+

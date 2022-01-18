@@ -1,0 +1,91 @@
+{% extends "eProcessBonBundle:BonCommande:index.html.twig" %}
+
+{% block page_content_left %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Liste des Nouveaux Bons de commande  Edités
+            <div class="pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        Actions
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li class="alert-warning"><a href="#" onclick="autorisationBon(getIDs(), '{{statusDeleted()}}', 'list_bon_emis', '{{bonSupprime()}}') ;"> 
+                                <span class="fa fa-times-circle"></span> Supprimer</a> </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"  onclick="autorisationBon(getIDs(), '{{statusInactive()}}' , 'list_bon_emis', '{{bonSoumisAutor()}}' );"><i class="fa fa-share-square-o "></i> Soumettre</a>
+{#                            <a href="#"  onclick="etapeBon(getIDs(), '{{bonSoumisAutor()}}', '{{route}}', -1);"><i class="fa fa-share-square-o "></i> Soumettre</a>#}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+
+            <div class="dataTable_wrapper">
+                <table class="table table-striped table-bordered table-hover"  id="" >
+                    <thead class="element">
+                        <tr class="alert-warning">
+                            <th > <input type="checkbox" class="checkall" name="checkall"/> </th>
+                            <th >Numero</th>
+                            <th >Objet</th>
+                            <th  ><center>Actions</center></th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                        {%for entity in listeBonCommande%}
+                            <tr class="odd gradeX">
+                                <td> {% if entity.etape == bonVerifie()%}<input type="checkbox" name="tab[]" value="{{entity.id}}" rel="tab_c" /> {% else %} *{% endif %}</td>
+                                <td class="small text-muted">{{ entity.numero }}</td>
+                                <td class="small text-muted">{{ entity.achat.objet }}</td>
+                                <td>
+                                    <a href="{{path('voir_bonCommande',{'idBon':entity.id})}}" data-target="#fichierModal" data-toggle="modal"  ><button type="button" class="btn btn-primary btn-circle" data-toggle="tooltip" data-placement="top" title="vérifier le bon"><i class="fa fa-list" ></i> </button></a>
+                                    <a href="{{path('edit_bonCommande',{'idAchat':entity.achat.id})}}"><button type="button" class="btn btn-info " data-toggle="tooltip" data-placement="top" title="modifier le bon"><i class="fa fa-edit" ></i> </button></a>
+                                </td>
+                            </tr>
+                        {% else %}    
+                            <tr class="odd gradeX">
+                                <td colspan="5"><center> Aucun bon </center></td>
+
+                        </tr>
+                    {% endfor %}                    
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock %}
+
+{% block javascripts %} 
+  
+    <div id="dialog-confirm"  style=" display: none">
+        <div   style=" width: 90%; height: 90%; ">
+            <div id="">
+                <div class="">
+                    {# <form id="">
+                         <textarea class="form-control" id="noteEnvoi"> Note:</textarea>
+                     </form>
+#}
+
+                    <div id="" >
+                        <center> <img src="{{asset('images/chargement/ajax-loader.gif')}}" width="400px"/> </center>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+
+        {{parent()}}
+        
+{% endblock %}
+
+

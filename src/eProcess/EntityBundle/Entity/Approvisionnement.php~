@@ -1,0 +1,65 @@
+<?php
+
+namespace eProcess\EntityBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Approvisionnement
+ *
+ * @ORM\Entity
+ */
+class Approvisionnement extends Achat
+{
+   
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="articles", type="json_array")
+     */
+    private $articles;
+
+    /**
+    * Constructor
+    */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set articles
+     *
+     * @param array $articles
+     *
+     * @return Approvisionnement
+     */
+    public function setArticles($articles)
+    {
+        $this->articles = $articles;
+
+        return $this;
+    }
+
+    /**
+     * Get articles
+     *
+     * @return array
+     */
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+}

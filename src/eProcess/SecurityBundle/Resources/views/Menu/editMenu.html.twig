@@ -1,0 +1,85 @@
+{% extends "eProcessSecurityBundle:Menu:index.html.twig" %}
+
+{% block page_content_left %}
+     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Mise à jour du Menu : {{entity}} 
+                            <div class="pull-right">
+                                <div class="btn-group">
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            <form role="form" method="POST" action="{{path('edit_menu',{'idMenu': entity.id})}}">
+                                <div class="form-group">
+                                    <label>Nom</label>
+                                    <input class="form-control" name="name" placeholder="Nom à afficher"  value="{{entity.nom}} "required="true"> 
+                                </div>
+
+                                <div class="form-group" >
+                                    <label>Parent</label>
+                                    <select name="parent" class=" form-control chosen-select-element ">
+                                        {% if (getMenuParents()|length) < 15 %}
+                                            <option value=""> Select parent Menu </option>   
+                                        {% endif %}
+
+                                        {%for parent in getMenuParents() %}
+                                            {% if entity.parent and  parent.id == entity.parent.id %}
+                                                <option value="{{parent.id}}" selected="true">{{parent}}</option>
+                                            {% else %}
+                                                 <option value="{{parent.id}}" >{{parent}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Module</label>
+                                    <select name="idModule" class="form-control chosen-select-element " onchange ="getModuleActions($(this).val());" >
+                                        <option value="">-Select action module-</option>    
+                                        {%for key, value in getEntities('eProcessEntityBundle','Module') %}
+                                            <option value="{{key}}">{{value}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div> 
+                                <div class="form-group">
+                                    <label>Actions</label>
+                                    <select class="form-control" id="actions" required="true" name="action">
+                                        <option value="{{entity.action.id}}">{{entity.action.description}}</option>
+                                    </select>
+                                </div>
+
+
+                                <button type="submit" class="btn btn-success">Modifier </button>
+                                <button type="reset" class="btn btn-primary">Annuler</button>
+                            </form>
+
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+
+         function getModuleActions(id) {
+
+            if (id > 0) {
+                getAssociated('eProcessEntityBundle', 'Module', {'id':id}, 'Action', '#actions',{});
+            }
+
+        }
+    </script>
+{% endblock %}
+
+

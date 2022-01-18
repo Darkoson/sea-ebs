@@ -1,0 +1,41 @@
+<button type="button" data-target=".navbarCollapse" data-toggle="collapse" class="navbar-toggle btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-menu-hamburger"></span>
+</button>
+
+<a class="navbar-brand col-lg-2 col-md-2 col-sm-2" href="{{path('dashboard')}}"> <img src="{{ asset('images/logo/images_002.jpg') }}" style="width: 200px; height: 40px; margin-top: -10px;" >      </a> 
+
+<div id="titreBaniere" class="col-lg-7 col-md-7 col-sm-7 text-center small">  SUIVI ELECTRONIQUE DES ACHATS   </div>
+<div id="" class="collapse navbar-collapse  col-lg-3 col-md-3 col-sm-3 text-center small"> 
+    <div class="row" id ="banniere-user"> 
+        <div class="col-lg-1 col-md-1 col-sm-1" id="logout"> 
+            <ul class="nav navbar-top-links col-lg-1 col-md-1 col-sm-1 pull-right">
+                <li class="dropdown">
+                    <span class=" btn btn-circle btn-warning dropdown-toggle"  href="#" data-toggle="dropdown"><i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i> </span>
+
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="{{path('logout')}}"><i class="fa fa-sign-out fa-fw"></i> Déconnexion</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-10" id=""> 
+            <div class="row"> 
+                <div class="col-lg-4 col-md-3 col-sm-3" style="text-align: right">Profil </div>
+                <div class="col-lg-8 col-md-9 col-sm-9"> <span class="small pull-left"> {{NOM_PROFIL}} </span></div>
+            </div>
+            <div class="row"> 
+                <div class="col-lg-4 col-md-3 col-sm-3" style="text-align: right">Utilisateur </div>
+                <div class="col-lg-8 col-md-9 col-sm-9" > <span class=" small pull-left"> {{USER_NOM_PRENOM}} </span></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id =""> 
+        <div class="col-lg-2 col-md-2 col-sm-2 heure" id ="">heure:  </div>
+        <div class="col-lg-10 col-md-10 col-sm-10 " id ="div_horloge">  </div>
+    </div>
+
+
+
+
+</div>

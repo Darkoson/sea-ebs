@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>SEA-{% block title %}Login{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('logo.ico') }}" />
+        {% include '::scripts/call_css.html.twig' %}
+
+    </head>
+
+    <body style=" background-image: url({{asset('images/fond/login2.png')}}) ;background-repeat: no-repeat; background-size: cover">
+        <script src="{{ asset('bower/bower_components/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui-1.10.4.min.js') }}"></script>
+        <div class="container" style=" min-height: 500px; width: 100%;" id="bglogin">
+            <div class="row" style="margin-left: 25% ; margin-right:  25%; margin-top: 18%" id="bglogin" >
+                <div class="col-lg-12 col-md-12 col-sm-12" >
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                            <div class="login-panel panel panel-default" style=" opacity: 0.5">
+                                <div class="panel-body">
+                                    <form role="form" action="{{ path('login_check') }}" method="post">
+                                        <fieldset style=" opacity: 5">
+                                            <div class="form-group">
+                                                <input class="form-control" placeholder="nom d'utilisateur"id="username" name="_username" value="" type="text" autofocus required="true">
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="form-control" placeholder="mot de passe" id="password" name="_password" type="password" required="true" value="">
+                                            </div>
+
+                                            <!-- Change this to a button or input when using this as a form -->
+                                            <input type="submit" class="btn btn-lg btn-success btn-block" value="Connexion" />
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            {% if  error is defined and error %}
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <center class="alert-link">{{ error.message }}</center>.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        {% include '::scripts/call_js.html.twig' %}
+        {% block javascripts %}  {% endblock %}
+
+    </body>
+
+</html>

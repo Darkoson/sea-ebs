@@ -1,0 +1,119 @@
+{% extends "::base.html.twig"%}
+
+{% block title %}{{titrePage}} {% endblock  %}
+{% block stylesheet %}
+    <!-- Custom CSS for admin -->
+    <link  rel="stylesheet" href="{{ asset('bower/dist/css/sb-admin-2.css') }}" > 
+{% endblock  %}
+
+
+{% block body %}
+
+    <div id="wrapper" >
+
+        <div class=" nav navbar-nav  navbar-fixed-top" role="navigation" id="header">
+            {#        <div class="  navbar navbar-default navbar-static-top" role="navigation" style="  background-color: #18708a;  ">#}
+            {% block page_header %}
+                {% include '::components/header.html.twig' %}
+            {% endblock  %}
+        </div>
+
+        <div class="clearfix clear row" id="page-wrapper">
+
+            <div class="col-lg-3 col-md-3 col-sm-3" id="pagesidebar" >
+                {#  sidebar : ici se trouve les menus #}
+                {% block page_sidebar %}
+                    {% include '::components/sidebar.html.twig' %}
+                {% endblock  %}
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9" id="page" >
+
+                <div class="row" style="" id="pageconentwrapper">
+
+                    {#       AFFICHAGE DU TITRE DE LA PAGE     #}
+                    <div class="col-lg-12 col-md-12 col-sm-12 Bold alert-info " id="banniere-description" style=" margin-bottom: 10px; ">
+                        {% block page_title %} {{titrePage}} {% endblock page_title %}
+                    </div> 
+
+                    {#       AFFICHAGE DES NOTIFICATIONS     #}
+                    <center>
+                        {% for notice in app.session.flashbag.get('ok')%}
+                            <div class="alert alert-success alert-dismissable col-lg-6 col-md-6 col-sm-6">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <center class="alert-link">{{notice}}</center>.
+                            </div>
+                        {% endfor %}
+                        {% for notice in app.session.flashbag.get('ko')%}
+                            <div class="alert alert-danger alert-dismissable col-lg-6 col-md-6 col-sm-6">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <center class="alert-link">{{notice}}</center>.
+                            </div>
+                        {% endfor %}
+                    </center>
+
+                    {#       AFFICHAGE DES CONTENUS DES PAGES     #}
+                    <div class="col-lg-12 col-md-12 col-sm-12"  id="pagecontent" >
+
+                        {% block page_content %}
+
+                            <div class="row">
+
+                                {#      BLOC GAUCHE D' AFFICHAGE DES CONTENUS DES PAGES     #}
+                                <div id="page_content_left" class="col-lg-8 col-md-8  col-sm-8">
+                                    {% block page_content_left %} 
+
+                                    {% endblock  %}
+
+                                </div>
+
+                                {#      BLOC DROIT D' AFFICHAGE DES PETITS RACOURCIS DES PAGES     #}
+                                <div id="page_content_right" class="col-lg-4 col-md-4 col-sm-4 ">
+
+                                    {% block page_content_right %} 
+
+                                    {% endblock  %}
+
+                                </div>
+                                <!-- /.col-lg-4 -->
+                            </div>
+                            <!-- /.row -->
+
+
+                            <div class="row">
+                                {% block page_content_bottom %} 
+                                {% endblock  %}
+
+                            </div>
+
+                        {% endblock %}
+
+                    </div>
+
+
+                </div> 
+
+                <div class="row header" id="foot" style="margin-bottom:  -0px;" {#background-color: #f0f0ff " #} >
+                    <div class="col-lg-12 col-md-12 col-sm-12 "  style="background-color: #ffffff; {#margin-bottom: -10px;#}" >
+                        <center> <p style="color: #002a80; font-size: smaller; font-weight: bolder"> copyright  @ ecobank 2016</p> </center> 
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        {% if isRECEPTION(CODE_PROFIL) %}
+            $('body').addClass("bg-recept");
+        {% elseif isEBS(CODE_PROFIL) %} 
+            $('body').addClass("bg-ebs");
+        {% elseif isOPERATION(CODE_PROFIL) %}     
+            $('body').addClass("bg-ops");
+        {% endif %}  
+    </script>
+
+    {% include '::scripts/user_js.html.twig' %}
+{% endblock %}

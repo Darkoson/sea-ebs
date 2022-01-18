@@ -1,0 +1,105 @@
+{% extends "::base.html.twig"%}
+
+{% block title %} {{titrePage}} {% endblock  %}
+
+{% block stylesheet %}
+    <!-- Custom CSS for admin -->
+    <link  rel="stylesheet" href="{{ asset('bower/dist/css/sb-admin-2.admin.css') }}" > 
+{% endblock  %}
+
+{% block body %}
+
+    <div id="wrapper" style="">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0px">
+
+            {#  header  #}
+            {% block page_header %}
+                {% include '::components/header.html.twig' %}
+            {% endblock  %}
+                <div class="" style="margin-top: 20px;"> </div>
+
+            {#  sidebar : ici se trouve les menus #}
+            {% block page_sidebar %}
+
+                {% include '::components/sidebar.html.twig' %}
+            {% endblock  %}
+        </nav>
+
+        <div id="page-wrapper">
+{#
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 page-header" id="descriptionModule">
+                     <div class="col-lg-4 col-md-4 col-sm-4 Bold  " id="">
+                            {% block page_module %}  {% endblock %}
+                        </div>
+                     <div class="col-lg-6 col-md-6 col-sm-6 Bold  " id="banniere-description">
+                            {% block page_title %} {{titrePage}} {% endblock page_title %}
+                        </div>
+                </div>
+            </div>#}
+
+            {% for notice in app.session.flashbag.get('ok')%}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <center class="alert-link">{{notice}}</center>.
+                </div>
+            {% endfor %}
+            {% for notice in app.session.flashbag.get('ko')%}
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <center class="alert-link">{{notice}}</center>.
+                </div>
+            {% endfor %}
+
+
+            <div class="row" >
+                {% block profile_modules %} {% endblock  %}
+                {#  page_content : ici se trouve les blocks (4) les plus dynamiques #}
+                {% block page_content %} 
+                    
+                    <div class="row">
+
+                        <div class="  col-lg-8">
+                            {% block page_content_left %} 
+                            {% endblock  %} 
+                        </div>
+                        <!-- /.col-lg-8 -->   
+
+
+
+
+
+                        <div class="col-lg-4 " style="">
+                            {% block page_content_right %} 
+                            {% endblock  %}
+                        </div>
+                        <!-- /.col-lg-4 -->   
+
+
+
+                    </div>
+                    <!-- /.row -->
+
+                    <div class="row">
+                        {% block page_content_bottom %} 
+                        {% endblock  %}
+
+                    </div>
+
+                {% endblock %}
+
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    
+    <script>
+  
+    </script>
+
+{% endblock %}

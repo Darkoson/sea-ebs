@@ -1,0 +1,143 @@
+{% extends "::layout.html.twig" %}
+
+{% block page_module %}
+    <a href="{{path('index_facture')}}">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class=" text-center">
+                    <div class="banniere-module">Factures </div>
+                    <div>Gestion des Factures </div>
+                </div>
+            </div>
+        </div>
+    </a>
+{% endblock  %}
+
+
+
+{% block page_content_right %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i>  Graph
+        </div>
+        <div class="panel-body">
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+{% endblock %}
+
+{% block javascripts %} 
+    {{information.modalTransfertFacture()}}
+
+    {#  SUPPRESSION  DE FACTURE  #}
+    <form action="{{path('facture_remove')}}" method="POST" class="hidden" id="etapeFactureForm">
+        <input type="" name="idFactures" id="idFactures" value="" />
+    </form>
+
+    {#  CHANGEMENT D'ETAT  DE FACTURE  #}    
+    <form action="{{path('facture_traitement_status')}}" method="POST" class="hidden" id="statusFactureForm">
+        <input type="text" name="ids" id="statusIdFact" value="" />
+        <input type="text" name="etape" id="statusEtapeFact" value=""  />
+        <input type="text" name="etat" id="statusEtatFact" value=""  />
+        <input type="text" name="route" id="statusRouteFact" value=""  />
+    </form>
+
+    {#  CHANGEMENT D'ETAPE  DE FACTURE  #}
+    <form action="{{path('facture_traitement_etape')}}" method="POST" class="hidden" id="etapesModifFactureForm">
+        <input type="text" name="ids" id="etapeIdFact" value="" />
+        <input type="text" name="etape" id="etapeEtapeFact" value=""  />
+        <input type="text" name="etat" id="etapeEtatFact" value=""  />
+        <input type="text" name="route" id="etapeRouteFact" value=""  />
+    </form>
+
+
+    <script>
+
+        function passerSuivant(idSuivant) {
+        $('#' + idSuivant).click();
+        }
+
+        // changement de l'etape d'une facture
+        function changerEtapeFacture(ids, etape, route, status = - 1) {
+
+        if (ids === '') {
+        alert('Selectionner au moins un élément !');
+        }
+        else {
+        $('#etapeIdFact').val(ids);
+        $('#etapeEtapeFact').val(etape);
+        $('#etapeEtatFact').val(status);
+        $('#etapeRouteFact').val(route);
+        {# alert($('#etapeIdFact').val()) ;
+         alert($('#etapeEtapeFact').val()) ;
+         alert($('#etapeEtatFact').val()) ;
+         alert($('#etapeRouteFact').val()) ;#}
+                         $('#etapesModifFactureForm').submit();
+                         }
+                         }
+
+
+
+                         // changement d'etat d'une facture
+                         function changerStatusFacture(ids, status, route, etape = - 1) {
+
+                         if (ids === '') {
+                         alert('Selectionner au moins un élément !');
+                         }
+                         else {
+                         $('#statusIdFact').val(ids);
+                         $('#statusEtapeFact').val(etape);
+                         $('#statusEtatFact').val(status);
+                         $('#statusRouteFact').val(route);
+        {#alert($('#statusIdFact').val()) ;
+        alert($('#statusEtapeFact').val()) ;
+        alert($('#statusEtatFact').val()) ;
+        alert($('#statusRouteFact').val()) ;#}
+                         $('#statusFactureForm').submit();
+                         }
+                         }
+
+    </script>
+
+
+    <script>
+
+        {#
+        function changerEtapeFacture(ids,status) {
+            if (ids === '') {
+                alert('Selectionner au moins un élément !');
+            }   //cas d'une suppression
+            else {
+               
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('facture_traitement_status')}}",
+                    data: {
+                        ids: ids,
+                        etat: status
+                    },
+                    cache: false,
+                    beforeSend: function (xhr) {
+                       
+                    },
+                    success: function (data) {
+//                            $('#loadAssociated').hide('fast');
+//                            $('#target').show('fast');
+                        var answer = jQuery.parseJSON(data);
+                        if (answer.status) {
+                           window.location.reload() ;
+                        } else {
+                            alert(answer.message);
+                        }
+                    }
+                });
+            }
+        }
+#}
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,105 @@
+
+<ul class="chat">
+
+    <li>
+        <div class=" row chat-panel  upAndDownSpace" id="" style="margin-bottom: 50px"> 
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-12">{{ form_widget(form.objet) }} {{ form_errors(form.objet) }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row chat-panel upAndDownSpace">
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-3" >Fournisseur</div>
+                    <div class="col-lg-9">{{ form_widget(form.fournisseur) }} {{ form_errors(form.fournisseur) }}</div>
+                </div> 
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-2">Devise</div>
+                    <div  class="col-lg-10">{{ form_widget(form.devise) }} </div>
+                </div>
+            </div>
+        </div>
+
+
+    </li>
+
+    <li>
+        <div class="chat-panel  row" id="listNormal"> 
+            <div class="header col-lg-12">
+
+                <div  class=" factNormal row upAndDownSpace" style="margin-top: 15px">
+                    <p class="col-lg-2"> Demande </p>
+                    <input type="checkbox" class="col-lg-1"  name="hasDemande">
+                    <input type="text"  name="hasDemandeComment" value="" placeholder=" Votre Commantaire sur la demande " class="col-lg-4 form-control" style="width: 45%">
+                    <small class=" col-lg-2   text-muted" style="margin-top: -15px">
+                        {{form_widget(form.ficDemande)}}
+                    </small>
+                </div>
+
+                <div class="factNormal row upAndDownSpace" style="margin-top: 15px">
+                    <p class="col-lg-2"> Proforma </p>
+                    <input type="checkbox" class="col-lg-1"   name="hasProforma">
+                    <input type="text" name="hasProformaComment" value="" placeholder=" Votre Commantaire sur le proforma" class="col-lg-4 form-control" style="width: 45%">
+                    <small class=" col-lg-2   text-muted" style="margin-top: -15px">
+                        {{form_widget(form.ficProformat)}}
+                    </small>
+                </div>
+                <div class="factNormal row upAndDownSpace" style="margin-top: 15px">
+                    <p class="col-lg-2"> Approbation </p>
+                    <input type="checkbox" class="col-lg-1" name="hasApprobation" >
+                    <input type="text" name="hasApprobationComment" value="" placeholder=" Votre Commantaire sur l'approbation" class="col-lg-6 form-control" style="width: 45%">
+                    <small class=" col-lg-2   text-muted" style="margin-top: -15px">
+                        {{form_widget(form.ficApprobation)}}
+                    </small>
+                </div>
+            </div>
+        </div>
+
+    </li>
+
+</ul>
+
+
+
+
+<div class="btn btn-primary" style="margin-left: 50px" onclick="recapitulerEtSuivant();">
+    <strong>Suivant</strong> <i class="fa fa-angle-right"></i>
+</div> 
+
+
+
+<script>
+
+    function recapitulerEtSuivant() {
+        passerSuivant('lienInfos');
+        changerDevise();
+        recapCheckList();
+    }
+
+
+
+
+    /**
+     * changerValeurs : fonction de changement des valeurs des checkboxs à true ou false
+     * 
+     * @param 
+     * @returns 
+     */
+    function changerValeurs() {
+        $('input[type=checkbox]').each(function () {
+            if ($(this).is(':checked')) {
+                $(this).val(1);
+            } else {
+                $(this).val(0);
+            }
+        });
+    }
+
+
+
+</script>

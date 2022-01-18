@@ -1,0 +1,106 @@
+{% extends "eProcessBonBundle:BonCommande:index.html.twig" %}
+
+{% block page_content_left %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Génération de bon de commande
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#checklist" data-toggle="tab" id="lienCheckList">Informations & CheckList </a> </li>
+                <li><a href="#infos" data-toggle="tab" id="lienInfos" >Saisie des Trajets</a> </li>
+                <li><a href="#enreg" data-toggle="tab" id="lienEnreg"> Recapitulatif & Enregistrement </a> </li>
+            </ul>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <!-- Tab panes -->
+            <div class="tab-content col-lg-12" style="padding-top: 20px">
+
+                {#  ****  block des informations sur le checkList  ***  #}        
+                <div class="tab-pane fade in active" id="checklist">
+                    {% include 'eProcessBonBundle:BonCommande:generation/voyage/checkList.html.twig' %}
+                </div>
+
+                {#  ****  block des informations sur la facture  ***  #}
+                <div class="tab-pane fade " id="infos">
+                    {% include 'eProcessBonBundle:BonCommande:generation/voyage/infoVoyage.html.twig' %}
+                </div>
+
+
+                {#  ****  block des informations sur le checkList  ***  #} 
+                <div class="tab-pane fade " id="enreg">
+                    {% include 'eProcessBonBundle:BonCommande:generation/voyage/genererBon.html.twig' %}
+                </div>
+
+                {# RECAPITULATION SUR LES CHECKLIST#}
+                <input type="text"    name="checklist" id="checklistRecap" style="display: none">
+                <input type="text"    name="automatique" id="automatique" style="display: none">
+
+                {{form_rest(form)}}
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+    <form onsubmit=""> </form>
+
+{% endblock %}
+
+
+{% block javascripts %} 
+    <div id="lignePrototype" style="display: none">
+        <div class="row ligne upAndDownSpace ">
+            <div class="col-lg-3 col-md-3 col-sm-3"><input required="true" type="text" autocomplete="off" name="nom" value="" placeholder=" Nom et Prénoms" class=" form-control dynamic"></div>
+            <div class="col-lg-2 col-md-2 col-sm-2"><input required="true" type="text" autocomplete="off" name="villeDep" value="" class=" form-control dynamic"></div>
+            <div class="col-lg-1 col-md-1 col-sm-1"><input required="true" type="text" autocomplete="off" name="dateDep" value="" class=" form-control dynamic datetime"></div>
+            <div class="col-lg-2 col-md-2 col-sm-2"><input required="true" type="text" autocomplete="off" name="villeArrive" value="" placeholder=" ville" class=" form-control dynamic"></div>
+            <div class="col-lg-1 col-md-1 col-sm-1"><input required="true" type="text" autocomplete="off" name="dateRetour" value="" class=" form-control dynamic datetime"></div>
+            <div class="col-lg-1 col-md-1 col-sm-1"><input type="text" autocomplete="off" name="montantVoyage" value="" placeholder=" 0" required="" class=" form-control numeric dynamic"></div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <select name="dep" class="chosen-select-element form-control" required="true">
+                    {%for key, value in getEntities('eProcessEntityBundle','Departement') %}
+                        <option value="{{key}}">{{value}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+                
+        {{parent()}}
+        <script>
+            $('.chosen-container').css('width', '100%');
+            $('#eprocess_entitybundle_achat_fichiers').css('width', '100%');
+            $('#eprocess_entitybundle_achat_bon_objet').keyup(function () {
+                $('#objetArticles center').html($(this).val());
+            });
+            $('#eprocess_entitybundle_achat_bon_devise_chosen').click(function () {
+                var deviseCourante = $(this).children('a:first-child').text();
+                $('#deviseArticles').html(deviseCourante);
+            });
+
+
+
+            $(document).ready(function () {
+                $('.dynamic').each(function () {
+                    if ($(this).hasClass('numeric')) {
+                        $(this).val(0);
+                    } else {
+                        $(this).val('');
+                    }
+
+                });
+
+            });
+
+
+
+        </script>
+    {% endblock %}
+
+

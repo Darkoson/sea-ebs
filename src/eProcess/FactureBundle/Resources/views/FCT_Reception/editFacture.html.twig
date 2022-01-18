@@ -1,0 +1,171 @@
+{% extends "eProcessFactureBundle:FCT_Reception:index.html.twig" %}
+
+{% block page_content_left %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Modification  d'une facture 
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-3  col-md-3 col-sm-3">   </div>
+                <div class="col-lg-3  col-md-3 col-sm-3">Ordre d'arrive:  </button></div>
+                <div class="col-lg-2 col-md-2 col-sm-2"> <button class=" btn btn-success">{{ facture.ordreArrive }} </button></div>
+            </div>
+
+            <div class="  panel-body row " style="margin-top: 30px">
+
+                <form role="form" class="col-lg-12 well" method="POST" action="{{path('edit_facture', {'idAchat': achat.id })}}" >
+
+                    {% if (achat.bonCommande  is not null) %}
+
+                        {% set bonCommande =  achat.bonCommande %}
+
+                        <div class="panel panel-info" style="margin-top: 10px;">
+                            <div class="panel-heading">
+                                <center>{{achat.objet}}</center>
+                            </div>
+                        </div>
+
+                        <div class="row well ">
+                            <div class="form-group col-lg-12 ">
+
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Référence bon :</label>
+                                        <input type="text" value="{{bonCommande.numero}}" readonly="" class="form-control">
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Fournisseur :</label>
+                                        <select id="iFour" name="iFour" class="chosen-select-element form-control"  disabled="true">
+                                            {% for key, value in getEntities('eProcessEntityBundle','Fournisseur') %}
+                                                {% if (achat.fournisseur is not null) and (achat.id == key ) %}
+
+                                                    <option value="{{key}}" selected="true">{{value}}</option>
+                                                {% else %}
+                                                    <option value="">Aucun</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                        {#                                             {{ form_widget(form.fournisseur) }}#}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Montant :</label>
+                                        <input type="text" name="montant" value="{{achat.montant}}" readonly="" class="form-control">
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Devise :</label>
+                                        <input type="text" name="devise" value="{{achat.devise}}" readonly="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row well">
+                            <div class="form-group col-lg-12 ">
+
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Référence Facture :</label>
+                                        <input type="text" class="form-control" name="refFact" required="true" value="{{facture.referenceFournisseur}}" />
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Date Arrivée :</label>
+                                        <input type="text" class="form-control datetime" name="dateArrive" required="true"  value="{{facture.dateArrive|date('d-m-Y')}}"/>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    {% else %}
+
+
+
+                        <div class="row">
+                            <div class="form-group col-lg-12 ">
+                                {{ form_widget(form.objet) }}
+                            </div>
+                        </div>
+
+                        <div class="row well">
+                            <div class="form-group col-lg-12 ">
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Fournisseur :</label>
+                                        {{ form_widget(form.fournisseur) }}
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Référence Facture :</label>
+                                        <input type="text" class="form-control" name="refFact" required="true" value="{{facture.referenceFournisseur}}" />
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Date Arrivée :</label>
+                                        <input type="text" class="form-control datetime" name="dateArrive" required="true"  value="{{facture.dateArrive|date('d-m-Y')}}"/>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Montant :</label>
+                                        {{ form_widget(form.montant) }}
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                                        <label class="">Devise :</label>
+                                        {{ form_widget(form.devise) }}
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>   
+
+                    {% endif  %}
+
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-3 col-sm-3"></div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                            <button type="submit" class="btn btn-success"  onclick="afficheImageExecution();">Enregistrer </button>
+                            <button type="reset" class="btn btn-primary">Annuler</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %} 
+    {{parent()}}
+
+    <script>
+
+        function chercherAchat() {
+            $('#form1').submit();
+        }
+
+
+    </script>
+{% endblock %}
+

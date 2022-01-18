@@ -1,0 +1,103 @@
+{% extends "::layout.html.twig" %}
+
+{% block profile_modules %} 
+    {% include 'eProcessSecurityBundle:Dashboard:modules/moduleEBS.html.twig' %} 
+{% endblock  %}
+
+
+
+{% block page_content_left %} 
+    <div class="panel panel-default">
+        
+        <div class="panel-heading">
+            Module 
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+             <div class="row ">
+        {% for parent in MENUS_TITRE %}
+
+            <a href="{{path(parent.route)}}">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <div class="huge">{{loop.index}} </div>
+                                </div>
+                                <div class="col-xs-10 text-center">
+                                    <div class="small text-muted" style="font-weight: bolder; margin-top: 20px;">{{parent.nom}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        {% endfor  %}
+
+
+    </div>    
+            
+            
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock  %}
+
+
+{% block page_content_right %} 
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Raccourcis
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="list-group">
+                <a href="{{path('e_process_transfert_encours_recept')}}" class="list-group-item">
+                    <i class="fa  fa-sign-in fa-fw"></i> Factures à recevoir
+                    <span class="pull-right text-muted small"><em> ({{nbreTransfertArrive(CODE_PROFIL)}})</em>
+                    </span>
+                </a>
+                    
+                <a href="{{path('add_bonCommande_article')}}" class="list-group-item">
+                    <i class="fa  fa-plus-circle fa-fw"></i> Editer un bon de commande
+                </a>   
+                    
+                <a href="{{path('facture_traitement_arrive')}}" class="list-group-item">
+                    <i class="fa fa-gears fa-fw"></i> Facture à traiter
+
+                </a>
+               {# <a href="{{path('facture_traitement_rejete')}}" class="list-group-item">
+                    <i class="fa  fa-reply fa-fw"></i> Facture rejetées
+                </a>
+#}
+                
+                {#<a href="{{path('list_bon_emis')}}" class="list-group-item">
+                    <i class="fa fa-inbox  fa-fw"></i> Liste des bons Edités
+                </a>#}
+                <a href="{{path('list_fournisseur')}}" class="list-group-item">
+                    <i class="fa  fa-user  fa-fw"></i> Les fournisseurs
+                </a>
+               {# <a href="{{path('facture_traitement_journee')}}" class="list-group-item">
+                    <i class="fa a-hand-o-down fa-fw"></i> Les traitements de la journée
+                </a>#}
+
+            </div>
+            <!-- /.list-group -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+{% endblock  %}
+
+{% block javascripts %} 
+
+    <script>
+       
+    </script>
+
+{% endblock %}
+
+

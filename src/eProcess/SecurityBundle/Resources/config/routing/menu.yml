@@ -1,0 +1,28 @@
+list_menu:
+    path:     /list
+    defaults: { _controller: eProcessSecurityBundle:Menu:listMenu }
+
+add_menu:
+    path:     /add
+    defaults: { _controller: eProcessSecurityBundle:Menu:addMenu  }
+    
+edit_menu:
+    path:     /{idMenu}/edit
+    defaults: { _controller: eProcessSecurityBundle:Menu:editMenu , idMenu : 1  }
+
+activate_menu:
+    path:     /activate
+    defaults: { _controller: "eProcessSecurityBundle:Menu:activateMenu"   }
+    
+deactivate_menu:
+    path:     /deactivate
+    defaults: { _controller: "eProcessSecurityBundle:Menu:deactivateMenu"   }
+    
+remove_menu:
+    path:     /remove
+    defaults: { _controller: "eProcessSecurityBundle:Menu:removeMenu"   }
+
+status_menu:
+    path:     /changestatus
+    defaults: { _controller: "eProcessSecurityBundle:Menu:changeMenuStatus" }
+
